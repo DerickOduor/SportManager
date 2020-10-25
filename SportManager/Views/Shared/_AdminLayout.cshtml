@@ -1,0 +1,768 @@
+﻿@using SportManager.Models
+@using Microsoft.AspNetCore.Http;
+@{
+    String UserType = "",UserName="";
+    Student student = null;
+    Staff staff = null;
+
+    try
+    {
+        UserType = Context.Session.GetString("USERTYPE");
+        if(UserType.ToUpper().Equals("STAFF"))
+            staff = SessionHelper.GetObjectFromJson<Staff>(Context.Session, "MY_l_USER");
+        else
+            student = SessionHelper.GetObjectFromJson<Student>(Context.Session, "MY_l_USER");
+
+        UserName = (staff != null) ? staff.Firstname + " " + staff.Lastname : student.Firstname + " " + student.Lastname;
+    }
+    catch (Exception ex) { }
+
+}
+<!DOCTYPE html>
+<html lang="en">
+<!-- Added by HTTrack -->
+<meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+<head>
+
+    <title>@ViewData["Title"] - Sport Manager</title>
+
+    <!--[if lt IE 10]>
+            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+            <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+            <![endif]-->
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+    <meta name="author" content="Thump" />
+
+    @*<link rel="icon" href="https://colorlib.com/polygon/admindek/files/assets/images/favicon.ico" type="image/x-icon">*@
+
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Quicksand:500,700" rel="stylesheet">
+
+    <link rel="stylesheet" type="text/css" href="~/assets/css/bootstrap.min.css">
+
+    <link rel="stylesheet" href="~/assets/css/waves.min.css" type="text/css" media="all">
+
+    <link rel="stylesheet" type="text/css" href="~/assets/css/feather.css">
+
+    <link rel="stylesheet" type="text/css" href="~/assets/css/font-awesome-n.min.css">
+
+    <link rel="stylesheet" href="~/assets/css/chartist.css" type="text/css" media="all">
+
+    <link rel="stylesheet" type="text/css" href="~/assets/css/style.css">
+    <link rel="stylesheet" type="text/css" href="~/assets/css/widget.css">
+    <link rel="stylesheet" type="text/css" href="~/assets/css/datatables.bootstrap4.min.css">
+    <link rel="stylesheet" type="text/css" href="~/assets/css/buttons.datatables.min.css">
+    <link rel="stylesheet" type="text/css" href="~/assets/css/responsive.bootstrap4.min.css">
+    <link rel="stylesheet" type="text/css" href="~/assets/css/themify-icons.css">
+    @*<link rel="stylesheet" type="text/css" href="~/assets/css/style.css">*@
+    <link rel="stylesheet" type="text/css" href="~/assets/css/pages.css">
+
+    <style>
+        a#view_policy_application:hover {
+            text-decoration: none;
+        }
+
+        ul#notification_list {
+            overflow: hidden;
+            overflow-y: scroll;
+            height: 350px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="loader-bg">
+        <div class="loader-bar"></div>
+    </div>
+
+    <div id="pcoded" class="pcoded">
+        <div class="pcoded-overlay-box"></div>
+        <div class="pcoded-container navbar-wrapper">
+
+            <nav class="navbar header-navbar pcoded-header">
+                <div class="navbar-wrapper">
+                    <div class="navbar-logo">
+                        <a href="/home">
+                            @*<img class="img-fluid" src="~/assets/png/logo_app.png" alt="Theme-Logo" />*@
+                        </a>
+                        <a class="mobile-menu" id="mobile-collapse" href="#!">
+                            <i class="feather icon-menu icon-toggle-right"></i>
+                        </a>
+                        <a class="mobile-options waves-effect waves-light">
+                            <i class="feather icon-more-horizontal"></i>
+                        </a>
+                    </div>
+                    <div class="navbar-container container-fluid">
+                        <ul class="nav-left">
+                            <li class="header-search">
+                                <div class="main-search morphsearch-search">
+                                    <div class="input-group">
+                                        <span class="input-group-prepend search-close">
+                                            <i class="feather icon-x input-group-text"></i>
+                                        </span>
+                                        <input type="text" class="form-control" placeholder="Enter Keyword">
+                                        <span class="input-group-append search-btn">
+                                            <i class="feather icon-search input-group-text"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                            </li>
+                            <li>
+                                <a href="#!" onclick="if (!window.__cfRLUnblockHandlers) return false; javascript:toggleFullScreen()" class="waves-effect waves-light" data-cf-modified-d2d1d6e2f87cbebdf4013b26-="">
+                                    <i class="full-screen feather icon-maximize"></i>
+                                </a>
+                            </li>
+                        </ul>
+                        <ul class="nav-right">
+                            <li class="header-notification">
+                                <div class="dropdown-primary dropdown">
+                                    <div class="dropdown-toggle" data-toggle="dropdown">
+                                        <i class="feather icon-bell"></i>
+                                        <span class="badge bg-c-red" id="notification_count">0</span>
+                                    </div>
+                                    <ul class="show-notification notification-view dropdown-menu" data-dropdown-in="fadeIn" data-dropdown-out="fadeOut" id="notification_list">
+                                        <li>
+                                            <h6>Notifications</h6>
+                                            <label class="label label-danger">New</label>
+                                        </li>
+                                        <!--<li>
+                                            <div class="media">
+                                                <img class="img-radius" src="~/assets/jpg/avatar-4.jpg" alt="Generic placeholder image">
+                                                <div class="media-body">
+                                                    <h5 class="notification-user">John Doe</h5>
+                                                    <p class="notification-msg">Lorem ipsum dolor sit amet, consectetuer elit.</p>
+                                                    <span class="notification-time">30 minutes ago</span>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="media">
+                                                <img class="img-radius" src="~/assets/jpg/avatar-3.jpg" alt="Generic placeholder image">
+                                                <div class="media-body">
+                                                    <h5 class="notification-user">Joseph William</h5>
+                                                    <p class="notification-msg">Lorem ipsum dolor sit amet, consectetuer elit.</p>
+                                                    <span class="notification-time">30 minutes ago</span>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="media">
+                                                <img class="img-radius" src="~/assets/jpg/avatar-4.jpg" alt="Generic placeholder image">
+                                                <div class="media-body">
+                                                    <h5 class="notification-user">Sara Soudein</h5>
+                                                    <p class="notification-msg">Lorem ipsum dolor sit amet, consectetuer elit.</p>
+                                                    <span class="notification-time">30 minutes ago</span>
+                                                </div>
+                                            </div>
+                                        </li>-->
+                                    </ul>
+                                </div>
+                            </li>
+                            <li class="header-notification">
+                                <div class="dropdown-primary dropdown">
+                                    <div class="displayChatbox dropdown-toggle" data-toggle="dropdown">
+                                        <i class="feather icon-message-square"></i>
+                                        <span class="badge bg-c-green">3</span>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="user-profile header-notification">
+                                <div class="dropdown-primary dropdown">
+                                    <div class="dropdown-toggle" data-toggle="dropdown">
+                                        <img src="~/assets/jpg/user_avatar.png" class="img-radius" alt="User-Profile-Image">
+
+                                        @{
+                                            if (UserName != null)
+                                            {
+                                                <span>@UserName</span>
+                                            }
+                                        }
+                                        <i class="feather icon-chevron-down"></i>
+                                    </div>
+                                    <ul class="show-notification profile-notification dropdown-menu" data-dropdown-in="fadeIn" data-dropdown-out="fadeOut">
+                                        <li>
+                                            <a href="#!">
+                                                <i class="feather icon-settings"></i> Settings
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="#">
+                                                <i class="feather icon-user"></i> Profile
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="#">
+                                                <i class="feather icon-mail"></i> My Messages
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="/ChangePassword">
+                                                <i class="feather icon-lock"></i>Change Password
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="/logout">
+                                                <i class="feather icon-log-out"></i> Logout
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+
+            <div id="sidebar" class="users p-chat-user showChat">
+                <div class="had-container">
+                    <div class="p-fixed users-main">
+                        <div class="user-box">
+                            <div class="chat-search-box">
+                                <a class="back_friendlist">
+                                    <i class="feather icon-x"></i>
+                                </a>
+                                <div class="right-icon-control">
+                                    <div class="input-group input-group-button">
+                                        <input type="text" id="search-friends" name="footer-email" class="form-control" placeholder="Search Friend">
+                                        <div class="input-group-append">
+                                            <button class="btn btn-primary waves-effect waves-light" type="button"><i class="feather icon-search"></i></button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="main-friend-list">
+                                <div class="media userlist-box waves-effect waves-light" data-id="1" data-status="online" data-username="Josephin Doe">
+                                    <a class="media-left" href="#!">
+                                        <img class="media-object img-radius img-radius" src="~/assets/jpg/avatar-3.jpg" alt="Generic placeholder image ">
+                                        <div class="live-status bg-success"></div>
+                                    </a>
+                                    <div class="media-body">
+                                        <div class="chat-header">Josephin Doe</div>
+                                    </div>
+                                </div>
+                                <div class="media userlist-box waves-effect waves-light" data-id="2" data-status="online" data-username="Lary Doe">
+                                    <a class="media-left" href="#!">
+                                        <img class="media-object img-radius" src="~/assets/jpg/avatar-2.jpg" alt="Generic placeholder image">
+                                        <div class="live-status bg-success"></div>
+                                    </a>
+                                    <div class="media-body">
+                                        <div class="f-13 chat-header">Lary Doe</div>
+                                    </div>
+                                </div>
+                                <div class="media userlist-box waves-effect waves-light" data-id="3" data-status="online" data-username="Alice">
+                                    <a class="media-left" href="#!">
+                                        <img class="media-object img-radius" src="~/assets/jpg/avatar-4.jpg" alt="Generic placeholder image">
+                                        <div class="live-status bg-success"></div>
+                                    </a>
+                                    <div class="media-body">
+                                        <div class="f-13 chat-header">Alice</div>
+                                    </div>
+                                </div>
+                                <div class="media userlist-box waves-effect waves-light" data-id="4" data-status="offline" data-username="Alia">
+                                    <a class="media-left" href="#!">
+                                        <img class="media-object img-radius" src="~/assets/jpg/avatar-3.jpg" alt="Generic placeholder image">
+                                        <div class="live-status bg-default"></div>
+                                    </a>
+                                    <div class="media-body">
+                                        <div class="f-13 chat-header">Alia<small class="d-block text-muted">10 min ago</small></div>
+                                    </div>
+                                </div>
+                                <div class="media userlist-box waves-effect waves-light" data-id="5" data-status="offline" data-username="Suzen">
+                                    <a class="media-left" href="#!">
+                                        <img class="media-object img-radius" src="~/assets/jpg/avatar-2.jpg" alt="Generic placeholder image">
+                                        <div class="live-status bg-default"></div>
+                                    </a>
+                                    <div class="media-body">
+                                        <div class="f-13 chat-header">Suzen<small class="d-block text-muted">15 min ago</small></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="showChat_inner">
+                <div class="media chat-inner-header">
+                    <a class="back_chatBox">
+                        <i class="feather icon-x"></i> Josephin Doe
+                    </a>
+                </div>
+                <div class="main-friend-chat">
+                    <div class="media chat-messages">
+                        <a class="media-left photo-table" href="#!">
+                            <img class="media-object img-radius img-radius m-t-5" src="~/assets/jpg/avatar-2.jpg" alt="Generic placeholder image">
+                        </a>
+                        <div class="media-body chat-menu-content">
+                            <div class="">
+                                <p class="chat-cont">I'm just looking around. Will you tell me something about yourself?</p>
+                            </div>
+                            <p class="chat-time">8:20 a.m.</p>
+                        </div>
+                    </div>
+                    <div class="media chat-messages">
+                        <div class="media-body chat-menu-reply">
+                            <div class="">
+                                <p class="chat-cont">Ohh! very nice</p>
+                            </div>
+                            <p class="chat-time">8:22 a.m.</p>
+                        </div>
+                    </div>
+                    <div class="media chat-messages">
+                        <a class="media-left photo-table" href="#!">
+                            <img class="media-object img-radius img-radius m-t-5" src="~/assets/jpg/avatar-2.jpg" alt="Generic placeholder image">
+                        </a>
+                        <div class="media-body chat-menu-content">
+                            <div class="">
+                                <p class="chat-cont">can you come with me?</p>
+                            </div>
+                            <p class="chat-time">8:20 a.m.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="chat-reply-box">
+                    <div class="right-icon-control">
+                        <div class="input-group input-group-button">
+                            <input type="text" class="form-control" placeholder="Write hear . . ">
+                            <div class="input-group-append">
+                                <button class="btn btn-primary waves-effect waves-light" type="button"><i class="feather icon-message-circle"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pcoded-main-container">
+                <div class="pcoded-wrapper">
+
+                    <nav class="pcoded-navbar">
+                        <div class="nav-list">
+                            <div class="pcoded-inner-navbar main-menu">
+                                <div class="pcoded-navigation-label">Navigation</div>
+                                <ul class="pcoded-item pcoded-left-item">
+                                    <li class="pcoded-hasmenu active pcoded-trigger">
+                                        <a href="javascript:void(0)" class="waves-effect waves-dark">
+                                            <span class="pcoded-micon"><i class="feather icon-home"></i></span>
+                                            <span class="pcoded-mtext">Dashboard</span>
+                                        </a>
+                                        <ul class="pcoded-submenu">
+                                            <li class="active">
+                                                <a href="/home" class="waves-effect waves-dark">
+                                                    <span class="pcoded-mtext">Home</span>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    @*<li class="pcoded-hasmenu">
+                                            <a href="javascript:void(0)" class="waves-effect waves-dark">
+                                                <span class="pcoded-micon"><i class="feather icon-sidebar"></i></span>
+                                                <span class="pcoded-mtext">Administration</span>
+                                            </a>
+                                            <ul class="pcoded-submenu">
+                                                <li class=" pcoded-hasmenu">
+                                                    <a href="javascript:void(0)" class="waves-effect waves-dark">
+                                                        <span class="pcoded-mtext">Company</span>
+                                                    </a>
+                                                    <ul class="pcoded-submenu">
+                                                        <li class="">
+                                                            <a href="/Company" class="waves-effect waves-dark">
+                                                                <span class="pcoded-mtext">Company profile</span>
+                                                            </a>
+                                                        </li>
+                                                        <li class="">
+                                                            <a href="/Employees" class="waves-effect waves-dark">
+                                                                <span class="pcoded-mtext">Employees</span>
+                                                            </a>
+                                                        </li>
+                                                        <li class="">
+                                                            <a href="/Branch/Create" class="waves-effect waves-dark">
+                                                                <span class="pcoded-mtext">Branch</span>
+                                                            </a>
+                                                        </li>
+                                                    </ul>
+                                                </li>
+                                                <li class=" pcoded-hasmenu">
+                                                    <a href="javascript:void(0)" class="waves-effect waves-dark">
+                                                        <span class="pcoded-mtext">Security</span>
+                                                    </a>
+                                                    <ul class="pcoded-submenu">
+                                                        <li class="">
+                                                            <a href="/UserRights" class="waves-effect waves-dark">
+                                                                <span class="pcoded-mtext">User rights</span>
+                                                            </a>
+                                                        </li>
+                                                        <li class="">
+                                                            <a href="/Profile" class="waves-effect waves-dark">
+                                                                <span class="pcoded-mtext">User Profiles</span>
+                                                            </a>
+                                                        </li>
+                                                    </ul>
+                                                </li>
+                                                <li class=" pcoded-hasmenu">
+                                                    <a href="javascript:void(0)" class="waves-effect waves-dark">
+                                                        <span class="pcoded-mtext">Package category</span>
+                                                    </a>
+                                                    <ul class="pcoded-submenu">
+                                                        <li class="">
+                                                            <a href="/PackageCategory" class="waves-effect waves-dark">
+                                                                <span class="pcoded-mtext">View categories</span>
+                                                            </a>
+                                                        </li>
+                                                    </ul>
+                                                </li>
+                                                <li class=" pcoded-hasmenu">
+                                                    <a href="javascript:void(0)" class="waves-effect waves-dark">
+                                                        <span class="pcoded-mtext">Package main class</span>
+                                                    </a>
+                                                    <ul class="pcoded-submenu">
+                                                        <li class="">
+                                                            <a href="/PackageMainClass" class="waves-effect waves-dark">
+                                                                <span class="pcoded-mtext">View classes</span>
+                                                            </a>
+                                                        </li>
+                                                    </ul>
+                                                </li>
+                                                <li class=" pcoded-hasmenu">
+                                                    <a href="javascript:void(0)" class="waves-effect waves-dark">
+                                                        <span class="pcoded-mtext">Products</span>
+                                                    </a>
+                                                    <ul class="pcoded-submenu">
+                                                        <li class="">
+                                                            <a href="/Product" class="waves-effect waves-dark">
+                                                                <span class="pcoded-mtext">View Products</span>
+                                                            </a>
+                                                        </li>
+                                                    </ul>
+                                                </li>
+                                                <li class=" pcoded-hasmenu">
+                                                    <a href="javascript:void(0)" class="waves-effect waves-dark">
+                                                        <span class="pcoded-mtext">Patner</span>
+                                                    </a>
+                                                    <ul class="pcoded-submenu">
+                                                        <li class="">
+                                                            <a href="/Patner" class="waves-effect waves-dark">
+                                                                <span class="pcoded-mtext">View Patners</span>
+                                                            </a>
+                                                        </li>
+                                                    </ul>
+                                                </li>
+                                                <li class=" pcoded-hasmenu">
+                                                    <a href="javascript:void(0)" class="waves-effect waves-dark">
+                                                        <span class="pcoded-mtext">System parameters</span>
+                                                    </a>
+                                                    <ul class="pcoded-submenu">
+                                                        <li class="">
+                                                            <a href="/SystemParameter" class="waves-effect waves-dark">
+                                                                <span class="pcoded-mtext">View parameters</span>
+                                                            </a>
+                                                        </li>
+                                                    </ul>
+                                                </li>
+                                            </ul>
+                                        </li>*@
+                                </ul>
+                                <ul class="pcoded-item pcoded-left-item">
+                                    @{
+                                        List<SportManager.Models.Menu> parentMenus = new List<SportManager.Models.Menu>();
+                                        List<SportManager.Models.Menu> subMenus = new List<SportManager.Models.Menu>();
+                                        var ParentMenus = 1;
+                                        try
+                                        {
+                                            parentMenus = SessionHelper.GetObjectFromJson<List<SportManager.Models.Menu>>(Context.Session, "MY_P_MENUS");
+                                            subMenus = SessionHelper.GetObjectFromJson<List<SportManager.Models.Menu>>(Context.Session, "MY_S_MENUS");
+                                            if (parentMenus != null)
+                                            {
+                                                if (parentMenus.Count > 0)
+                                                {
+                                                    foreach (var pmenu in parentMenus)
+                                                    {
+                                                        <li class="pcoded-hasmenu">
+                                                            <a href="javascript:void(0)" class="waves-effect waves-dark">
+                                                                <span class="pcoded-micon">
+                                                                    <i class="feather icon-box"></i>
+                                                                </span>
+                                                                <span class="pcoded-mtext">@pmenu.Name</span>
+                                                            </a>
+                                                            <ul class="pcoded-submenu">
+                                                                @{
+                                                                    foreach (var smenu in subMenus.Where(s => s.ParentId == pmenu.Id).ToList())
+                                                                    {
+                                                                        <li class="">
+                                                                            <a href="@smenu.Link" class="waves-effect waves-dark">
+                                                                                <span class="pcoded-mtext">@smenu.Name</span>
+                                                                            </a>
+                                                                        </li>
+                                                                    }
+                                                                }
+                                                            </ul>
+                                                        </li>
+                                                    }
+                                                }
+                                            }
+                                        }
+                                        catch (Exception ex)
+                                        {
+
+                                        }
+                                    }
+                                </ul>
+                            </div>
+                        </div>
+                    </nav>
+
+                    <div class="pcoded-content">
+                        @RenderBody()
+                    </div>
+
+                    <div id="styleSelector">
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--<script data-cfasync="false" src="~/assets/js/email-decode.min.js"></script>
+    <script type="1dc21dc544476ddffbc54af6-text/javascript" src="~/assets/js/jquery.min.js"></script>
+    <script type="1dc21dc544476ddffbc54af6-text/javascript" src="~/assets/js/jquery-ui.min.js"></script>
+    <script type="1dc21dc544476ddffbc54af6-text/javascript" src="~/assets/js/popper.min.js"></script>
+    <script type="1dc21dc544476ddffbc54af6-text/javascript" src="~/assets/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
+    <script src="~/assets/js/waves.min.js" type="1dc21dc544476ddffbc54af6-text/javascript"></script>
+
+    <script type="1dc21dc544476ddffbc54af6-text/javascript" src="~/assets/js/jquery.slimscroll.js"></script>
+
+    <script type="1dc21dc544476ddffbc54af6-text/javascript" src="~/assets/js/modernizr.js"></script>
+    <script type="1dc21dc544476ddffbc54af6-text/javascript" src="~/assets/js/css-scrollbars.js"></script>
+
+    <script src="~/assets/js/waves.min.js" type="1dc21dc544476ddffbc54af6-text/javascript"></script>
+
+    <script src="~/assets/js/jquery.datatables.min.js" type="1dc21dc544476ddffbc54af6-text/javascript"></script>
+    <script src="~/assets/js/datatables.buttons.min.js" type="1dc21dc544476ddffbc54af6-text/javascript"></script>
+    <script src="~/assets/js/jszip.min.js" type="1dc21dc544476ddffbc54af6-text/javascript"></script>
+    <script src="~/assets/js/pdfmake.min.js" type="1dc21dc544476ddffbc54af6-text/javascript"></script>
+    <script src="~/assets/js/vfs_fonts.js" type="1dc21dc544476ddffbc54af6-text/javascript"></script>
+    <script src="~/assets/js/buttons.print.min.js" type="1dc21dc544476ddffbc54af6-text/javascript"></script>
+    <script src="~/assets/js/buttons.html5.min.js" type="1dc21dc544476ddffbc54af6-text/javascript"></script>
+    <script src="~/assets/js/datatables.bootstrap4.min.js" type="1dc21dc544476ddffbc54af6-text/javascript"></script>
+    <script src="~/assets/js/datatables.responsive.min.js" type="1dc21dc544476ddffbc54af6-text/javascript"></script>
+    <script src="~/assets/js/responsive.bootstrap4.min.js" type="1dc21dc544476ddffbc54af6-text/javascript"></script>
+    <script src="~/assets/js/data-table-custom.js" type="1dc21dc544476ddffbc54af6-text/javascript"></script>
+
+    <script src="~/assets/js/chartist.js" type="d2d1d6e2f87cbebdf4013b26-text/javascript"></script>
+    <script src="~/assets/js/amcharts.js" type="d2d1d6e2f87cbebdf4013b26-text/javascript"></script>
+    <script src="~/assets/js/serial.js" type="d2d1d6e2f87cbebdf4013b26-text/javascript"></script>
+    <script src="~/assets/js/light.js" type="d2d1d6e2f87cbebdf4013b26-text/javascript"></script>
+
+    <script src="~/assets/js/pcoded.min.js" type="1dc21dc544476ddffbc54af6-text/javascript"></script>
+    <script type="d2d1d6e2f87cbebdf4013b26-text/javascript" src="~/assets/js/custom-dashboard.min.js"></script>
+    <script src="~/assets/js/vertical-layout.min.js" type="1dc21dc544476ddffbc54af6-text/javascript"></script>
+    <script src="~/assets/js/jquery.mcustomscrollbar.concat.min.js" type="1dc21dc544476ddffbc54af6-text/javascript"></script>
+    <script type="1dc21dc544476ddffbc54af6-text/javascript" src="~/assets/js/script.js"></script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-23581568-13" type="1dc21dc544476ddffbc54af6-text/javascript"></script>
+    <script type="1dc21dc544476ddffbc54af6-text/javascript">
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-23581568-13');
+    </script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
+
+    <script src="~/assets/js/rocket-loader.min.js" data-cf-settings="1dc21dc544476ddffbc54af6-|49" defer=""></script>-->
+    <script data-cfasync="false" src="~/assets/js/email-decode.min.js"></script>
+    <script type="d2d1d6e2f87cbebdf4013b26-text/javascript" src="~/assets/js/jquery.min.js"></script>
+    <script type="d2d1d6e2f87cbebdf4013b26-text/javascript" src="~/assets/js/jquery-ui.min.js"></script>
+    <script type="d2d1d6e2f87cbebdf4013b26-text/javascript" src="~/assets/js/popper.min.js"></script>
+    <script type="d2d1d6e2f87cbebdf4013b26-text/javascript" src="~/assets/js/bootstrap.min.js"></script>
+
+    <script src="~/assets/js/waves.min.js" type="d2d1d6e2f87cbebdf4013b26-text/javascript"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
+    <script type="d2d1d6e2f87cbebdf4013b26-text/javascript" src="~/assets/js/jquery.slimscroll.js"></script>
+    <script type="1dc21dc544476ddffbc54af6-text/javascript" src="~/assets/js/modernizr.js"></script>
+    <script type="1dc21dc544476ddffbc54af6-text/javascript" src="~/assets/js/css-scrollbars.js"></script>
+    <script src="~/assets/js/waves.min.js" type="1dc21dc544476ddffbc54af6-text/javascript"></script>
+    <script src="~/assets/js/jquery.datatables.min.js" type="1dc21dc544476ddffbc54af6-text/javascript"></script>
+    <script src="~/assets/js/datatables.buttons.min.js" type="1dc21dc544476ddffbc54af6-text/javascript"></script>
+    <script src="~/assets/js/jszip.min.js" type="1dc21dc544476ddffbc54af6-text/javascript"></script>
+    <script src="~/assets/js/pdfmake.min.js" type="1dc21dc544476ddffbc54af6-text/javascript"></script>
+    <script src="~/assets/js/vfs_fonts.js" type="1dc21dc544476ddffbc54af6-text/javascript"></script>
+    <script src="~/assets/js/buttons.print.min.js" type="1dc21dc544476ddffbc54af6-text/javascript"></script>
+    <script src="~/assets/js/buttons.html5.min.js" type="1dc21dc544476ddffbc54af6-text/javascript"></script>
+    <script src="~/assets/js/datatables.bootstrap4.min.js" type="1dc21dc544476ddffbc54af6-text/javascript"></script>
+    <script src="~/assets/js/datatables.responsive.min.js" type="1dc21dc544476ddffbc54af6-text/javascript"></script>
+    <script src="~/assets/js/responsive.bootstrap4.min.js" type="1dc21dc544476ddffbc54af6-text/javascript"></script>
+
+    <script src="~/assets/js/data-table-custom.js" type="1dc21dc544476ddffbc54af6-text/javascript"></script>
+    <script src="~/assets/js/pcoded.min.js" type="1dc21dc544476ddffbc54af6-text/javascript"></script>
+    <script src="~/assets/js/vertical-layout.min.js" type="1dc21dc544476ddffbc54af6-text/javascript"></script>
+    <script src="~/assets/js/jquery.mcustomscrollbar.concat.min.js" type="1dc21dc544476ddffbc54af6-text/javascript"></script>
+    <script type="1dc21dc544476ddffbc54af6-text/javascript" src="~/assets/js/script.js"></script>
+
+    @*<script src="~/assets/js/jquery.flot.js" type="d2d1d6e2f87cbebdf4013b26-text/javascript"></script>*@
+    @*<script src="~/assets/js/jquery.flot.categories.js" type="d2d1d6e2f87cbebdf4013b26-text/javascript"></script>*@
+    @*<script src="~/assets/js/curvedlines.js" type="d2d1d6e2f87cbebdf4013b26-text/javascript"></script>*@
+    @*<script src="~/assets/js/jquery.flot.tooltip.min.js" type="d2d1d6e2f87cbebdf4013b26-text/javascript"></script>*@
+
+    <script src="~/assets/js/chartist.js" type="d2d1d6e2f87cbebdf4013b26-text/javascript"></script>
+
+    <script src="~/assets/js/amcharts.js" type="d2d1d6e2f87cbebdf4013b26-text/javascript"></script>
+    <script src="~/assets/js/serial.js" type="d2d1d6e2f87cbebdf4013b26-text/javascript"></script>
+    <script src="~/assets/js/light.js" type="d2d1d6e2f87cbebdf4013b26-text/javascript"></script>
+
+    <script src="~/assets/js/pcoded.min.js" type="d2d1d6e2f87cbebdf4013b26-text/javascript"></script>
+    <script src="~/assets/js/vertical-layout.min.js" type="d2d1d6e2f87cbebdf4013b26-text/javascript"></script>
+    <script type="d2d1d6e2f87cbebdf4013b26-text/javascript" src="~/assets/js/custom-dashboard.min.js"></script>
+    <script type="d2d1d6e2f87cbebdf4013b26-text/javascript" src="~/assets/js/script.min.js"></script>
+    @*<script src="~/js/profile.js"></script>*@
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-23581568-13" type="d2d1d6e2f87cbebdf4013b26-text/javascript"></script>
+    <script type="d2d1d6e2f87cbebdf4013b26-text/javascript">
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-23581568-13');
+    </script>
+    <script src="~/assets/js/rocket-loader.min.js" data-cf-settings="d2d1d6e2f87cbebdf4013b26-|49" defer=""></script>
+    <script>
+        $(document).ready(function () {
+            $('#profileForm').on('sumbit', function (e) {
+                e.preventDefault();
+                var profileRegex = /^[a-zA-Z0-9]+(([._ -][a-zA-Z0-9 ])?[a-zA-Z0-9]*)*$/;
+                if (!profileRegex.test($('#profileName').val())) {
+                    $('.profileNamemessages').html('Invalid profile name!');
+                    return;
+                }
+
+                $(this).submit();
+            });
+        });
+    </script>
+    <script>
+        $(function () {
+            $('#motorPolicyTypeCodeDiv').hide();
+            $('input.parent_menu').click(function () {
+                var id = $(this).attr('id');
+                $('.sub_menu.' + id).each(function () {
+                    $(this).attr('checked', !$(this).attr('checked'));
+                });
+            });
+
+            $('#packageMainClassCode').on('change', function (e) {
+                var code = $(this).val();
+                if (code == '005') {
+                    $('#motorPolicyTypeCodeDiv').show();
+                } else {
+                    $('#motorPolicyTypeCodeDiv').hide();
+                }
+            });
+            fetchPolicies();
+            setInterval(fetchPolicies, 120000);
+            function fetchPolicies() {
+                var notification_count = 0;
+                $.ajax({
+                    url: '/PolicyApplication/FetchPolicyApplications',
+                    data: '',
+                    contentType: 'application/json',
+                    method: 'get',
+                    success: function (msg) {
+                        //console.log(JSON.stringify(msg));
+                        if (JSON.stringify(msg) != '') {
+                            console.log("Not empty");
+                            data = $.parseJSON(msg);
+                            /*$('#notification_list').append(
+                                '<div><h3>Policy Applications</h3></div>'
+                            )*/
+                            $.each(data, function (i, item) {
+                                //alert(item);
+                                notification_count += 1;
+                                $('#notification_list').append(
+                                    '<li>' +
+                                    '<div class="media">' +
+                                    //'<img class="img-radius" src="~/assets/jpg/avatar-4.jpg" alt="Generic placeholder image">' +
+                                    '<div class="media-body">' +
+                                    '<h5 class="notification-user">Policy Application</h5>' +
+                                    '<p class="notification-msg">' +
+                                    '<div><b>Policy App No.:</b>&nbsp;' + item.appNo + '</div>' +
+                                    '<div><b>Product:</b>&nbsp;' + item.productCode + '</div>' +
+                                    '</p> ' +
+                                    '<span class="notification-time"><b>Time:</b>&nbsp;' + item.createDate + '</span>' +
+                                    '<span class="notification-time"><a href="/PolicyApplication/Details/' + item.id + '" id="view_policy_applicatio">View</a></span>' +
+                                    '</div>' +
+                                    '</div>' +
+                                    '</li>'
+                                )
+                            });
+                            $('#notification_count').html(notification_count);
+                        } else {
+                            console.log("Empty");
+                        }
+                    },
+                    error: function (er) {
+                        console.log(JSON.stringify(er));
+                    }
+
+                });
+            }
+        });
+    </script>
+
+    <!--NEW SCRIPT-->
+    <!--<script data-cfasync="false" src="~/assets/js/email-decode.min.js"></script>
+    <script type="d2d1d6e2f87cbebdf4013b26-text/javascript" src="~/assets/js/jquery.min.js"></script>
+    <script type="d2d1d6e2f87cbebdf4013b26-text/javascript" src="~/assets/js/jquery-ui.min.js"></script>
+    <script type="d2d1d6e2f87cbebdf4013b26-text/javascript" src="~/assets/js/popper.min.js"></script>
+    <script type="d2d1d6e2f87cbebdf4013b26-text/javascript" src="~/assets/js/bootstrap.min.js"></script>
+
+    <script src="~/assets/js/waves.min.js" type="d2d1d6e2f87cbebdf4013b26-text/javascript"></script>
+
+    <script type="d2d1d6e2f87cbebdf4013b26-text/javascript" src="~/assets/js/jquery.slimscroll.js"></script>
+    <script type="1dc21dc544476ddffbc54af6-text/javascript" src="~/assets/js/modernizr.js"></script>
+    <script type="1dc21dc544476ddffbc54af6-text/javascript" src="~/assets/js/css-scrollbars.js"></script>
+    <script src="~/assets/js/waves.min.js" type="1dc21dc544476ddffbc54af6-text/javascript"></script>
+    <script src="~/assets/js/jquery.datatables.min.js" type="1dc21dc544476ddffbc54af6-text/javascript"></script>
+    <script src="~/assets/js/datatables.buttons.min.js" type="1dc21dc544476ddffbc54af6-text/javascript"></script>
+    <script src="~/assets/js/jszip.min.js" type="1dc21dc544476ddffbc54af6-text/javascript"></script>
+    <script src="~/assets/js/pdfmake.min.js" type="1dc21dc544476ddffbc54af6-text/javascript"></script>
+    <script src="~/assets/js/vfs_fonts.js" type="1dc21dc544476ddffbc54af6-text/javascript"></script>
+    <script src="~/assets/js/buttons.print.min.js" type="1dc21dc544476ddffbc54af6-text/javascript"></script>
+    <script src="~/assets/js/buttons.html5.min.js" type="1dc21dc544476ddffbc54af6-text/javascript"></script>
+    <script src="~/assets/js/datatables.bootstrap4.min.js" type="1dc21dc544476ddffbc54af6-text/javascript"></script>
+    <script src="~/assets/js/datatables.responsive.min.js" type="1dc21dc544476ddffbc54af6-text/javascript"></script>
+    <script src="~/assets/js/responsive.bootstrap4.min.js" type="1dc21dc544476ddffbc54af6-text/javascript"></script>
+
+    <script src="~/assets/js/data-table-custom.js" type="1dc21dc544476ddffbc54af6-text/javascript"></script>
+    <script src="~/assets/js/pcoded.min.js" type="1dc21dc544476ddffbc54af6-text/javascript"></script>
+    <script src="~/assets/js/vertical-layout.min.js" type="1dc21dc544476ddffbc54af6-text/javascript"></script>
+    <script src="~/assets/js/jquery.mcustomscrollbar.concat.min.js" type="1dc21dc544476ddffbc54af6-text/javascript"></script>
+    <script type="1dc21dc544476ddffbc54af6-text/javascript" src="~/assets/js/script.js"></script>
+
+    @*<script src="~/assets/js/jquery.flot.js" type="d2d1d6e2f87cbebdf4013b26-text/javascript"></script>*@
+    @*<script src="~/assets/js/jquery.flot.categories.js" type="d2d1d6e2f87cbebdf4013b26-text/javascript"></script>*@
+    @*<script src="~/assets/js/curvedlines.js" type="d2d1d6e2f87cbebdf4013b26-text/javascript"></script>*@
+    @*<script src="~/assets/js/jquery.flot.tooltip.min.js" type="d2d1d6e2f87cbebdf4013b26-text/javascript"></script>*@
+
+    <script src="~/assets/js/chartist.js" type="d2d1d6e2f87cbebdf4013b26-text/javascript"></script>
+
+    <script src="~/assets/js/amcharts.js" type="d2d1d6e2f87cbebdf4013b26-text/javascript"></script>
+    <script src="~/assets/js/serial.js" type="d2d1d6e2f87cbebdf4013b26-text/javascript"></script>
+    <script src="~/assets/js/light.js" type="d2d1d6e2f87cbebdf4013b26-text/javascript"></script>
+
+    <script src="~/assets/js/pcoded.min.js" type="d2d1d6e2f87cbebdf4013b26-text/javascript"></script>
+    <script src="~/assets/js/vertical-layout.min.js" type="d2d1d6e2f87cbebdf4013b26-text/javascript"></script>
+    <script type="d2d1d6e2f87cbebdf4013b26-text/javascript" src="~/assets/js/custom-dashboard.min.js"></script>
+    <script type="d2d1d6e2f87cbebdf4013b26-text/javascript" src="~/assets/js/script.min.js"></script>
+    @*<script src="~/js/profile.js"></script>*@
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
+        -->
+    <!--END NEW SCRIPT-->
+</body>
+</html>
