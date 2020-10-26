@@ -45,6 +45,7 @@ namespace SportManager.Controllers
                 if (collection != null)
                 {
                     Staff staff = _context.Staffs.Where(s => s.Email.Equals(collection.Username.Trim())).SingleOrDefault();
+                    Parameter otpParameter = _context.Parameters.Where(p => p.Name.Equals("OTP_EXPIRY_IN_MINUTES")).SingleOrDefault();
                     if (staff == null)
                     {
                         staff = _context.Staffs.Where(s => s.Phone.Equals(collection.Username.Trim())).SingleOrDefault();
@@ -54,7 +55,7 @@ namespace SportManager.Controllers
                         if (staff.Otp.Equals((collection.Password.Trim())))
                         {
                             TimeSpan span = DateTime.Now.Subtract(staff.OtpDate);
-                            if (span.Minutes < 60)
+                            if (span.Minutes < Convert.ToInt32(otpParameter.Value))
                             {
                                 TempData["Success"] = "Success!"; 
                                 staff.ChangePassword = true;
@@ -85,7 +86,7 @@ namespace SportManager.Controllers
                             {
 
                                 TimeSpan span = DateTime.Now.Subtract(staff.OtpDate);
-                                if (span.Minutes < 60)
+                                if (span.Minutes < Convert.ToInt32(otpParameter.Value))
                                 {
                                     TempData["Success"] = "Success!";
                                     student.ChangePassword = true;

@@ -428,6 +428,13 @@ namespace SportManager.Migrations
                             IsPassword = false,
                             Name = "EMAILFROM",
                             Value = "SPORTS DEPARTMENT"
+                        },
+                        new
+                        {
+                            Id = new Guid("76a94ef2-6b7f-4800-bbf9-12030898f3c9"),
+                            IsPassword = false,
+                            Name = "OTP_EXPIRY_IN_MINUTES",
+                            Value = "60"
                         });
                 });
 
@@ -515,7 +522,7 @@ namespace SportManager.Migrations
                         new
                         {
                             Id = new Guid("910ce653-c7f1-4429-9b95-19270767129d"),
-                            DateAdded = new DateTime(2020, 10, 26, 1, 51, 6, 465, DateTimeKind.Local).AddTicks(4445),
+                            DateAdded = new DateTime(2020, 10, 26, 18, 26, 11, 898, DateTimeKind.Local).AddTicks(7592),
                             Deleted = false,
                             Name = "Football",
                             Status = true
@@ -588,6 +595,9 @@ namespace SportManager.Migrations
                     b.Property<string>("RegistrationNumber")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool>("RegistrationVerified")
+                        .HasColumnType("bit");
+
                     b.Property<bool>("Status")
                         .HasColumnType("bit");
 
@@ -603,7 +613,7 @@ namespace SportManager.Migrations
                             Id = new Guid("327d571a-1690-44e0-806d-65e0593364ad"),
                             Authorized = true,
                             ChangePassword = false,
-                            DateRegistered = new DateTime(2020, 10, 26, 1, 51, 6, 462, DateTimeKind.Local).AddTicks(7026),
+                            DateRegistered = new DateTime(2020, 10, 26, 18, 26, 11, 896, DateTimeKind.Local).AddTicks(6387),
                             Deleted = false,
                             Email = "oduorderick@gmail.com",
                             Firstname = "Derick",
@@ -613,6 +623,7 @@ namespace SportManager.Migrations
                             Phone = "+254715812661",
                             ProfileId = new Guid("327d571a-1690-44e0-806d-65e0593364ad"),
                             RegistrationNumber = "ST001",
+                            RegistrationVerified = false,
                             Status = false
                         },
                         new
@@ -620,7 +631,7 @@ namespace SportManager.Migrations
                             Id = new Guid("81019aa2-4056-41f9-b4b3-828d51fa7c51"),
                             Authorized = true,
                             ChangePassword = false,
-                            DateRegistered = new DateTime(2020, 10, 26, 1, 51, 6, 465, DateTimeKind.Local).AddTicks(1825),
+                            DateRegistered = new DateTime(2020, 10, 26, 18, 26, 11, 898, DateTimeKind.Local).AddTicks(5113),
                             Deleted = false,
                             Email = "appsderick@gmail.com",
                             Firstname = "Derick",
@@ -630,6 +641,7 @@ namespace SportManager.Migrations
                             Phone = "+254712345678",
                             ProfileId = new Guid("327d571a-1690-44e0-806d-65e0593364ad"),
                             RegistrationNumber = "ST001",
+                            RegistrationVerified = false,
                             Status = false
                         });
                 });
@@ -640,14 +652,19 @@ namespace SportManager.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("StoreCategoryId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("StoreCategoryId");
-
                     b.ToTable("Stores");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("910ce653-c7f1-4429-9b95-19270767129d"),
+                            Name = "SportStore"
+                        });
                 });
 
             modelBuilder.Entity("SportManager.Models.StoreCategory", b =>
@@ -659,7 +676,12 @@ namespace SportManager.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<Guid?>("StoreId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("StoreId");
 
                     b.ToTable("StoreCategories");
                 });
@@ -676,12 +698,12 @@ namespace SportManager.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid>("StoreId")
+                    b.Property<Guid>("StoreCategoryId")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("StoreId");
+                    b.HasIndex("StoreCategoryId");
 
                     b.ToTable("StoreItems");
                 });
@@ -745,6 +767,9 @@ namespace SportManager.Migrations
                     b.Property<bool>("ChangePassword")
                         .HasColumnType("bit");
 
+                    b.Property<string>("ConfirmPassword")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime>("DateRegistered")
                         .HasColumnType("datetime2");
 
@@ -775,6 +800,9 @@ namespace SportManager.Migrations
                     b.Property<string>("RegistrationNumber")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool>("RegistrationVerified")
+                        .HasColumnType("bit");
+
                     b.Property<Guid>("SportDiscipineId")
                         .HasColumnType("uniqueidentifier");
 
@@ -795,7 +823,7 @@ namespace SportManager.Migrations
                             Id = new Guid("910ce653-c7f1-4429-9b95-19270767129d"),
                             Authorized = true,
                             ChangePassword = false,
-                            DateRegistered = new DateTime(2020, 10, 26, 1, 51, 6, 466, DateTimeKind.Local).AddTicks(1332),
+                            DateRegistered = new DateTime(2020, 10, 26, 18, 26, 11, 899, DateTimeKind.Local).AddTicks(8084),
                             Email = "derick_oduor@yahoo.com",
                             Firstname = "Derick",
                             Lastname = "Oduor",
@@ -804,6 +832,7 @@ namespace SportManager.Migrations
                             Phone = "+254756993396",
                             ProfileId = new Guid("327d571a-1690-44e0-806d-65e0593364ad"),
                             RegistrationNumber = "S13/21416/14",
+                            RegistrationVerified = false,
                             SportDiscipineId = new Guid("910ce653-c7f1-4429-9b95-19270767129d"),
                             Status = false
                         });
@@ -981,21 +1010,19 @@ namespace SportManager.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("SportManager.Models.Store", b =>
+            modelBuilder.Entity("SportManager.Models.StoreCategory", b =>
                 {
-                    b.HasOne("SportManager.Models.StoreCategory", "StoreCategory")
-                        .WithMany("Stores")
-                        .HasForeignKey("StoreCategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.HasOne("SportManager.Models.Store", null)
+                        .WithMany("StoreCategories")
+                        .HasForeignKey("StoreId");
                 });
 
             modelBuilder.Entity("SportManager.Models.StoreItem", b =>
                 {
-                    b.HasOne("SportManager.Models.Store", "Store")
+                    b.HasOne("SportManager.Models.StoreCategory", "StoreCategory")
                         .WithMany("StoreItems")
-                        .HasForeignKey("StoreId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .HasForeignKey("StoreCategoryId")
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
                 });
 

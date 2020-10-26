@@ -71,7 +71,7 @@ namespace SportManager.Controllers
                             {
                                 RecepientAddress = staff.Email,
                                 RecepientName = staff.Firstname + " " + staff.Lastname,
-                                MessageSubject = "Forgot password - One Time Password",
+                                MessageSubject = "Password Change",
                                 MessageText = "Dear " + staff.Firstname + " " + staff.Lastname + ", \n" +
                                 "Your password was changed at: "+DateTime.UtcNow+". \n" +
                                 "If this was not you kindly proceed to change your password.",
@@ -114,7 +114,7 @@ namespace SportManager.Controllers
                                 {
                                     RecepientAddress = student.Email,
                                     RecepientName = student.Firstname + " " + student.Lastname,
-                                    MessageSubject = "Forgot password - One Time Password",
+                                    MessageSubject = "Password Change",
                                     MessageText = "Dear " + student.Firstname + " " + student.Lastname + ", \n" +
                                 "Your password was changed at: " + DateTime.UtcNow + ". \n" +
                                 "If this was not you kindly proceed to change your password.",

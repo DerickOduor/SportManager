@@ -142,17 +142,23 @@ namespace SportManager.Models.Context
                 .IsRequired()
                 .OnDelete(DeleteBehavior.Restrict);
 
-            modelBuilder.Entity<Store>()
-                .HasOne(a => a.StoreCategory)
-                .WithMany(b => b.Stores)
-                .IsRequired()
-                .OnDelete(DeleteBehavior.Cascade);
-
             modelBuilder.Entity<StoreItem>()
-                .HasOne(a => a.Store)
+                .HasOne(a => a.StoreCategory)
                 .WithMany(b => b.StoreItems)
                 .IsRequired()
-                .OnDelete(DeleteBehavior.Cascade);
+                .OnDelete(DeleteBehavior.NoAction);
+
+            //modelBuilder.Entity<Store>()
+            //    .HasOne(a => a.StoreCategory)
+            //    .WithMany(b => b.Stores)
+            //    .IsRequired()
+            //    .OnDelete(DeleteBehavior.Cascade);
+
+            //modelBuilder.Entity<StoreItem>()
+            //    .HasOne(a => a.Store)
+            //    .WithMany(b => b.StoreItems)
+            //    .IsRequired()
+            //    .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<StoreItemInUse>()
                 .HasOne(a => a.StoreItem)
@@ -312,6 +318,13 @@ namespace SportManager.Models.Context
                     Name = "EMAILFROM",
                     Value = "SPORTS DEPARTMENT",
                     IsPassword = false
+                },
+                new Parameter
+                {
+                    Id = Guid.Parse("76a94ef2-6b7f-4800-bbf9-12030898f3c9"),
+                    Name = "OTP_EXPIRY_IN_MINUTES",
+                    Value = "60",
+                    IsPassword = false
                 }
                 //, 
                 //new Parameter
@@ -360,6 +373,14 @@ namespace SportManager.Models.Context
                     DateAdded =DateTime.Now,
                     Deleted = false,
                     Status = true
+                }
+            );
+
+            modelBuilder.Entity<Store>().HasData(
+                new Store
+                {
+                    Id = Guid.Parse("910ce653-c7f1-4429-9b95-19270767129d"),
+                    Name = "SportStore"
                 }
             );
 

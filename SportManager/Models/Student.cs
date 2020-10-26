@@ -13,19 +13,35 @@ namespace SportManager.Models
         [Key]
         public Guid Id { get; set; }
         public string RegistrationNumber { get; set; }
+        [Display(Name = "Firstname")]
+        [RegularExpression(@"^[a-zA-Z]*$", ErrorMessage = "Invalid firstname!")]
         public string Firstname { get; set; }
+        [Display(Name = "Lastname")]
+        [RegularExpression(@"^[a-zA-Z]*$", ErrorMessage = "Invalid lastname!")]
         public string Lastname { get; set; }
+        [Display(Name = "E-mail address")]
+        [RegularExpression("^(([^<>()\\[\\]\\.,;:\\s@\\\"]+(\\.[^<>()\\[\\]\\.,;:\\s@\\\"]+)*)|(\\\".+\\\"))@(([^<>()[\\]\\.,;:\\s@\\\"]+\\.)+[^<>()[\\]\\.,;:\\s@\\\"]{2,})$", ErrorMessage = "Invalid email!")]
         public string Email { get; set; }
+        [Display(Name = "Phone")]
+        [RegularExpression("^\\+(\\d{1,3}?)?(\\d{3}?)(\\d{2}?){2}\\d{2}$", ErrorMessage = "Invalid phone!")]
         public string Phone { get; set; }
+        [Display(Name = "Password")]
         public string Password { get; set; }
+        [Display(Name = "Confirm password")]
+        public string ConfirmPassword { get; set; }
+        [Display(Name = "One-Time Password")]
         public string Otp { get; set; }
         public DateTime OtpDate { get; set; }
         public bool Status { get; set; }
         public bool Authorized { get; set; }
+        [Display(Name = "Account Verified")]
+        public bool RegistrationVerified { get; set; }
         public bool ChangePassword { get; set; }
         public DateTime DateRegistered { get; set; }
+        [Display(Name = "Profile")]
         public Guid ProfileId { get; set; }
         public virtual Profile Profile { get; set; }
+        [Display(Name = "Sport Discipine")]
         public Guid SportDiscipineId { get; set; }
         public virtual SportDiscipine SportDiscipine { get; set; }
         public virtual IEnumerable<StudentsParticipatingInEvent> StudentsParticipatingInEvent { get; set; }
@@ -47,6 +63,7 @@ namespace SportManager.Models
         public bool Status { get; set; }
         public bool Deleted { get; set; }
         public bool ChangePassword { get; set; }
+        public bool RegistrationVerified { get; set; }
         public DateTime DateRegistered { get; set; }
         public Guid ProfileId { get; set; }
         public virtual Profile Profile { get; set; }
@@ -261,7 +278,8 @@ namespace SportManager.Models
         public Guid Id { get; set; }
         public string Name { get; set; }
         public int Count { get; set; }
-        public virtual Store Store { get; set; }
+        public Guid StoreCategoryId { get; set; }
+        public virtual StoreCategory StoreCategory { get; set; }
         public virtual IEnumerable<StoreItemInUse> StoreItemsInUse { get; set; }
     }
 
@@ -290,9 +308,8 @@ namespace SportManager.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Key]
         public Guid Id { get; set; }
-        public Guid StoreCategoryId { get; set; }
-        public virtual StoreCategory StoreCategory { get; set; }
-        public virtual IEnumerable<StoreItem> StoreItems { get; set; }
+        public string Name { get; set; }
+        public virtual IEnumerable<StoreCategory> StoreCategories { get; set; }
     }
 
     public class StoreCategory
@@ -301,7 +318,7 @@ namespace SportManager.Models
         [Key]
         public Guid Id { get; set; }
         public string Name { get; set; }
-        public IEnumerable<Store> Stores { get; set; }
+        public IEnumerable<StoreItem> StoreItems { get; set; }
     }
 
     public class SportDisciplinesInEvent

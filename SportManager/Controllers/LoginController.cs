@@ -58,6 +58,16 @@ namespace SportManager.Controllers
                     {
                         if (staff.Password.Equals(AppUtility.Encrypt(collection.Password.Trim())))
                         {
+                            if (!staff.RegistrationVerified || staff.ChangePassword)
+                            {
+                                HttpContext.Session.SetString("VERIFY_USER", staff.Email);
+                                return RedirectToAction(nameof(Index), "VerifyAccountCreation", new { id = nameof(Staff) });
+                            }
+                            if (staff.Deleted)
+                            {
+                                TempData["Failed"] = "Login failed!";
+                                return RedirectToAction(nameof(Index));
+                            }
                             try
                             {
                                 accessRights = _context.AccessRights.Include(nameof(Menu)).Where(a => a.ProfileId == staff.ProfileId).ToList();
@@ -130,6 +140,11 @@ namespace SportManager.Controllers
                         {
                             if (student.Password.Equals(AppUtility.Encrypt(collection.Password.Trim())))
                             {
+                                if (!student.RegistrationVerified || student.ChangePassword)
+                                {
+                                    HttpContext.Session.SetString("VERIFY_USER", student.Email);
+                                    return RedirectToAction(nameof(Index), "VerifyAccountCreation", new { id = nameof(Staff) });
+                                }
                                 try
                                 {
                                     accessRights = _context.AccessRights.Include(nameof(Menu)).Where(a => a.ProfileId == student.ProfileId).ToList();

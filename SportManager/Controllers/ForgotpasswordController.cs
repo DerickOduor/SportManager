@@ -36,6 +36,8 @@ namespace SportManager.Controllers
             return View();
         }
 
+        
+
         // POST: ForgorpasswordController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -47,6 +49,7 @@ namespace SportManager.Controllers
                 Parameter emailFromParameter = _context.Parameters.Where(p => p.Name.Equals("EMAILFROM")).SingleOrDefault();
                 Parameter emailFromAddressParameter = _context.Parameters.Where(p => p.Name.Equals("EMAILADDRESS")).SingleOrDefault();
                 Parameter emailFromPasswordParameter = _context.Parameters.Where(p => p.Name.Equals("EMAILPASSWORD")).SingleOrDefault();
+                Parameter otpParameter = _context.Parameters.Where(p => p.Name.Equals("OTP_EXPIRY_IN_MINUTES")).SingleOrDefault();
                 if (collection != null)
                 {
                     Staff staff = _context.Staffs.Where(s => s.Email.Equals(collection.Username.Trim())).SingleOrDefault();
@@ -65,7 +68,7 @@ namespace SportManager.Controllers
                             RecepientName=staff.Firstname+" "+staff.Lastname,
                             MessageSubject="Forgot password - One Time Password",
                             MessageText="Dear "+staff.Firstname + " " + staff.Lastname+", \n"+
-                            "Your OTP code is: "+RandomString+". Kindly enter this to proceed. This code expires in 60 minutes.",
+                            "Your OTP code is: "+RandomString+ ". \nKindly enter this to proceed. This code expires in " + otpParameter.Value + " minutes.",
                             MessageType="EMAIL",
                             MessageDate=DateTime.Now,
                             Sent=true
@@ -98,7 +101,7 @@ namespace SportManager.Controllers
                                 RecepientName = student.Firstname + " " + student.Lastname,
                                 MessageSubject = "Forgot password - One Time Password",
                                 MessageText = "Dear " + student.Firstname + " " + student.Lastname + ", \n" +
-                                "Your OTP code is: " + RandomString + ". Kindly enter this to proceed. This code expires in 60 minutes.",
+                                "Your OTP code is: " + RandomString + ". Kindly enter this to proceed. This code expires in " + otpParameter.Value + " minutes.",
                                 MessageType = "EMAIL",
                                 MessageDate = DateTime.Now,
                                 Sent = true
