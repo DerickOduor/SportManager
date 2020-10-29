@@ -199,3 +199,14 @@ C:\Users\doduor\source\repos\SportManager\SportManager\obj\Debug\netcoreapp3.1\R
 C:\Users\doduor\source\repos\SportManager\SportManager\obj\Debug\netcoreapp3.1\Razor\Views\StoreItems\Delete.cshtml.g.cs
 C:\Users\doduor\source\repos\SportManager\SportManager\obj\Debug\netcoreapp3.1\Razor\Views\StoreCategory\Edit.cshtml.g.cs
 C:\Users\doduor\source\repos\SportManager\SportManager\obj\Debug\netcoreapp3.1\Razor\Views\StoreCategory\Delete.cshtml.g.cs
+C:\Users\doduor\source\repos\SportManager\SportManager\obj\Debug\netcoreapp3.1\Razor\Views\StoreCategory\Create.cshtml.g.cs
+C:\Users\doduor\source\repos\SportManager\SportManager\obj\Debug\netcoreapp3.1\Razor\Views\Event\Index.cshtml.g.cs
+C:\Users\doduor\source\repos\SportManager\SportManager\obj\Debug\netcoreapp3.1\Razor\Views\Event\Create.cshtml.g.cs
+C:\Users\doduor\source\repos\SportManager\SportManager\obj\Debug\netcoreapp3.1\Razor\Views\Event\Edit.cshtml.g.cs
+C:\Users\doduor\source\repos\SportManager\SportManager\obj\Debug\netcoreapp3.1\Razor\Views\Event\Details.cshtml.g.cs
+C:\Users\doduor\source\repos\SportManager\SportManager\obj\Debug\netcoreapp3.1\Razor\Views\Event\Delete.cshtml.g.cs
+C:\Users\doduor\source\repos\SportManager\SportManager\obj\Debug\netcoreapp3.1\Razor\Views\EventSession\Index.cshtml.g.cs
+C:\Users\doduor\source\repos\SportManager\SportManager\obj\Debug\netcoreapp3.1\Razor\Views\EventSession\Details.cshtml.g.cs
+C:\Users\doduor\source\repos\SportManager\SportManager\obj\Debug\netcoreapp3.1\Razor\Views\EventSession\Create.cshtml.g.cs
+C:\Users\doduor\source\repos\SportManager\SportManager\obj\Debug\netcoreapp3.1\Razor\Views\EventSession\Edit.cshtml.g.cs
+C:\Users\doduor\source\repos\SportManager\SportManager\obj\Debug\netcoreapp3.1\Razor\Views\EventSession\Delete.cshtml.g.cs

@@ -124,6 +124,9 @@ namespace SportManager.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<bool>("Cancelled")
+                        .HasColumnType("bit");
+
                     b.Property<DateTime>("EndDate")
                         .HasColumnType("datetime2");
 
@@ -132,6 +135,18 @@ namespace SportManager.Migrations
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("NewEndDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("NewStartDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("Ongoing")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("PostPoned")
+                        .HasColumnType("bit");
 
                     b.Property<DateTime>("StartDate")
                         .HasColumnType("datetime2");
@@ -522,7 +537,7 @@ namespace SportManager.Migrations
                         new
                         {
                             Id = new Guid("910ce653-c7f1-4429-9b95-19270767129d"),
-                            DateAdded = new DateTime(2020, 10, 26, 18, 26, 11, 898, DateTimeKind.Local).AddTicks(7592),
+                            DateAdded = new DateTime(2020, 10, 29, 11, 33, 48, 288, DateTimeKind.Local).AddTicks(305),
                             Deleted = false,
                             Name = "Football",
                             Status = true
@@ -613,7 +628,7 @@ namespace SportManager.Migrations
                             Id = new Guid("327d571a-1690-44e0-806d-65e0593364ad"),
                             Authorized = true,
                             ChangePassword = false,
-                            DateRegistered = new DateTime(2020, 10, 26, 18, 26, 11, 896, DateTimeKind.Local).AddTicks(6387),
+                            DateRegistered = new DateTime(2020, 10, 29, 11, 33, 48, 285, DateTimeKind.Local).AddTicks(6951),
                             Deleted = false,
                             Email = "oduorderick@gmail.com",
                             Firstname = "Derick",
@@ -631,7 +646,7 @@ namespace SportManager.Migrations
                             Id = new Guid("81019aa2-4056-41f9-b4b3-828d51fa7c51"),
                             Authorized = true,
                             ChangePassword = false,
-                            DateRegistered = new DateTime(2020, 10, 26, 18, 26, 11, 898, DateTimeKind.Local).AddTicks(5113),
+                            DateRegistered = new DateTime(2020, 10, 29, 11, 33, 48, 287, DateTimeKind.Local).AddTicks(7732),
                             Deleted = false,
                             Email = "appsderick@gmail.com",
                             Firstname = "Derick",
@@ -823,7 +838,7 @@ namespace SportManager.Migrations
                             Id = new Guid("910ce653-c7f1-4429-9b95-19270767129d"),
                             Authorized = true,
                             ChangePassword = false,
-                            DateRegistered = new DateTime(2020, 10, 26, 18, 26, 11, 899, DateTimeKind.Local).AddTicks(8084),
+                            DateRegistered = new DateTime(2020, 10, 29, 11, 33, 48, 289, DateTimeKind.Local).AddTicks(597),
                             Email = "derick_oduor@yahoo.com",
                             Firstname = "Derick",
                             Lastname = "Oduor",

@@ -224,7 +224,12 @@ namespace SportManager.Models
         public string Name { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
+        public DateTime NewStartDate { get; set; }
+        public DateTime NewEndDate { get; set; }
         public Guid EventTypeId { get; set; }
+        public bool PostPoned { get; set; }
+        public bool Cancelled { get; set; }
+        public bool Ongoing { get; set; }
         public virtual EventType EventType { get; set; }
         public virtual IEnumerable<Team> Teams { get; set; }
         public virtual IEnumerable<StoreItemInUse> StoreItemsInUse { get; set; }

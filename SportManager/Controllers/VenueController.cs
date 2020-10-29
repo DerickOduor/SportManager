@@ -84,7 +84,7 @@ namespace SportManager.Controllers
         }
 
         // GET: VenueController/Edit/5
-        public async Task<ActionResult> Edit(int id)
+        public async Task<ActionResult> Edit(Guid id)
         {
             try
             {
@@ -130,7 +130,7 @@ namespace SportManager.Controllers
         }
 
         // GET: VenueController/Delete/5
-        public async Task<ActionResult> Delete(int id)
+        public async Task<ActionResult> Delete(Guid id)
         {
             try
             {

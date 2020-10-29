@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using SportManager.Models;
 using SportManager.Models.Context;
@@ -19,14 +20,33 @@ namespace SportManager.Controllers
             _context = context;
         }
         // GET: EventController
-        public async Task<ActionResult> Index()
+        public async Task<ActionResult> Index(int id)
         {
             try
             {
+                if (TempData["Success"] != null)
+                {
+                    ViewBag.Success = TempData["Success"];
+                }
+                if (TempData["Failed"] != null)
+                {
+                    ViewBag.Failed = TempData["Failed"];
+                }
                 List<EventType> eventTypes=_context.EventTypes.ToList();
                 ViewBag.EventTypes = eventTypes;
 
-                List<Event> events = _context.Events.ToList(); 
+                List<Event> events = _context.Events.ToList();
+                if (id != null)
+                {
+                    if (id == 1)
+                    {
+                        events = events.Where(e => e.PostPoned).ToList();
+                    }
+                    else if (id == 2)
+                    {
+                        events = events.Where(e => e.Cancelled).ToList();
+                    }
+                }
                 return View(events);
             }
             catch (Exception ex) { }
@@ -38,7 +58,7 @@ namespace SportManager.Controllers
         {
             try
             {
-                Event @event = _context.Events.Include(nameof(Team)).Include(nameof(StoreItemInUse)).Include(nameof(EventSession)).
+                Event @event = _context.Events.Include("Teams").Include("StoreItemsInUse").Include("EventSessions").
                     Where(e => e.Id.Equals(id)).SingleOrDefault();
 
                 ViewBag.EventType = _context.EventTypes.Where(e => e.Id.Equals(@event.EventTypeId)).SingleOrDefault().Name;
@@ -58,7 +78,7 @@ namespace SportManager.Controllers
             try
             {
                 List<EventType> eventTypes = _context.EventTypes.ToList();
-                ViewBag.EventTypes = eventTypes;
+                ViewBag.EventTypes = new SelectList(eventTypes, "Id", "Name");
             }
             catch (Exception ex) { }
             return View();
@@ -71,21 +91,46 @@ namespace SportManager.Controllers
         {
             try
             {
+                List<EventType> eventTypes = _context.EventTypes.ToList();
+                ViewBag.EventTypes = new SelectList(eventTypes, "Id", "Name");
+
+                Event @event = _context.Events.Where(e => e.Name.Equals(collection.Name.Trim()) & e.StartDate.Equals(collection.StartDate) & e.EndDate.Equals(collection.EndDate)).SingleOrDefault();
+                if (@event != null)
+                {
+                    ViewBag.Failed = "Event with same name and dates already exists!";
+                    return View();
+                }
+                collection.PostPoned = false;
+                collection.Cancelled = false;
+                collection.Ongoing = false;
+                _context.Events.Add(collection);
+
+                await _context.SaveChangesAsync();
+
+                TempData["Success"] = "Event saved successfully!";
+
                 return RedirectToAction(nameof(Index));
             }
             catch
             {
+                ViewBag.Failed = "An error occured!";
                 return View();
             }
         }
 
         // GET: EventController/Edit/5
-        public async Task<ActionResult> Edit(int id)
+        public async Task<ActionResult> Edit(Guid id)
         {
             try
             {
                 List<EventType> eventTypes = _context.EventTypes.ToList();
-                ViewBag.EventTypes = eventTypes;
+                ViewBag.EventTypes = new SelectList(eventTypes, "Id", "Name");
+
+                Event @event = _context.Events.Include(nameof(Team)).Include(nameof(StoreItemInUse)).Include(nameof(EventSession)).
+                    Where(e => e.Id.Equals(id)).SingleOrDefault();
+
+                return View(@event);
+
             }
             catch (Exception ex) { }
             return View();
@@ -98,10 +143,33 @@ namespace SportManager.Controllers
         {
             try
             {
+                List<EventType> eventTypes = _context.EventTypes.ToList();
+                ViewBag.EventTypes = new SelectList(eventTypes, "Id", "Name");
+                Event @event = _context.Events.Where(e => e.Name.Equals(collection.Name.Trim()) & e.StartDate.Equals(collection.StartDate) & e.EndDate.Equals(collection.EndDate)).SingleOrDefault();
+                if (@event != null)
+                {
+                    if (@event.Id.Equals(collection.Id))
+                    {
+                        ViewBag.Failed = "Event with same name and dates already exists!";
+                        return View();
+                    }
+                }
+
+                if (collection.PostPoned)
+                {
+                    collection.NewStartDate = collection.StartDate;
+                    collection.NewEndDate = collection.EndDate;
+                }
+
+                _context.Events.Update(collection);
+
+                await _context.SaveChangesAsync();
+                TempData["Success"] = "Event edited successfully!";
                 return RedirectToAction(nameof(Index));
             }
             catch
             {
+                ViewBag.Failed = "An error occured!";
                 return View();
             }
         }
