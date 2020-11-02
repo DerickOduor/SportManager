@@ -56,9 +56,21 @@ namespace SportManager.Controllers
         // GET: EventController/Details/5
         public async Task<ActionResult> Details(Guid id)
         {
+            Staff staff = null;
             try
             {
+                staff = SessionHelper.GetObjectFromJson<Staff>(HttpContext.Session, "MY_l_USER");
+                if (staff != null)
+                {
+                    try
+                    {
+                        if (staff.Profile.Name.Equals("Secretary") || staff.Profile.Name.Equals("Coordinator"))
+                            ViewBag.CanAddDiscipline = true;
+                    }
+                    catch (Exception ex) { }
+                }
                 Event @event = _context.Events.Include("Teams").Include("StoreItemsInUse").Include("EventSessions").
+                    Include("SportDisciplinesInEvent").
                     Where(e => e.Id.Equals(id)).SingleOrDefault();
 
                 ViewBag.EventType = _context.EventTypes.Where(e => e.Id.Equals(@event.EventTypeId)).SingleOrDefault().Name;

@@ -67,6 +67,7 @@ namespace SportManager.Models
         public DateTime DateRegistered { get; set; }
         public Guid ProfileId { get; set; }
         public virtual Profile Profile { get; set; }
+        public virtual SportDiscipinePatron SportDiscipinePatron { get; set; }
         public virtual IEnumerable<MakerChecker> MakerCheckers { get; set; }
     }
 
@@ -190,7 +191,8 @@ namespace SportManager.Models
         public DateTime DateAdded { get; set; }
         public bool Deleted { get; set; }
         public bool Status { get; set; }
-        public IEnumerable<Student> Students { get; set; }
+        public virtual SportDiscipinePatron SportDiscipinePatron { get; set; }
+        public virtual IEnumerable<Student> Students { get; set; }
         public virtual IEnumerable<Team> Teams { get; set; }
         public virtual IEnumerable<StoreItemInUse> StoreItemsInUse { get; set; }
     }
@@ -233,6 +235,7 @@ namespace SportManager.Models
         public virtual EventType EventType { get; set; }
         public virtual IEnumerable<Team> Teams { get; set; }
         public virtual IEnumerable<StoreItemInUse> StoreItemsInUse { get; set; }
+        public virtual IEnumerable<SportDisciplinesInEvent> SportDisciplinesInEvent { get; set; }
         public virtual IEnumerable<EventSession> EventSessions { get; set; }
     }
 
@@ -315,6 +318,17 @@ namespace SportManager.Models
         public Guid Id { get; set; }
         public string Name { get; set; }
         public virtual IEnumerable<StoreCategory> StoreCategories { get; set; }
+    }
+
+    public class SportDiscipinePatron
+    {
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [Key]
+        public Guid Id { get; set; }
+        public Guid SportDiscipineId { get; set; }
+        public virtual SportDiscipine SportDiscipine { get; set; }
+        public Guid StaffId { get; set; }
+        public virtual Staff Staff { get; set; }
     }
 
     public class StoreCategory

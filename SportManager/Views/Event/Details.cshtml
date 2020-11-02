@@ -84,6 +84,29 @@
                                     <dd class="col-sm-10">
                                         @Html.DisplayFor(model => model.Cancelled)
                                     </dd>
+                                    @{
+                                        try
+                                        {
+                                            bool CanAdd = false;
+                                            if (ViewBag.CanAddDiscipline != null)
+                                                CanAdd = (bool)ViewBag.CanAddDiscipline;
+
+                                            @Html.ActionLink("View sport disciplines", "Index", "EventDisciplines", new { id = Model.Id })
+                                            if (CanAdd)
+                                            {
+                                                @Html.Raw(" | ")
+                                            }
+                                            if (CanAdd)
+                                            {
+                                                @Html.ActionLink("Add sport disciplines", "Create", "EventDisciplines", new { id = Model.Id })
+                                            }
+
+                                        }
+                                        catch (Exception ex)
+                                        {
+                                            @Html.ActionLink("View sport disciplines", "Index", "EventDisciplines", new { id = Model.Id })
+                                        }
+                                    }
                                 </dl>
                                 <div class="card">
                                     <div class="card-block">

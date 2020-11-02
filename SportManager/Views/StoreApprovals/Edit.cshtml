@@ -1,0 +1,119 @@
+﻿@model SportManager.Models.StoreItemInUse
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<div class="page-header card">
+    <div class="row align-items-end">
+        <div class="col-lg-8">
+            @*<div class="page-header-title">
+                    <i class="feather icon-home bg-c-blue"></i>
+                    <div class="d-inline">
+                        <h5>Dashboard</h5>
+                        <span>Welcome user.</span>
+                    </div>
+                </div>*@
+        </div>
+        <div class="col-lg-4">
+            <div class="page-header-breadcrumb">
+                <ul class=" breadcrumb breadcrumb-title">
+                    <li class="breadcrumb-item">
+                        <a href="/home"><i class="feather icon-home"></i></a>
+                    </li>
+                    <li class="breadcrumb-item"><a href="#!">Dashboard</a> </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="pcoded-inner-content">
+    <div class="main-body">
+        <div class="page-wrapper">
+
+            <div class="page-body">
+                <div class="row">
+                    <div class="col-sm-12">
+
+                        <div class="card">
+                            <div class="card-header">
+                                <h5>Store Item Request Details</h5>
+                            </div>
+                            <div class="card-block">
+                                <dl class="row">
+                                    <dt class="col-sm-2">
+                                        @Html.DisplayNameFor(model => model.StoreItemId)
+                                    </dt>
+                                    <dd class="col-sm-10">
+                                        @Html.DisplayFor(model => model.StoreItem.Name)
+                                    </dd>
+                                    <dt class="col-sm-2">
+                                        @Html.DisplayNameFor(model => model.EventId)
+                                    </dt>
+                                    <dd class="col-sm-10">
+                                        @Html.DisplayFor(model => model.Event.Name)
+                                    </dd>
+                                    <dt class="col-sm-2">
+                                        @Html.DisplayNameFor(model => model.Count)
+                                    </dt>
+                                    <dd class="col-sm-10">
+                                        @Html.DisplayFor(model => model.Count)
+                                    </dd>
+                                    <dt class="col-sm-2">
+                                        @Html.DisplayNameFor(model => model.DateRequested)
+                                    </dt>
+                                    <dd class="col-sm-10">
+                                        @Html.DisplayFor(model => model.DateRequested.ToString("dd/MM/yyyy"))
+                                    </dd>
+                                    <dt class="col-sm-2">
+                                        @Html.DisplayNameFor(model => model.Approved)
+                                    </dt>
+                                    <dd class="col-sm-10">
+                                        @{
+                                            string appr = "";
+                                            if (Model.Approved & !Model.Rejected)
+                                                appr = "Yes";
+                                            else if (Model.Rejected)
+                                                appr = "No";
+                                            else
+                                                appr = "Pending";
+                                            @appr
+                                        }
+                                    </dd>
+                                </dl>
+
+                                @{
+                                    if (Model.Event.EndDate > DateTime.Now)
+                                    {
+                                        <div class="card">
+                                            <div class="card-header">
+                                                <h5>Action</h5>
+                                            </div>
+                                            <div class="card-block">
+                                                <form asp-action="Edit">
+                                                    <input type="hidden" value="@Model.Id" name="id" />
+                                                    <input type="radio" id="male" name="status" value="reject">
+                                                    <label for="male">Reject</label><br>
+                                                    <input type="radio" id="female" name="status" checked="checked" value="accept">
+                                                    <label for="female">Approve</label>
+                                                    <input type="submit" value="Submit" class="btn btn-danger" />
+                                                </form>
+                                            </div>
+                                        </div>
+                                    }
+                                }
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div>
+            <a asp-action="Index">Back to List</a>
+        </div>
+    </div>
+</div>

@@ -648,6 +648,39 @@
     </script>
     <script>
         $(function () {
+            $('#SportCategoryId').on('change', function (e) {
+                var id = $(this).val();
+                $('#StoreItemId').html('<option disabled selected>--select--</option>');
+                $.ajax({
+                    url: '',
+                    method: 'get',
+                    data: '',
+                    contentType: 'application/json',
+                    success: function (msg)
+                    {
+                        if (JSON.stringify(msg) != '') {
+                            console.log("Not empty");
+                            data = $.parseJSON(msg);
+                            /*$('#notification_list').append(
+                                '<div><h3>Policy Applications</h3></div>'
+                            )*/
+                            $.each(data, function (i, item) {
+                                //alert(item);
+                                notification_count += 1;
+                                $('#StoreItemId').append(
+                                    '<option value="'+item.Id+'">'+item.Name+'</option>'
+                                )
+                            });
+                        } else {
+                            console.log("Empty");
+                        }
+                    },
+                    error: function (err) {
+                        console.log(JSON.stringify(er));
+                    }
+                });
+            });
+
             $('#motorPolicyTypeCodeDiv').hide();
             $('input.parent_menu').click(function () {
                 var id = $(this).attr('id');

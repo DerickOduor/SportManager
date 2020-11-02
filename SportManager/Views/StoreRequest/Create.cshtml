@@ -1,14 +1,7 @@
-﻿@model SportManager.Models.EventSession
-@using SportManager.Models
+﻿@model SportManager.Models.StoreItemInUse
 
 @{
     ViewData["Title"] = "Create";
-    Event _event = null;
-    try
-    {
-        _event = (Event)ViewBag.Event;
-    }
-    catch (Exception ex) { }
 }
 
 <div class="page-header card">
@@ -45,7 +38,7 @@
 
                         <div class="card">
                             <div class="card-header">
-                                <h5>Add event session</h5>
+                                <h5>Request Item From Store</h5>
                             </div>
                             <div class="card-block">
                                 <form id="profileForm" method="post" asp-action="Create" autocomplete="off">
@@ -75,51 +68,45 @@
                                             </div> }
                                     }
                                     <div class="form-group row">
-                                        <label class="col-sm-2 col-form-label">Name&nbsp;<span style="color:red;">*</span></label>
+                                        <label class="col-sm-2 col-form-label">Event type&nbsp;<span style="color:red;">*</span></label>
                                         <div class="col-sm-10">
-                                            <input type="text" class="form-control" asp-for="Name" required>
-                                            <span asp-validation-for="Name" class="text-danger"></span>
-                                        </div>
-                                    </div>
-                                    <div class="form-group row">
-                                        <label class="col-sm-2 col-form-label">Event&nbsp;<span style="color:red;">*</span></label>
-                                        <div class="col-sm-10">
-                                            <select type="text" class="form-control" asp-for="EventId">
-                                                @{
-                                                    if (ViewBag.Event != null)
-                                                    {
-                                                        <option selected value="@_event.Id">@_event.Name</option>
-                                                    }
-                                                    else
-                                                    {
-                                                        <option disabled selected>--select--</option>
-                                                    }
-                                                }
+                                            <select type="text" class="form-control" asp-for="EventId" asp-items="ViewBag.Events">
+                                                <option disabled selected>--select--</option>
                                             </select>
                                             <span asp-validation-for="EventId" class="text-danger"></span>
                                         </div>
                                     </div>
                                     <div class="form-group row">
-                                        <label class="col-sm-2 col-form-label">Venue&nbsp;<span style="color:red;">*</span></label>
+                                        <label class="col-sm-2 col-form-label">Event type&nbsp;<span style="color:red;">*</span></label>
                                         <div class="col-sm-10">
-                                            <select type="text" class="form-control" asp-for="VenueId" asp-items="ViewBag.Venues">
+                                            <select type="text" class="form-control" name="SportCategoryId" asp-items="ViewBag.StoreCategories">
                                                 <option disabled selected>--select--</option>
                                             </select>
-                                            <span asp-validation-for="VenueId" class="text-danger"></span>
+                                            @*<span asp-validation-for="EventId" class="text-danger"></span>*@
                                         </div>
                                     </div>
                                     <div class="form-group row">
-                                        <label class="col-sm-2 col-form-label">Start time&nbsp;<span style="color:red;">*</span></label>
+                                        <label class="col-sm-2 col-form-label">Store Item&nbsp;<span style="color:red;">*</span></label>
                                         <div class="col-sm-10">
-                                            <input type="datetime-local" class="form-control" asp-for="StartTime" required>
-                                            <span asp-validation-for="StartTime" class="text-danger"></span>
+                                            <select type="text" class="form-control" asp-for="StoreItemId">
+                                                <option disabled selected>--select--</option>
+                                            </select>
+                                            @*<span asp-validation-for="EventId" class="text-danger"></span>*@
                                         </div>
                                     </div>
                                     <div class="form-group row">
-                                        <label class="col-sm-2 col-form-label">End time&nbsp;<span style="color:red;">*</span></label>
+                                        <div class="alert alert-danger background-danger">
+                                            <strong>Quantity Available:</strong>
+                                            <code>
+                                                0
+                                            </code>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-sm-2 col-form-label">Quantity&nbsp;<span style="color:red;">*</span></label>
                                         <div class="col-sm-10">
-                                            <input type="datetime-local" class="form-control" asp-for="EndTime" required>
-                                            <span asp-validation-for="EndTime" class="text-danger"></span>
+                                            <input type="number" min="0" class="form-control" asp-for="Count" required>
+                                            <span asp-validation-for="Count" class="text-danger"></span>
                                         </div>
                                     </div>
                                     <div class="form-group row">
@@ -139,8 +126,7 @@
         </div>
 
         <div>
-            @*<a asp-action="Index" asp-route="@_event.Id" class="btn btn-primary waves-effect waves-light">Back to List</a>*@
-            @Html.ActionLink("Back to List", "Index", new { id = _event.Id },new { @class = "btn btn-primary waves-effect waves-light" })
+            <a asp-action="Index" class="btn btn-primary waves-effect waves-light">Back to List</a>
         </div>
     </div>
 </div>

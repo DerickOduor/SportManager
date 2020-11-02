@@ -20,7 +20,7 @@ namespace SportManager.Models.Context
         public DbSet<Profile> Profiles { get; set; }
         public DbSet<SportDiscipine> SportDiscipines { get; set; }
         //public DbSet<SportDiscipineCaptain> SportDiscipineCaptains { get; set; }
-        //public DbSet<SportDiscipinePatron> SportDiscipinePatrons { get; set; }
+        public DbSet<SportDiscipinePatron> SportDiscipinePatrons { get; set; }
         public DbSet<SportDisciplinesInEvent> SportDisciplinesInEvents { get; set; }
         public DbSet<Staff> Staffs { get; set; }
         public DbSet<Store> Stores { get; set; }
@@ -100,11 +100,17 @@ namespace SportManager.Models.Context
                 .IsRequired()
                 .OnDelete(DeleteBehavior.Cascade);
 
-            //modelBuilder.Entity<SportDiscipinePatron>()
-            //    .HasOne(a => a.SportDiscipine)
-            //    .WithMany(b => b.SportDiscipinePatrons)
-            //    .IsRequired()
-            //    .OnDelete(DeleteBehavior.Cascade);
+            modelBuilder.Entity<SportDiscipinePatron>()
+                .HasOne(a => a.SportDiscipine)
+                .WithOne(b => b.SportDiscipinePatron)
+                .IsRequired()
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<SportDiscipinePatron>()
+                .HasOne(a => a.Staff)
+                .WithOne(b => b.SportDiscipinePatron)
+                .IsRequired()
+                .OnDelete(DeleteBehavior.Cascade);
 
             //modelBuilder.Entity<SportDiscipinePatron>()
             //    .HasOne(a => a.Staff)
