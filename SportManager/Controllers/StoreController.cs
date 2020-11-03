@@ -24,7 +24,7 @@ namespace SportManager.Controllers
             try
             {
                 ViewBag.Store = _context.Stores.ToList().ElementAt(0).Name;
-                List<StoreCategory> storeCategories = _context.StoreCategories.Include(nameof(StoreItem)).ToList();
+                List<StoreCategory> storeCategories = _context.StoreCategories.Include("StoreItems").ToList();
 
                 return View(storeCategories);
             }catch(Exception ex)

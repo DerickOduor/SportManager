@@ -40,7 +40,8 @@
                     </div>
                     <div class="card-block">
                         <p>
-                            <a asp-action="/StoreItems/Create" asp-route="@ViewBag.StoreCategoryId">Create New Item</a>
+                            @*<a asp-action="/StoreItems/Create" asp-route="@ViewBag.StoreCategoryId">Create New Item</a>*@
+                            @Html.ActionLink("Create New Item", "Create", "StoreItems")
                         </p>
                         <div class="table-responsive dt-responsive">
                             @{ if (ViewBag.Failed != null)

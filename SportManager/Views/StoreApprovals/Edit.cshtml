@@ -91,7 +91,7 @@
                                                 <h5>Action</h5>
                                             </div>
                                             <div class="card-block">
-                                                <form asp-action="Edit">
+                                                <form asp-action="Edit" method="post" autocomplete="off">
                                                     <input type="hidden" value="@Model.Id" name="id" />
                                                     <input type="radio" id="male" name="status" value="reject">
                                                     <label for="male">Reject</label><br>

@@ -40,7 +40,8 @@
                     </div>
                     <div class="card-block">
                         <p>
-                            <a asp-action="/StoreCategory/Create">Create New Category</a>
+                            @*<a asp-action="StoreCategory/Create">Create New Category</a>*@
+                            @Html.ActionLink("Create New Category", "Create", "StoreCategory")
                         </p>
                         <div class="table-responsive dt-responsive">
                             @{ if (ViewBag.Failed != null)

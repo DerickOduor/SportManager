@@ -108,7 +108,7 @@ namespace SportManager.Controllers
                             storeItemInUse.Approved = true;
                             storeItemInUse.Rejected = false;
                         }
-
+                        storeItemInUse.DateApproved = DateTime.Now;
                         _context.StoreItemInUse.Update(storeItemInUse);
                         await _context.SaveChangesAsync();
                     }

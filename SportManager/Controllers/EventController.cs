@@ -64,7 +64,8 @@ namespace SportManager.Controllers
                 {
                     try
                     {
-                        if (staff.Profile.Name.Equals("Secretary") || staff.Profile.Name.Equals("Coordinator"))
+                        Profile profile = _context.Profiles.Where(p => p.Id.Equals(staff.ProfileId)).SingleOrDefault();
+                        if (/*staff.Profile*/profile.Name.Equals("Secretary") || /*staff.Profile*/profile.Name.Equals("Coordinator"))
                             ViewBag.CanAddDiscipline = true;
                     }
                     catch (Exception ex) { }
@@ -138,7 +139,7 @@ namespace SportManager.Controllers
                 List<EventType> eventTypes = _context.EventTypes.ToList();
                 ViewBag.EventTypes = new SelectList(eventTypes, "Id", "Name");
 
-                Event @event = _context.Events.Include(nameof(Team)).Include(nameof(StoreItemInUse)).Include(nameof(EventSession)).
+                Event @event = _context.Events.Include("Teams").Include("StoreItemsInUse").Include("EventSessions").
                     Where(e => e.Id.Equals(id)).SingleOrDefault();
 
                 return View(@event);
@@ -191,7 +192,7 @@ namespace SportManager.Controllers
         {
             try
             {
-                Event @event = _context.Events.Include(nameof(Team)).Include(nameof(StoreItemInUse)).Include(nameof(EventSession)).
+                Event @event = _context.Events.Include("Teams").Include("StoreItemsInUse").Include("EventSessions").
                     Where(e => e.Id.Equals(id)).SingleOrDefault();
 
                 ViewBag.EventType = _context.EventTypes.Where(e => e.Id.Equals(@event.EventTypeId)).SingleOrDefault().Name;

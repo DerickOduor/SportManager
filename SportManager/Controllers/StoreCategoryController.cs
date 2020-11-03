@@ -66,15 +66,16 @@ namespace SportManager.Controllers
                     ViewBag.Failed = "Category with the same name already exists!";
                     return View();
                 }
-
+                collection.Id = Guid.Empty;
                 _context.StoreCategories.Add(collection);
                 await _context.SaveChangesAsync();
 
                 ViewBag.Success = "Item saved successfully!";
                 return RedirectToAction(nameof(Index));
             }
-            catch
+            catch(Exception ex)
             {
+                ViewBag.Failed = "An error occured!";
                 return View();
             }
         }

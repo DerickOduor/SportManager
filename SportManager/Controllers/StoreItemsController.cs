@@ -80,7 +80,7 @@ namespace SportManager.Controllers
                     ViewBag.Failed = "An item with the same name already exists!";
                     return View();
                 }
-
+                collection.Id = Guid.Empty;
                 _context.StoreItems.Add(collection);
                 await _context.SaveChangesAsync();
 

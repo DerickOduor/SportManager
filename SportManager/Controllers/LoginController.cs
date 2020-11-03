@@ -49,10 +49,10 @@ namespace SportManager.Controllers
                 List<AccessRight> accessRights = new List<AccessRight>();
                 if (collection != null)
                 {
-                    Staff staff = _context.Staffs.Include("Profile").Where(s => s.Email.Equals(collection.Username.Trim())).SingleOrDefault();
+                    Staff staff = _context.Staffs.Include("SportDiscipinePatron")/*.Include("Profile")*/.Where(s => s.Email.Equals(collection.Username.Trim())).SingleOrDefault();
                     if (staff == null)
                     {
-                        staff= _context.Staffs.Include("Profile").Where(s => s.Phone.Equals(collection.Username.Trim())).SingleOrDefault();
+                        staff= _context.Staffs.Include("SportDiscipinePatron")/*.Include("Profile")*/.Where(s => s.Phone.Equals(collection.Username.Trim())).SingleOrDefault();
                     }
                     if (staff != null)
                     {
@@ -70,6 +70,12 @@ namespace SportManager.Controllers
                             }
                             try
                             {
+                                try
+                                {
+                                    //Profile profile_ = _context.Profiles.Where(p => p.Id.Equals(staff.ProfileId)).SingleOrDefault();
+                                    //staff.Profile = profile_;
+                                }
+                                catch (Exception ex) { }
                                 accessRights = _context.AccessRights.Include(nameof(Menu)).Where(a => a.ProfileId == staff.ProfileId).ToList();
                                 foreach (AccessRight access in accessRights)
                                 {
@@ -104,8 +110,16 @@ namespace SportManager.Controllers
                             }
                             catch (Exception ex) { }
                             //TempData["Success"] = "Login success!";
-                            SessionHelper.SetObjectAsJson(HttpContext.Session, "MY_l_USER", staff);
-                            HttpContext.Session.SetString("USERTYPE", "STAFF");
+                            try
+                            {
+                                SessionHelper.SetObjectAsJson(HttpContext.Session, "MY_l_USER", staff);
+                            }
+                            catch (Exception ex) { }
+                            try
+                            {
+                                HttpContext.Session.SetString("USERTYPE", "STAFF");
+                            }
+                            catch (Exception ex) { }
                             try
                             {
                                 SessionHelper.SetObjectAsJson(HttpContext.Session, "MY_P_MENUS", menus.OrderBy(m => m.Level));
@@ -200,7 +214,7 @@ namespace SportManager.Controllers
                 TempData["Failed"] = "Login failed!";
                 return RedirectToAction(nameof(Index));
             }
-            catch
+            catch(Exception ex)
             {
                 TempData["Failed"] = "An error occured!";
                 return RedirectToAction(nameof(Index));

@@ -24,7 +24,7 @@ namespace SportManager.Controllers
         {
             try
             {
-                if (id == null)
+                if (id.Equals(Guid.Empty))
                 {
                     return RedirectToAction("Index","Event");
                 }
@@ -82,7 +82,8 @@ namespace SportManager.Controllers
             try
             {
                 ViewBag.Event = _context.Events.Where(e => e.Id.Equals(collection.EventId)).SingleOrDefault();
-                ViewBag.Venues = _context.Venues.ToList();
+                List<Venue> venues = _context.Venues.ToList();
+                ViewBag.Venues = new SelectList(venues, "Id", "Name");
                 if (!ModelState.IsValid)
                 {
                     return View();
@@ -93,14 +94,35 @@ namespace SportManager.Controllers
                     ViewBag.Failed="Session with the same name already exists!";
                     return View();
                 }
+                try
+                {
+                    List<EventSession> sessions = _context.EventSessions.Include("Event").ToList();
+                    if (sessions != null)
+                    {
+                        foreach(EventSession session in sessions)
+                        {
+                            if(session.StartTime<collection.StartTime & session.EndTime > collection.EndTime)
+                            {
+                                if (session.VenueId.Equals(collection.VenueId))
+                                {
+                                    ViewBag.Failed = "Venue already booked for Session: "+session.Name+", Event:"+session.Event.Name;
+                                    return View();
+                                }
+                            }
+                        }
+                    }
+                }catch(Exception ex)
+                {
 
+                }
+                collection.Id = Guid.Empty;
                 _context.EventSessions.Add(collection);
                 await _context.SaveChangesAsync();
 
                 TempData["Success"] = "Session added successfully";
                 return RedirectToAction(nameof(Index),collection.EventId);
             }
-            catch
+            catch(Exception ex)
             {
                 ViewBag.Failed = "An error occured!";
                 return View();
@@ -112,6 +134,7 @@ namespace SportManager.Controllers
         {
             try
             {
+                ViewBag.Event = _context.Events.Where(e => e.Id.Equals(id)).SingleOrDefault();
                 List<Venue> venues = _context.Venues.ToList();
                 ViewBag.Venues = new SelectList(venues, "Id", "Name");
                 EventSession eventSession = _context.EventSessions.Include(nameof(Event)).Include(nameof(Venue)).Where(e => e.Id.Equals(id)).SingleOrDefault();
@@ -180,19 +203,22 @@ namespace SportManager.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Delete(int id, EventSession collection)
         {
+            Guid event_id=Guid.NewGuid();
             try
             {
                 EventSession eventSession = _context.EventSessions.Where(e => e.Id.Equals(collection.Id)).SingleOrDefault();
+                event_id = eventSession.EventId;
                 _context.EventSessions.Remove(eventSession);
                 await _context.SaveChangesAsync();
 
                 TempData["Success"] = "Session deleted successfully";
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Index), event_id);
             }
             catch
             {
                 ViewBag.Failed="An error occured!";
-                return View();
+                //return View();
+                return RedirectToAction(nameof(Delete), event_id);
             }
         }
     }

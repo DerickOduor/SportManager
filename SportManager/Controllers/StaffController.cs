@@ -328,7 +328,8 @@ namespace SportManager.Controllers
                     //    catch (Exception ex) { }
                     //}
                     //_context.Messages.Add(message);
-
+                    collection.Id = Guid.Empty;
+                    collection.DateRegistered = DateTime.Now;
                     _context.Staffs.Add(collection);
 
                     await _context.SaveChangesAsync();

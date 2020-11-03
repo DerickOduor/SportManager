@@ -45,6 +45,8 @@ namespace SportManager.Controllers
                     ViewBag.Failed = TempData["Failed"];
                 }
 
+                Profile profile = _context.Profiles.Where(p => p.Id.Equals(staff.ProfileId)).SingleOrDefault();
+
                 List<StoreItemInUse> storeItems = _context.StoreItemInUse.Include("StoreItem").Include("Event")
                     .Include("SportDiscipine").Where(s=>s.SportDiscipineId.Equals(staff.SportDiscipinePatron.SportDiscipineId)).
                     ToList();
@@ -119,6 +121,7 @@ namespace SportManager.Controllers
                 collection.Approved = false;
                 collection.Rejected = false;
                 collection.DateRequested = DateTime.Now;
+                collection.Id = Guid.Empty;
 
                 _context.StoreItemInUse.Add(collection);
                 await _context.SaveChangesAsync();

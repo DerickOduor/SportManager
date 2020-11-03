@@ -22,6 +22,7 @@ namespace SportManager.Controllers
         // GET: EventDisciplinesController
         public async Task<ActionResult> Index(Guid id)
         {
+            
             Staff staff = null;
             try
             {
@@ -30,7 +31,8 @@ namespace SportManager.Controllers
                 {
                     try
                     {
-                        if (staff.Profile.Name.Equals("Secretary") || staff.Profile.Name.Equals("Coordinator"))
+                        Profile profile = _context.Profiles.Where(p => p.Id.Equals(staff.ProfileId)).SingleOrDefault();
+                        if (/*staff.Profile*/profile.Name.Equals("Secretary") || /*staff.Profile*/profile.Name.Equals("Coordinator"))
                             ViewBag.CanAddDiscipline = true;
                     }
                     catch (Exception ex) { }
@@ -48,10 +50,19 @@ namespace SportManager.Controllers
                     ViewBag.Failed = TempData["Failed"];
                 }
 
-                if (id == null)
+                if (id.Equals(Guid.Empty))
                 {
-                    return RedirectToAction("Index", "Home");
+                    return RedirectToAction("Index", "Event");
                 }
+                try
+                {
+                    ViewBag.Id = id;
+                }
+                catch (Exception ex)
+                {
+
+                }
+                ViewBag.Event = _context.Events.Where(e => e.Id.Equals(id)).SingleOrDefault();
                 List<SportDisciplinesInEvent> sportDisciplinesInEvent = _context.SportDisciplinesInEvents
                     .Include("Event").Include("SportDiscipine").ToList();
                 
@@ -72,9 +83,9 @@ namespace SportManager.Controllers
         {
             try
             {
-                if (id == null)
+                if (id.Equals(Guid.Empty))
                 {
-                    return RedirectToAction("Index", "Home");
+                    return RedirectToAction("Index", "Event");
                 }
 
                 Event _event = _context.Events.Where(e => e.Id.Equals(id)).SingleOrDefault();
@@ -109,7 +120,7 @@ namespace SportManager.Controllers
                     ViewBag.Failed = "Discipline already exists in this event!";
                     return View();
                 }
-
+                collection.Id = Guid.Empty;
                 _context.SportDisciplinesInEvents.Add(collection);
                 await _context.SaveChangesAsync();
 

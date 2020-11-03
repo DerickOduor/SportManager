@@ -45,7 +45,8 @@
                                 if (ViewBag.CanAddDiscipline != null)
                                 {
                                     <p>
-                                        <a asp-action="Create">Create New</a>
+                                        @*<a asp-action="Create" asp-route="@ViewBag.Id">Create New</a>*@
+                                        @Html.ActionLink("Create New", "Create", new { id = ViewBag.Id })
                                     </p>
                                 }
                             }
@@ -102,7 +103,7 @@
                                                             {
                                                                 if (ViewBag.CanAddDiscipline != null)
                                                                 {
-                                                                    @Html.ActionLink("Remove", "Delete", new { id = item.Id,jd=item.EventId })
+                                                                    @Html.ActionLink("Remove", "Delete", new { id = item.Id, jd = item.EventId })
                                                                 }
                                                             }
                                                             catch (Exception ex) { }

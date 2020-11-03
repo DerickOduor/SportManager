@@ -41,7 +41,7 @@
                                 <h5>Edit staff</h5>
                             </div>
                             <div class="card-block">
-                                <form id="profileForm" method="post" asp-action="Create" autocomplete="off">
+                                <form id="profileForm" method="post" asp-action="Edit" autocomplete="off">
                                     <input type="hidden" class="form-control" asp-for="Id" required>
                                     @{ if (ViewBag.Failed != null)
                                         {
