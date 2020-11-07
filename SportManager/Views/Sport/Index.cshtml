@@ -1,4 +1,4 @@
-﻿@model IEnumerable<SportManager.Models.SportDisciplinesInEvent>
+﻿@model IEnumerable<SportManager.Models.SportDiscipine>
 
 @{
     ViewData["Title"] = "Index";
@@ -36,22 +36,12 @@
 
                 <div class="card">
                     <div class="card-header">
-                        <h5>Sports in event</h5>
+                        <h5>Sport disciplines</h5>
                     </div>
                     <div class="card-block">
-                        @{
-                            try
-                            {
-                                if (ViewBag.CanAddDiscipline != null)
-                                {
-                                    <p>
-                                        @*<a asp-action="Create" asp-route="@ViewBag.Id">Create New</a>*@
-                                        @Html.ActionLink("Create New", "Create", new { id = ViewBag.Id })
-                                    </p>
-                                }
-                            }
-                            catch (Exception ex) { }
-                        }
+                        <p>
+                            <a asp-action="Create">Add New</a>
+                        </p>
                         <div class="table-responsive dt-responsive">
                             @{ if (ViewBag.Failed != null)
                                 {
@@ -82,7 +72,13 @@
                                 <thead>
                                     <tr>
                                         <th>
-                                            @Html.DisplayNameFor(model => model.SportDiscipineId)
+                                            @Html.DisplayNameFor(model => model.Name)
+                                        </th>
+                                        <th>
+                                            @Html.DisplayNameFor(model => model.DateAdded)
+                                        </th>
+                                        <th>
+                                            @Html.DisplayNameFor(model => model.SportDiscipinePatron)
                                         </th>
                                         <th></th>
                                     </tr>
@@ -95,22 +91,39 @@
                                             {
                                                 <tr>
                                                     <td>
-                                                        @Html.DisplayFor(modelItem => item.SportDiscipine.Name)
+                                                        @Html.DisplayFor(modelItem => item.Name)
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.DateAdded)
                                                     </td>
                                                     <td>
                                                         @{
-                                                            try
+                                                            if (item.SportDiscipinePatron != null)
                                                             {
-                                                                if (ViewBag.CanAddDiscipline != null)
-                                                                {
-                                                                    @Html.ActionLink("Remove", "Delete", new { id = item.Id, jd = item.EventId })
-                                                                    @Html.Raw(" | ")
-                                                                }
+                                                                @item.SportDiscipinePatron.Staff.Firstname
+                                                                @Html.Raw(" ")
+                                                                @item.SportDiscipinePatron.Staff.Lastname
                                                             }
-                                                            catch (Exception ex) { }
+                                                            else
+                                                            {
+                                                                @Html.Raw("Not assigned!")
+                                                            }
                                                         }
-                                                        @Html.ActionLink("Add student", "Create", "StudentsInEvent", new { id = item.Id }) |
-                                                        @Html.ActionLink("View students", "Index", "StudentsInEvent", new { id = item.Id })
+                                                    </td>
+                                                    <td>
+                                                        @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+                                                        @Html.ActionLink("Details", "Details", new { id = item.Id }) |
+                                                        @Html.ActionLink("Delete", "Delete", new { id = item.Id }) |
+                                                        @{
+                                                            if (item.SportDiscipinePatron != null)
+                                                            {
+                                                                @Html.ActionLink("Change patron", "Edit", "SportDisciplinePatron", new { id = item.Id })
+                                                            }
+                                                            else
+                                                            {
+                                                                @Html.ActionLink("Assign patron", "Index", "SportDisciplinePatron", new { id = item.Id })
+                                                            }
+                                                        }
                                                     </td>
                                                 </tr>
                                             }
@@ -120,8 +133,14 @@
                                 <tfoot>
                                     <tr>
                                         <th>
-                                            @Html.DisplayNameFor(model => model.SportDiscipineId)
+                                            @Html.DisplayNameFor(model => model.Name)
                                         </th>
+                                        <th>
+                                            @Html.DisplayNameFor(model => model.DateAdded)
+                                        </th>
+                                        <td>
+                                            @Html.DisplayNameFor(model => model.SportDiscipinePatron)
+                                        </td>
                                         <th></th>
                                     </tr>
                                 </tfoot>

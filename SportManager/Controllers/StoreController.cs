@@ -21,6 +21,14 @@ namespace SportManager.Controllers
         // GET: StoreController
         public async Task<ActionResult> Index()
         {
+            if (TempData["Success"] != null)
+            {
+                ViewBag.Success = TempData["Success"];
+            }
+            if (TempData["Failed"] != null)
+            {
+                ViewBag.Failed = TempData["Failed"];
+            }
             try
             {
                 ViewBag.Store = _context.Stores.ToList().ElementAt(0).Name;

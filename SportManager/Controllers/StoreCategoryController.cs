@@ -21,15 +21,23 @@ namespace SportManager.Controllers
         // GET: StoreController
         public async Task<ActionResult> Index(Guid id)
         {
+            if (TempData["Success"] != null)
+            {
+                ViewBag.Success = TempData["Success"];
+            }
+            if (TempData["Failed"] != null)
+            {
+                ViewBag.Failed = TempData["Failed"];
+            }
             try
             {
-                if (id == null)
+                if (id.Equals(Guid.Empty))
                 {
                     return RedirectToAction("Index", "Store");
                 }
                 ViewBag.StoreCategory = _context.StoreCategories.Where(s => s.Id.Equals(id)).SingleOrDefault().Name;
                 ViewBag.StoreCategoryId = _context.StoreCategories.Where(s => s.Id.Equals(id)).SingleOrDefault().Id;
-                List<StoreItem> storeItems = _context.StoreItems.Include(nameof(StoreItemInUse)).Where(s => s.StoreCategoryId.Equals(id)).ToList();
+                List<StoreItem> storeItems = _context.StoreItems.Include("StoreCategory").Include("StoreItemsInUse").Where(s => s.StoreCategoryId.Equals(id)).ToList();
                 return View(storeItems);
             }
             catch (Exception ex) { }
@@ -71,7 +79,10 @@ namespace SportManager.Controllers
                 await _context.SaveChangesAsync();
 
                 ViewBag.Success = "Item saved successfully!";
-                return RedirectToAction(nameof(Index));
+                TempData["Success"] = "Item saved successfully!";
+                //return RedirectToAction(nameof(Index));
+
+                return RedirectToAction(nameof(Index), "Store");
             }
             catch(Exception ex)
             {
@@ -85,7 +96,7 @@ namespace SportManager.Controllers
         {
             try
             {
-                StoreCategory storeCategory = _context.StoreCategories.Include(nameof(StoreItem)).Where(s => s.Id.Equals(id)).SingleOrDefault();
+                StoreCategory storeCategory = _context.StoreCategories.Include("StoreItems").Where(s => s.Id.Equals(id)).SingleOrDefault();
                 return View(storeCategory);
             }catch(Exception ex)
             {
@@ -101,7 +112,7 @@ namespace SportManager.Controllers
         {
             try
             {
-                StoreCategory storeCategory = _context.StoreCategories.Where(s => s.Name.Equals(collection.Name)).SingleOrDefault();
+                StoreCategory storeCategory = _context.StoreCategories.Include("StoreItems").Where(s => s.Name.Equals(collection.Name)).SingleOrDefault();
                 if (storeCategory != null)
                 {
                     if (storeCategory.Id.Equals(collection.Id))
@@ -115,7 +126,9 @@ namespace SportManager.Controllers
                 await _context.SaveChangesAsync();
 
                 ViewBag.Success = "Item updated successfully!";
-                return RedirectToAction(nameof(Index));
+                TempData["Success"] = "Item updated successfully!";
+                //return RedirectToAction(nameof(Index),id);
+                return RedirectToAction(nameof(Index), "Store");
             }
             catch
             {
@@ -128,7 +141,7 @@ namespace SportManager.Controllers
         {
             try
             {
-                StoreCategory storeCategory = _context.StoreCategories.Include(nameof(StoreItem)).Where(s => s.Id.Equals(id)).SingleOrDefault();
+                StoreCategory storeCategory = _context.StoreCategories.Include("StoreItems").Where(s => s.Id.Equals(id)).SingleOrDefault();
                 return View(storeCategory);
             }
             catch (Exception ex)
@@ -145,7 +158,7 @@ namespace SportManager.Controllers
         {
             try
             {
-                StoreCategory storeCategory = _context.StoreCategories.Where(s => s.Id.Equals(collection.Id)).SingleOrDefault();
+                StoreCategory storeCategory = _context.StoreCategories.Include("StoreItems").Where(s => s.Id.Equals(collection.Id)).SingleOrDefault();
                 if (storeCategory != null)
                 {
                     _context.StoreCategories.Remove(storeCategory);

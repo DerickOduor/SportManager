@@ -42,7 +42,7 @@
                             </div>
                             <div class="card-block">
                                 <form id="profileForm" method="post" asp-action="Edit" autocomplete="off">
-                                    <input type="text" class="form-control" asp-for="Id" required>
+                                    <input type="hidden" class="form-control" asp-for="Id" required>
                                     @{ if (ViewBag.Failed != null)
                                         {
                                             <div class="alert alert-danger background-danger">
@@ -120,7 +120,8 @@
         </div>
 
         <div>
-            <a asp-action="Index" class="btn btn-primary waves-effect waves-light">Back to List</a>
+            @*<a asp-action="Index" class="btn btn-primary waves-effect waves-light">Back to List</a>*@
+            @Html.ActionLink("Back to List", "Index", "StoreCategory",new { id=Model.StoreCategoryId})
         </div>
     </div>
 </div>

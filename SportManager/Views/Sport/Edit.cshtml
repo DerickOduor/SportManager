@@ -1,7 +1,7 @@
-﻿@model SportManager.Models.StoreItem
+﻿@model SportManager.Models.SportDiscipine
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Edit";
 }
 
 <div class="page-header card">
@@ -38,10 +38,11 @@
 
                         <div class="card">
                             <div class="card-header">
-                                <h5>Add Store Item</h5>
+                                <h5>Edit sport</h5>
                             </div>
                             <div class="card-block">
-                                <form id="profileForm" method="post" asp-action="Create" autocomplete="off">
+                                <form id="profileForm" method="post" asp-action="Edit" autocomplete="off">
+                                    <input type="hidden" class="form-control" asp-for="Id" required>
                                     @{ if (ViewBag.Failed != null)
                                         {
                                             <div class="alert alert-danger background-danger">
@@ -75,34 +76,6 @@
                                         </div>
                                     </div>
                                     <div class="form-group row">
-                                        <label class="col-sm-2 col-form-label">Count&nbsp;<span style="color:red;">*</span></label>
-                                        <div class="col-sm-10">
-                                            <input type="text" class="form-control" asp-for="Count" required>
-                                            <span asp-validation-for="Count" class="text-danger"></span>
-                                        </div>
-                                    </div>
-                                    <div class="form-group row">
-                                        <label class="col-sm-2 col-form-label">Store Category&nbsp;<span style="color:red;">*</span></label>
-                                        <div class="col-sm-10">
-                                            @{
-                                                if (ViewBag.StoreCategory != null)
-                                                {
-                                                    StoreCategory storeCategory = (StoreCategory)ViewBag.StoreCategory;
-                                                    <select type="text" class="form-control" asp-for="StoreCategoryId" >
-                                                        <option value="@storeCategory.Id" selected>@storeCategory.Name</option>
-                                                    </select>
-                                                }
-                                                else
-                                                {
-                                                    <select type="text" class="form-control" asp-for="StoreCategoryId" asp-items="ViewBag.StoreCategories">
-                                                        <option disabled selected>--select--</option>
-                                                    </select>
-                                                }
-                                            }
-                                            <span asp-validation-for="StoreCategoryId" class="text-danger"></span>
-                                        </div>
-                                    </div>
-                                    <div class="form-group row">
                                         <label class="col-sm-2"></label>
                                         <div class="col-sm-10">
                                             <button type="submit" class="btn btn-primary m-b-0">Submit</button>
@@ -119,8 +92,7 @@
         </div>
 
         <div>
-            @*<a asp-action="Index" class="btn btn-primary waves-effect waves-light">Back to List</a>*@
-            @Html.ActionLink("Back to List", "Index", "StoreCategory", new { id = Model.StoreCategoryId })
+            <a asp-action="Index" class="btn btn-primary waves-effect waves-light">Back to List</a>
         </div>
     </div>
 </div>

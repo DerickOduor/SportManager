@@ -41,7 +41,7 @@
                     <div class="card-block">
                         <p>
                             @*<a asp-action="/StoreItems/Create" asp-route="@ViewBag.StoreCategoryId">Create New Item</a>*@
-                            @Html.ActionLink("Create New Item", "Create", "StoreItems")
+                            @Html.ActionLink("Create New Item", "Create", "StoreItems", new { id= ViewBag.StoreCategoryId!=null? ViewBag.StoreCategoryId:""})
                         </p>
                         <div class="table-responsive dt-responsive">
                             @{ if (ViewBag.Failed != null)
@@ -102,9 +102,9 @@
                                                     </td>
                                                     <td>
                                                         @*@Html.ActionLink("Items", "Index", "StoreCategory", new { id = item.Id }) |*@
-                                                        @Html.ActionLink("Edit", "Edit", "StoreItem", new { id = item.Id }) |
-                                                        @Html.ActionLink("Details", "Details", "StoreItem", new { id = item.Id }) |
-                                                        @Html.ActionLink("Delete", "Delete", "StoreItem", new { id = item.Id })
+                                                        @Html.ActionLink("Edit", "Edit", "StoreItems", new { id = item.Id }) |
+                                                        @Html.ActionLink("Details", "Details", "StoreItems", new { id = item.Id }) |
+                                                        @Html.ActionLink("Delete", "Delete", "StoreItems", new { id = item.Id })
                                                     </td>
                                                 </tr>
                                             }

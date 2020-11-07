@@ -62,7 +62,8 @@
             <form asp-action="Delete">
                 <input type="hidden" class="form-control" asp-for="Id" required>
                 <input type="submit" value="Delete" class="btn btn-danger" /> |
-                <a asp-action="Index">Back to List</a>
+                @*<a asp-action="Index">Back to List</a>*@
+                @Html.ActionLink("Back to List", "Index", "Store")
             </form>
         </div>
     </div>

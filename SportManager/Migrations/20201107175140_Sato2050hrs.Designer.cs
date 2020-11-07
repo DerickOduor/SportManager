@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SportManager.Models.Context;
 
 namespace SportManager.Migrations
 {
     [DbContext(typeof(SportDbContext))]
-    partial class SportDbContextModelSnapshot : ModelSnapshot
+    [Migration("20201107175140_Sato2050hrs")]
+    partial class Sato2050hrs
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -48,27 +50,6 @@ namespace SportManager.Migrations
                             Id = new Guid("910ce653-c7f1-4429-9b95-19270767129d"),
                             MenuId = new Guid("910ce653-c7f1-4429-9b95-19270767129d"),
                             ParentMenuId = new Guid("910ce653-c7f1-4429-9b95-19270767129d"),
-                            ProfileId = new Guid("327d571a-1690-44e0-806d-65e0593364ad")
-                        },
-                        new
-                        {
-                            Id = new Guid("759b44d1-3f41-41c0-99ad-19880524962a"),
-                            MenuId = new Guid("96deb675-0d05-47e8-9827-3fbd3b6be7a8"),
-                            ParentMenuId = new Guid("400dd70c-af53-4849-9889-823256adf99a"),
-                            ProfileId = new Guid("327d571a-1690-44e0-806d-65e0593364ad")
-                        },
-                        new
-                        {
-                            Id = new Guid("14e558bc-3474-462c-8000-71fd082fe64e"),
-                            MenuId = new Guid("a4f70713-403c-449d-b60f-20cee0087f55"),
-                            ParentMenuId = new Guid("d0e36979-1c0e-41a8-9a4a-c19293390f74"),
-                            ProfileId = new Guid("327d571a-1690-44e0-806d-65e0593364ad")
-                        },
-                        new
-                        {
-                            Id = new Guid("902527af-cc96-460f-86f8-b0f7eabaf512"),
-                            MenuId = new Guid("ebc9b700-2cd3-4984-811c-01dd30c6beb6"),
-                            ParentMenuId = new Guid("1f37b623-7973-43f0-baf5-bd15c995e89f"),
                             ProfileId = new Guid("327d571a-1690-44e0-806d-65e0593364ad")
                         },
                         new
@@ -407,7 +388,7 @@ namespace SportManager.Migrations
                             Link = "/Event/",
                             MenuType = "SUB-MENU",
                             MenuUser = "STAFF",
-                            Name = "View events",
+                            Name = "View event",
                             ParentId = new Guid("d0e36979-1c0e-41a8-9a4a-c19293390f74")
                         },
                         new
@@ -608,7 +589,7 @@ namespace SportManager.Migrations
                         new
                         {
                             Id = new Guid("910ce653-c7f1-4429-9b95-19270767129d"),
-                            DateAdded = new DateTime(2020, 11, 7, 20, 58, 27, 69, DateTimeKind.Local).AddTicks(9017),
+                            DateAdded = new DateTime(2020, 11, 7, 20, 51, 39, 581, DateTimeKind.Local).AddTicks(3424),
                             Deleted = false,
                             Name = "Football",
                             Status = true
@@ -616,7 +597,7 @@ namespace SportManager.Migrations
                         new
                         {
                             Id = new Guid("27f9810e-3e57-4f56-b787-8e8df67fd9ff"),
-                            DateAdded = new DateTime(2020, 11, 7, 20, 58, 27, 70, DateTimeKind.Local).AddTicks(756),
+                            DateAdded = new DateTime(2020, 11, 7, 20, 51, 39, 581, DateTimeKind.Local).AddTicks(5911),
                             Deleted = false,
                             Name = "Basketball",
                             Status = true
@@ -624,7 +605,7 @@ namespace SportManager.Migrations
                         new
                         {
                             Id = new Guid("8d5d6ccb-c34f-44b6-8bc7-0b19e5d0e472"),
-                            DateAdded = new DateTime(2020, 11, 7, 20, 58, 27, 70, DateTimeKind.Local).AddTicks(800),
+                            DateAdded = new DateTime(2020, 11, 7, 20, 51, 39, 581, DateTimeKind.Local).AddTicks(5975),
                             Deleted = false,
                             Name = "Volleyball",
                             Status = true
@@ -632,7 +613,7 @@ namespace SportManager.Migrations
                         new
                         {
                             Id = new Guid("73503878-6414-42fc-87a6-b98c1bc17b5c"),
-                            DateAdded = new DateTime(2020, 11, 7, 20, 58, 27, 70, DateTimeKind.Local).AddTicks(804),
+                            DateAdded = new DateTime(2020, 11, 7, 20, 51, 39, 581, DateTimeKind.Local).AddTicks(5982),
                             Deleted = false,
                             Name = "Racket games",
                             Status = true
@@ -746,7 +727,7 @@ namespace SportManager.Migrations
                             Id = new Guid("327d571a-1690-44e0-806d-65e0593364ad"),
                             Authorized = true,
                             ChangePassword = false,
-                            DateRegistered = new DateTime(2020, 11, 7, 20, 58, 27, 67, DateTimeKind.Local).AddTicks(6754),
+                            DateRegistered = new DateTime(2020, 11, 7, 20, 51, 39, 578, DateTimeKind.Local).AddTicks(8203),
                             Deleted = false,
                             Email = "oduorderick@gmail.com",
                             Firstname = "Derick",
@@ -764,7 +745,7 @@ namespace SportManager.Migrations
                             Id = new Guid("81019aa2-4056-41f9-b4b3-828d51fa7c51"),
                             Authorized = true,
                             ChangePassword = false,
-                            DateRegistered = new DateTime(2020, 11, 7, 20, 58, 27, 69, DateTimeKind.Local).AddTicks(6337),
+                            DateRegistered = new DateTime(2020, 11, 7, 20, 51, 39, 580, DateTimeKind.Local).AddTicks(9598),
                             Deleted = false,
                             Email = "appsderick@gmail.com",
                             Firstname = "Derick",
@@ -782,7 +763,7 @@ namespace SportManager.Migrations
                             Id = new Guid("44c04a3e-844d-46e6-ae44-1e3e2853e50c"),
                             Authorized = true,
                             ChangePassword = false,
-                            DateRegistered = new DateTime(2020, 11, 7, 20, 58, 27, 69, DateTimeKind.Local).AddTicks(6435),
+                            DateRegistered = new DateTime(2020, 11, 7, 20, 51, 39, 580, DateTimeKind.Local).AddTicks(9829),
                             Deleted = false,
                             Email = "derick_oduor@yahoo.com",
                             Firstname = "Derick",
@@ -974,7 +955,7 @@ namespace SportManager.Migrations
                             Id = new Guid("910ce653-c7f1-4429-9b95-19270767129d"),
                             Authorized = true,
                             ChangePassword = false,
-                            DateRegistered = new DateTime(2020, 11, 7, 20, 58, 27, 70, DateTimeKind.Local).AddTicks(8329),
+                            DateRegistered = new DateTime(2020, 11, 7, 20, 51, 39, 582, DateTimeKind.Local).AddTicks(6562),
                             Email = "derick_oduor@yahoo.com",
                             Firstname = "Derick",
                             Lastname = "Oduor",

@@ -1,7 +1,16 @@
-﻿@model SportManager.Models.StoreItem
-
+﻿@model SportManager.Models.SportDiscipinePatron
+@using SportManager.Models
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Index";
+    SportDiscipine sportDiscipine = null;
+    try
+    {
+        if (ViewBag.SpoortDiscipline != null)
+        {
+            sportDiscipine = (SportDiscipine)ViewBag.SpoortDiscipline;
+        }
+    }
+    catch (Exception ex) { }
 }
 
 <div class="page-header card">
@@ -38,7 +47,7 @@
 
                         <div class="card">
                             <div class="card-header">
-                                <h5>Add Store Item</h5>
+                                <h5>Assign patron</h5>
                             </div>
                             <div class="card-block">
                                 <form id="profileForm" method="post" asp-action="Create" autocomplete="off">
@@ -68,38 +77,20 @@
                                             </div> }
                                     }
                                     <div class="form-group row">
-                                        <label class="col-sm-2 col-form-label">Name&nbsp;<span style="color:red;">*</span></label>
+                                        <label class="col-sm-2 col-form-label">Sport discipline&nbsp;<span style="color:red;">*</span></label>
                                         <div class="col-sm-10">
-                                            <input type="text" class="form-control" asp-for="Name" required>
-                                            <span asp-validation-for="Name" class="text-danger"></span>
+                                            <input type="hidden" class="form-control" value="@sportDiscipine.Id" asp-for="SportDiscipineId" required/>
+                                            <input type="text" class="form-control" value="@sportDiscipine.Name" readonly/>
+                                            <span asp-validation-for="SportDiscipineId" class="text-danger"></span>
                                         </div>
                                     </div>
                                     <div class="form-group row">
-                                        <label class="col-sm-2 col-form-label">Count&nbsp;<span style="color:red;">*</span></label>
+                                        <label class="col-sm-2 col-form-label">Patron&nbsp;<span style="color:red;">*</span></label>
                                         <div class="col-sm-10">
-                                            <input type="text" class="form-control" asp-for="Count" required>
-                                            <span asp-validation-for="Count" class="text-danger"></span>
-                                        </div>
-                                    </div>
-                                    <div class="form-group row">
-                                        <label class="col-sm-2 col-form-label">Store Category&nbsp;<span style="color:red;">*</span></label>
-                                        <div class="col-sm-10">
-                                            @{
-                                                if (ViewBag.StoreCategory != null)
-                                                {
-                                                    StoreCategory storeCategory = (StoreCategory)ViewBag.StoreCategory;
-                                                    <select type="text" class="form-control" asp-for="StoreCategoryId" >
-                                                        <option value="@storeCategory.Id" selected>@storeCategory.Name</option>
-                                                    </select>
-                                                }
-                                                else
-                                                {
-                                                    <select type="text" class="form-control" asp-for="StoreCategoryId" asp-items="ViewBag.StoreCategories">
-                                                        <option disabled selected>--select--</option>
-                                                    </select>
-                                                }
-                                            }
-                                            <span asp-validation-for="StoreCategoryId" class="text-danger"></span>
+                                            <select type="text" class="form-control" asp-for="StaffId" asp-items="ViewBag.Staffs">
+                                                <option disabled selected>--select--</option>
+                                            </select>
+                                            <span asp-validation-for="StaffId" class="text-danger"></span>
                                         </div>
                                     </div>
                                     <div class="form-group row">
@@ -119,8 +110,7 @@
         </div>
 
         <div>
-            @*<a asp-action="Index" class="btn btn-primary waves-effect waves-light">Back to List</a>*@
-            @Html.ActionLink("Back to List", "Index", "StoreCategory", new { id = Model.StoreCategoryId })
+            <a asp-action="Index" class="btn btn-primary waves-effect waves-light">Back to List</a>
         </div>
     </div>
 </div>

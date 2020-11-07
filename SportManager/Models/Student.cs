@@ -186,14 +186,23 @@ namespace SportManager.Models
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Key]
+        [Display(Name = "Id")]
         public Guid Id { get; set; }
+        [Display(Name = "Name")]
         public string Name { get; set; }
+        [Display(Name = "Date added")]
         public DateTime DateAdded { get; set; }
+        [Display(Name = "Deleted")]
         public bool Deleted { get; set; }
+        [Display(Name = "Status")]
         public bool Status { get; set; }
+        [Display(Name = "Patron")]
         public virtual SportDiscipinePatron SportDiscipinePatron { get; set; }
+        [Display(Name = "Students")]
         public virtual IEnumerable<Student> Students { get; set; }
+        [Display(Name = "Teams")]
         public virtual IEnumerable<Team> Teams { get; set; }
+        [Display(Name = "Store items")]
         public virtual IEnumerable<StoreItemInUse> StoreItemsInUse { get; set; }
     }
 
@@ -201,11 +210,17 @@ namespace SportManager.Models
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Key]
+        [Display(Name = "Id")]
         public Guid Id { get; set; }
+        [Display(Name = "Name")]
         public string Name { get; set; }
+        [Display(Name = "Location")]
         public string Location { get; set; }
+        [Display(Name = "Capacity")]
         public int Capacity { get; set; }
+        [Display(Name = "Available")]
         public bool Available { get; set; }
+        [Display(Name = "Event sessions")]
         public virtual IEnumerable<EventSession> EventSessions { get; set; }
     }
 

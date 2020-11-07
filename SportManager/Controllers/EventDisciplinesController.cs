@@ -64,7 +64,7 @@ namespace SportManager.Controllers
                 }
                 ViewBag.Event = _context.Events.Where(e => e.Id.Equals(id)).SingleOrDefault();
                 List<SportDisciplinesInEvent> sportDisciplinesInEvent = _context.SportDisciplinesInEvents
-                    .Include("Event").Include("SportDiscipine").ToList();
+                    .Include("Event").Include("SportDiscipine").Include("StudentsParticipatingInEvent").ToList();
                 
                 return View(sportDisciplinesInEvent);
             }

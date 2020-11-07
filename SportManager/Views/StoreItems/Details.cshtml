@@ -78,7 +78,8 @@
 
         <div>
             @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
-            <a asp-action="Index">Back to List</a>
+            @*<a asp-action="Index">Back to List</a>*@
+            @Html.ActionLink("Back to List", "Index", "StoreCategory", new { id = Model.StoreCategoryId })
         </div>
     </div>
 </div>

@@ -30,7 +30,7 @@ namespace SportManager.Controllers
         {
             try
             {
-                StoreItem storeItem = _context.StoreItems.Include(nameof(StoreItemInUse)).Where(s => s.Id.Equals(id)).SingleOrDefault();
+                StoreItem storeItem = _context.StoreItems.Include("StoreCategory").Include("StoreItemsInUse").Where(s => s.Id.Equals(id)).SingleOrDefault();
                 ViewBag.StoreCategory = _context.StoreCategories.Where(s => s.Id.Equals(storeItem.StoreCategoryId)).SingleOrDefault().Name;
                 return View(storeItem);
             }catch(Exception ex)
@@ -85,7 +85,8 @@ namespace SportManager.Controllers
                 await _context.SaveChangesAsync();
 
                 ViewBag.Success = "Item saved successfully!";
-                return RedirectToAction(nameof(Index));
+                TempData["Success"] = "Item saved successfully!";
+                return RedirectToAction(nameof(Index), "StoreCategory",collection.StoreCategoryId);
             }
             catch
             {
@@ -101,7 +102,7 @@ namespace SportManager.Controllers
             {
                 List<StoreCategory> storeCategories = _context.StoreCategories.ToList();
                 ViewBag.StoreCategories = new SelectList(storeCategories, "Id", "Name");
-                StoreItem storeItem = _context.StoreItems.Include(nameof(StoreItemInUse)).Where(s => s.Id.Equals(id)).SingleOrDefault();
+                StoreItem storeItem = _context.StoreItems.Include("StoreCategory").Include("StoreItemsInUse").Where(s => s.Id.Equals(id)).SingleOrDefault();
                 return View(storeItem);
             }
             catch (Exception ex) { }
@@ -123,7 +124,7 @@ namespace SportManager.Controllers
                     return View();
                 }
 
-                StoreItem storeItem = _context.StoreItems.Where(s => s.Name.Equals(collection.Name) & s.StoreCategoryId.Equals(collection.StoreCategoryId)).SingleOrDefault();
+                StoreItem storeItem = _context.StoreItems.Where(s => s.Name.Equals(collection.Name) & s.StoreCategoryId.Equals(collection.StoreCategoryId) & s.Count == collection.Count).SingleOrDefault();
                 if (storeItem != null)
                 {
                     if (storeItem.Id.Equals(collection.Id))
@@ -137,7 +138,8 @@ namespace SportManager.Controllers
                 await _context.SaveChangesAsync();
 
                 ViewBag.Success = "Item updated successfully!";
-                return RedirectToAction(nameof(Index));
+                TempData["Success"] = "Item updated successfully!";
+                return RedirectToAction(nameof(Index), "StoreCategory",collection.StoreCategoryId);
             }
             catch
             {
@@ -153,7 +155,7 @@ namespace SportManager.Controllers
             {
                 List<StoreCategory> storeCategories = _context.StoreCategories.ToList();
                 ViewBag.StoreCategories = new SelectList(storeCategories, "Id", "Name");
-                StoreItem storeItem = _context.StoreItems.Include(nameof(StoreItemInUse)).Where(s => s.Id.Equals(id)).SingleOrDefault();
+                StoreItem storeItem = _context.StoreItems.Include("StoreCategory").Include("StoreItemsInUse").Where(s => s.Id.Equals(id)).SingleOrDefault();
                 return View(storeItem);
             }
             catch (Exception ex) { }
@@ -171,13 +173,15 @@ namespace SportManager.Controllers
                 ViewBag.StoreCategories = new SelectList(storeCategories, "Id", "Name");
 
                 StoreItem storeItem = _context.StoreItems.Where(s => s.Id.Equals(collection.Id)).SingleOrDefault();
+                Guid cat_id=Guid.Empty;
                 if (storeItem != null)
                 {
+                    cat_id = storeItem.StoreCategoryId;
                     _context.StoreItems.Remove(storeItem);
                     await _context.SaveChangesAsync();
 
                     ViewBag.Success = "Item deleted successfully!";
-                    return RedirectToAction(nameof(Index));
+                    return RedirectToAction(nameof(Index), "StoreCategory", cat_id);
                 }
                 ViewBag.Failed = "Deletion failed!";
                 return View();

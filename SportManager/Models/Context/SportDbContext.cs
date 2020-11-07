@@ -358,7 +358,7 @@ namespace SportManager.Models.Context
                 new Staff
                 {
                     Id = Guid.Parse("81019aa2-4056-41f9-b4b3-828d51fa7c51"),
-                    RegistrationNumber = "ST001",
+                    RegistrationNumber = "ST002",
                     Firstname = "Derick",
                     Lastname = "Oduor",
                     Email = "appsderick@gmail.com",
@@ -367,7 +367,21 @@ namespace SportManager.Models.Context
                     Authorized = true,
                     Deleted=false,
                     DateRegistered = DateTime.Now,
-                    ProfileId = Guid.Parse("327d571a-1690-44e0-806d-65e0593364ad")
+                    ProfileId = Guid.Parse("bfdedc6a-01d1-44f7-9e70-595b8091342a")
+                },
+                new Staff
+                {
+                    Id = Guid.Parse("44c04a3e-844d-46e6-ae44-1e3e2853e50c"),
+                    RegistrationNumber = "ST003",
+                    Firstname = "Derick",
+                    Lastname = "Oduor",
+                    Email = "derick_oduor@yahoo.com",
+                    Phone = "+254712345678",
+                    Password = Encrypt("s3cret"),
+                    Authorized = true,
+                    Deleted=false,
+                    DateRegistered = DateTime.Now,
+                    ProfileId = Guid.Parse("cb8f202b-549b-448d-a2e8-927ff944813e")
                 }
             );
 
@@ -377,6 +391,30 @@ namespace SportManager.Models.Context
                     Id = Guid.Parse("910ce653-c7f1-4429-9b95-19270767129d"),
                     Name = "Football",
                     DateAdded =DateTime.Now,
+                    Deleted = false,
+                    Status = true
+                },
+                new SportDiscipine
+                {
+                    Id = Guid.Parse("27f9810e-3e57-4f56-b787-8e8df67fd9ff"),
+                    Name = "Basketball",
+                    DateAdded = DateTime.Now,
+                    Deleted = false,
+                    Status = true
+                },
+                new SportDiscipine
+                {
+                    Id = Guid.Parse("8d5d6ccb-c34f-44b6-8bc7-0b19e5d0e472"),
+                    Name = "Volleyball",
+                    DateAdded = DateTime.Now,
+                    Deleted = false,
+                    Status = true
+                },
+                new SportDiscipine
+                {
+                    Id = Guid.Parse("73503878-6414-42fc-87a6-b98c1bc17b5c"),
+                    Name = "Racket games",
+                    DateAdded = DateTime.Now,
                     Deleted = false,
                     Status = true
                 }
@@ -487,6 +525,56 @@ namespace SportManager.Models.Context
                     MenuUser = "STAFF",
                     ParentId = Guid.Parse("910ce653-c7f1-4429-9b95-19270767129d"),
                     Level = 1,
+                },
+                new Menu
+                {
+                    Id = Guid.Parse("96deb675-0d05-47e8-9827-3fbd3b6be7a8"),
+                    Name = "Store",
+                    Link = "/Store/",
+                    MenuType = "SUB-MENU",
+                    MenuUser = "STAFF",
+                    ParentId = Guid.Parse("400dd70c-af53-4849-9889-823256adf99a"),
+                    Level = 1,
+                },
+                new Menu
+                {
+                    Id = Guid.Parse("a4f70713-403c-449d-b60f-20cee0087f55"),
+                    Name = "View events",
+                    Link = "/Event/",
+                    MenuType = "SUB-MENU",
+                    MenuUser = "STAFF",
+                    ParentId = Guid.Parse("d0e36979-1c0e-41a8-9a4a-c19293390f74"),
+                    Level = 1,
+                },
+                new Menu
+                {
+                    Id = Guid.Parse("3a0672c3-5af1-416f-a09c-ae3143fe31c2"),
+                    Name = "Add event",
+                    Link = "/Event/Create/",
+                    MenuType = "SUB-MENU",
+                    MenuUser = "STAFF",
+                    ParentId = Guid.Parse("d0e36979-1c0e-41a8-9a4a-c19293390f74"),
+                    Level = 2,
+                },
+                new Menu
+                {
+                    Id = Guid.Parse("ebc9b700-2cd3-4984-811c-01dd30c6beb6"),
+                    Name = "View venues",
+                    Link = "/Venue/",
+                    MenuType = "SUB-MENU",
+                    MenuUser = "STAFF",
+                    ParentId = Guid.Parse("1f37b623-7973-43f0-baf5-bd15c995e89f"),
+                    Level = 2,
+                },
+                new Menu
+                {
+                    Id = Guid.Parse("8d3d14a1-0209-49e4-bbbf-b3a79f7381b6"),
+                    Name = "View venues",
+                    Link = "/Venue/",
+                    MenuType = "SUB-MENU",
+                    MenuUser = "STAFF",
+                    ParentId = Guid.Parse("1f37b623-7973-43f0-baf5-bd15c995e89f"),
+                    Level = 2,
                 }
             );
 
@@ -496,6 +584,27 @@ namespace SportManager.Models.Context
                     Id = Guid.Parse("910ce653-c7f1-4429-9b95-19270767129d"),
                     MenuId = Guid.Parse("910ce653-c7f1-4429-9b95-19270767129d"),
                     ParentMenuId = Guid.Parse("910ce653-c7f1-4429-9b95-19270767129d"),
+                    ProfileId = Guid.Parse("327d571a-1690-44e0-806d-65e0593364ad"),
+                },
+                new AccessRight
+                {
+                    Id = Guid.Parse("759b44d1-3f41-41c0-99ad-19880524962a"),
+                    MenuId = Guid.Parse("96deb675-0d05-47e8-9827-3fbd3b6be7a8"),
+                    ParentMenuId = Guid.Parse("400dd70c-af53-4849-9889-823256adf99a"),
+                    ProfileId = Guid.Parse("327d571a-1690-44e0-806d-65e0593364ad"),
+                },
+                new AccessRight
+                {
+                    Id = Guid.Parse("14e558bc-3474-462c-8000-71fd082fe64e"),
+                    MenuId = Guid.Parse("a4f70713-403c-449d-b60f-20cee0087f55"),
+                    ParentMenuId = Guid.Parse("d0e36979-1c0e-41a8-9a4a-c19293390f74"),
+                    ProfileId = Guid.Parse("327d571a-1690-44e0-806d-65e0593364ad"),
+                },
+                new AccessRight
+                {
+                    Id = Guid.Parse("902527af-cc96-460f-86f8-b0f7eabaf512"),
+                    MenuId = Guid.Parse("ebc9b700-2cd3-4984-811c-01dd30c6beb6"),
+                    ParentMenuId = Guid.Parse("1f37b623-7973-43f0-baf5-bd15c995e89f"),
                     ProfileId = Guid.Parse("327d571a-1690-44e0-806d-65e0593364ad"),
                 },
                 new AccessRight

@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SportManager.Models.Context;
 
 namespace SportManager.Migrations
 {
     [DbContext(typeof(SportDbContext))]
-    partial class SportDbContextModelSnapshot : ModelSnapshot
+    [Migration("20201107175827_Sato2058hrs")]
+    partial class Sato2058hrs
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
