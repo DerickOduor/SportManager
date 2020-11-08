@@ -1,7 +1,16 @@
-﻿@model SportManager.Models.StoreItemInUse
-
+﻿@model SportManager.Models.StudentsParticipatingInEvent
+@using SportManager.Models
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Create";
+    SportDisciplinesInEvent disciplineInEvent = null;
+    try
+    {
+        if (ViewBag.SportDisciplineInEvent != null)
+        {
+            disciplineInEvent = (SportDisciplinesInEvent)ViewBag.SportDisciplineInEvent;
+        }
+    }
+    catch (Exception ex) { }
 }
 
 <div class="page-header card">
@@ -38,11 +47,10 @@
 
                         <div class="card">
                             <div class="card-header">
-                                <h5>Change Quatity Requested From Store</h5>
+                                <h5>Add student to event</h5>
                             </div>
                             <div class="card-block">
-                                <form id="profileForm" method="post" asp-action="Edit" autocomplete="off">
-                                    <input type="hidden" class="form-control" asp-for="Id" required>
+                                <form id="profileForm" method="post" asp-action="Create" autocomplete="off">
                                     @{ if (ViewBag.Failed != null)
                                         {
                                             <div class="alert alert-danger background-danger">
@@ -69,36 +77,26 @@
                                             </div> }
                                     }
                                     <div class="form-group row">
-                                        <label class="col-sm-2 col-form-label">Event type&nbsp;<span style="color:red;">*</span></label>
+                                        <label class="col-sm-2 col-form-label">Event name&nbsp;<span style="color:red;">*</span></label>
                                         <div class="col-sm-10">
-                                            <select type="text" class="form-control" asp-for="EventId" asp-items="ViewBag.Events">
-                                                <option disabled selected>@Model.Event.Name</option>
+                                            <input type="hidden" class="form-control" value="@disciplineInEvent.EventId" asp-for="SportDisciplinesInEventId" readonly>
+                                            <input type="text" class="form-control" value="@disciplineInEvent.Event.Name" readonly>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-sm-2 col-form-label">Discpline&nbsp;<span style="color:red;">*</span></label>
+                                        <div class="col-sm-10">
+                                            <input type="hidden" class="form-control" value="@disciplineInEvent.SportDiscipineId" readonly>
+                                            <input type="text" class="form-control" value="@disciplineInEvent.SportDiscipine.Name" readonly>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-sm-2 col-form-label">Student&nbsp;<span style="color:red;">*</span></label>
+                                        <div class="col-sm-10">
+                                            <select type="text" class="form-control" asp-for="StudentId" asp-items="ViewBag.Students">
+                                                <option disabled selected>--select--</option>
                                             </select>
-                                            <span asp-validation-for="EventId" class="text-danger"></span>
-                                        </div>
-                                    </div>
-                                    <div class="form-group row">
-                                        <label class="col-sm-2 col-form-label">Store Item&nbsp;<span style="color:red;">*</span></label>
-                                        <div class="col-sm-10">
-                                            <select type="text" class="form-control" asp-for="StoreItemId">
-                                                <option disabled selected>@Model.StoreItem.Name</option>
-                                            </select>
-                                            @*<span asp-validation-for="EventId" class="text-danger"></span>*@
-                                        </div>
-                                    </div>
-                                    <div class="form-group row">
-                                        <div class="alert alert-danger background-danger">
-                                            <strong>Quantity Available:</strong>
-                                            <code>
-                                                @Model.StoreItem.Count
-                                            </code>
-                                        </div>
-                                    </div>
-                                    <div class="form-group row">
-                                        <label class="col-sm-2 col-form-label">Quantity&nbsp;<span style="color:red;">*</span></label>
-                                        <div class="col-sm-10">
-                                            <input type="number" min="0" class="form-control" asp-for="Count" required>
-                                            <span asp-validation-for="Count" class="text-danger"></span>
+                                            <span asp-validation-for="StudentId" class="text-danger"></span>
                                         </div>
                                     </div>
                                     <div class="form-group row">

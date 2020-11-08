@@ -12,6 +12,7 @@ namespace SportManager.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Key]
         public Guid Id { get; set; }
+        [Display(Name = "Reg. No.")]
         public string RegistrationNumber { get; set; }
         [Display(Name = "Firstname")]
         [RegularExpression(@"^[a-zA-Z]*$", ErrorMessage = "Invalid firstname!")]
@@ -374,7 +375,9 @@ namespace SportManager.Models
         public Guid Id { get; set; }
         public Guid StudentId { get; set; }
         public Guid SportDisciplinesInEventId { get; set; }
+        [Display(Name = "Name")]
         public virtual Student Student { get; set; }
+        [Display(Name = "Sport discipline")]
         public virtual SportDisciplinesInEvent SportDisciplinesInEvent { get; set; }
     }
 }

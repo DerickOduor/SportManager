@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using SportManager.Models;
 using SportManager.Models.Context;
@@ -21,6 +22,22 @@ namespace SportManager.Controllers
         // GET: StudentsInEventController
         public async Task<ActionResult> Index(Guid id)
         {
+            Staff staff = null;
+            try
+            {
+                staff = SessionHelper.GetObjectFromJson<Staff>(HttpContext.Session, "MY_l_USER");
+                if (staff != null)
+                {
+                    try
+                    {
+                        Profile profile = _context.Profiles.Where(p => p.Id.Equals(staff.ProfileId)).SingleOrDefault();
+                        if (/*staff.Profile*/profile.Name.Equals("Patron"))
+                            ViewBag.CanAddStudent = true;
+                    }
+                    catch (Exception ex) { }
+                }
+            }
+            catch (Exception ex) { }
             try
             {
                 if (TempData["Success"] != null)
@@ -38,6 +55,7 @@ namespace SportManager.Controllers
                 List<StudentsParticipatingInEvent> students = _context.StudentsParticipatingInEvents
                     .Include("Student").Include("SportDisciplinesInEvent").Include("SportDisciplinesInEvent.Event")
                     .Where(s => s.SportDisciplinesInEventId.Equals(id)).ToList();
+                ViewBag.Id = id;
 
                 return View(students);
 
@@ -88,6 +106,7 @@ namespace SportManager.Controllers
                 ViewBag.SportDisciplineInEvent = disciplineInEvent;
                 List<Student> students = _context.Students.Include("SportDiscipine")
                     .Where(s => s.SportDiscipineId.Equals(disciplineInEvent.SportDiscipineId)).ToList();
+                ViewBag.Students = new SelectList(students, "Id", "RegistrationNumber");
             }
             catch (Exception ex) { }
             return View();
@@ -105,6 +124,7 @@ namespace SportManager.Controllers
                 ViewBag.SportDisciplineInEvent = disciplineInEvent;
                 List<Student> students = _context.Students.Include("SportDiscipine")
                     .Where(s => s.SportDiscipineId.Equals(disciplineInEvent.SportDiscipineId)).ToList();
+                ViewBag.Students = new SelectList(students, "Id", "RegistrationNumber");
             }
             catch (Exception ex) { }
             try

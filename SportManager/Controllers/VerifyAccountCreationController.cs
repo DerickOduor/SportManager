@@ -79,7 +79,7 @@ namespace SportManager.Controllers
                             if (student != null)
                             {
                                 student.RegistrationVerified = true;
-
+                                
                                 await _context.SaveChangesAsync();
 
                                 TempData["Success"] = "Account verified successfully!";

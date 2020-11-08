@@ -49,10 +49,10 @@ namespace SportManager.Controllers
                 List<AccessRight> accessRights = new List<AccessRight>();
                 if (collection != null)
                 {
-                    Staff staff = _context.Staffs.Include("SportDiscipinePatron")/*.Include("Profile")*/.Where(s => s.Email.Equals(collection.Username.Trim())).SingleOrDefault();
+                    Staff staff = _context.Staffs/*.Include("SportDiscipinePatron")*//*.Include("Profile")*/.Where(s => s.Email.Equals(collection.Username.Trim())).SingleOrDefault();
                     if (staff == null)
                     {
-                        staff= _context.Staffs.Include("SportDiscipinePatron")/*.Include("Profile")*/.Where(s => s.Phone.Equals(collection.Username.Trim())).SingleOrDefault();
+                        staff= _context.Staffs/*.Include("SportDiscipinePatron")*//*.Include("Profile")*/.Where(s => s.Phone.Equals(collection.Username.Trim())).SingleOrDefault();
                     }
                     if (staff != null)
                     {

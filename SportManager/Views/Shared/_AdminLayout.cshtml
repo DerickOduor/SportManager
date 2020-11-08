@@ -652,7 +652,7 @@
                 var id = $(this).val();
                 $('#StoreItemId').html('<option disabled selected>--select--</option>');
                 $.ajax({
-                    url: '',
+                    url: '/StoreRequest/FetchStoreItems/'+id,
                     method: 'get',
                     data: '',
                     contentType: 'application/json',
@@ -669,6 +669,33 @@
                                 notification_count += 1;
                                 $('#StoreItemId').append(
                                     '<option value="'+item.Id+'">'+item.Name+'</option>'
+                                )
+                            });
+                        } else {
+                            console.log("Empty");
+                        }
+                    },
+                    error: function (err) {
+                        console.log(JSON.stringify(er));
+                    }
+                });
+            });
+            $('#StoreItemId').on('change', function (e) {
+                var id = $(this).val();
+                $.ajax({
+                    url: '/StoreRequest/FetchStoreItem/'+id,
+                    method: 'get',
+                    data: '',
+                    contentType: 'application/json',
+                    success: function (msg)
+                    {
+                        if (JSON.stringify(msg) != '') {
+                            console.log("Not empty");
+                            data = $.parseJSON(msg);
+                            $.each(data, function (i, item) {
+                                notification_count += 1;
+                                $('#ItemQty').html(
+                                    item.Count
                                 )
                             });
                         } else {

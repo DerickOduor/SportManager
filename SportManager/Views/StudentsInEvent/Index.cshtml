@@ -1,4 +1,4 @@
-﻿@model IEnumerable<SportManager.Models.SportDisciplinesInEvent>
+﻿@model IEnumerable<SportManager.Models.StudentsParticipatingInEvent>
 
 @{
     ViewData["Title"] = "Index";
@@ -36,17 +36,17 @@
 
                 <div class="card">
                     <div class="card-header">
-                        <h5>Sports in event</h5>
+                        <h5>Students in event</h5>
                     </div>
                     <div class="card-block">
                         @{
                             try
                             {
-                                if (ViewBag.CanAddDiscipline != null)
+                                if (ViewBag.CanAddStudent != null)
                                 {
                                     <p>
                                         @*<a asp-action="Create" asp-route="@ViewBag.Id">Create New</a>*@
-                                        @Html.ActionLink("Create New", "Create", new { id = ViewBag.Id })
+                                        @Html.ActionLink("Add student", "Create", new { id = ViewBag.Id })
                                     </p>
                                 }
                             }
@@ -82,7 +82,10 @@
                                 <thead>
                                     <tr>
                                         <th>
-                                            @Html.DisplayNameFor(model => model.SportDiscipineId)
+                                            @Html.DisplayNameFor(model => model.Student)
+                                        </th>
+                                        <th>
+                                            @Html.DisplayNameFor(model => model.Student.RegistrationNumber)
                                         </th>
                                         <th></th>
                                     </tr>
@@ -95,27 +98,26 @@
                                             {
                                                 <tr>
                                                     <td>
-                                                        @Html.DisplayFor(modelItem => item.SportDiscipine.Name)
+                                                        @Html.DisplayFor(modelItem => item.Student.Firstname)
+                                                        @Html.Raw(" ")
+                                                        @Html.DisplayFor(modelItem => item.Student.Lastname)
                                                     </td>
                                                     <td>
+                                                        @Html.DisplayFor(modelItem => item.Student.RegistrationNumber)
+                                                    </td>
+                                                    <td>
+                                                        @Html.ActionLink("Details", "Details", "Students", new { id = item.StudentId })
                                                         @{
                                                             try
                                                             {
-                                                                if (ViewBag.CanAddDiscipline != null)
-                                                                {
-                                                                    @Html.ActionLink("Remove", "Delete", new { id = item.Id, jd = item.EventId })
-                                                                    @Html.Raw(" | ")
-                                                                }
                                                                 if (ViewBag.CanAddStudent != null)
                                                                 {
-                                                                    @Html.ActionLink("Add student", "Create", "StudentsInEvent", new { id = item.Id })
                                                                     @Html.Raw(" | ")
+                                                                    @Html.ActionLink("Remove from event", "Index", "Students", new { id = item.SportDisciplinesInEventId, studentid = item.StudentId })
                                                                 }
                                                             }
                                                             catch (Exception ex) { }
                                                         }
-
-                                                        @Html.ActionLink("View students", "Index", "StudentsInEvent", new { id = item.Id })
                                                     </td>
                                                 </tr>
                                             }
@@ -125,7 +127,10 @@
                                 <tfoot>
                                     <tr>
                                         <th>
-                                            @Html.DisplayNameFor(model => model.SportDiscipineId)
+                                            @Html.DisplayNameFor(model => model.Student)
+                                        </th>
+                                        <th>
+                                            @Html.DisplayNameFor(model => model.Student.RegistrationNumber)
                                         </th>
                                         <th></th>
                                     </tr>

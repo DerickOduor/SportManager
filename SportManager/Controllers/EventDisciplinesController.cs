@@ -33,7 +33,9 @@ namespace SportManager.Controllers
                     {
                         Profile profile = _context.Profiles.Where(p => p.Id.Equals(staff.ProfileId)).SingleOrDefault();
                         if (/*staff.Profile*/profile.Name.Equals("Secretary") || /*staff.Profile*/profile.Name.Equals("Coordinator"))
-                            ViewBag.CanAddDiscipline = true;
+                            ViewBag.CanAddDiscipline = true; ViewBag.CanAddStudent = true;
+                        if (/*staff.Profile*/profile.Name.Equals("Patron"))
+                            ViewBag.CanAddStudent = true;
                     }
                     catch (Exception ex) { }
                 }

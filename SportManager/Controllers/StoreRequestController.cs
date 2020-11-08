@@ -262,5 +262,18 @@ namespace SportManager.Controllers
                 return Content("");
             }
         }
+
+        public async Task<ActionResult> FetchStoreItem(Guid id)
+        {
+            try
+            {
+                List<StoreItem> storeItems = _context.StoreItems.Where(e => e.Id.Equals(id)).ToList();
+                return Content(JsonConvert.SerializeObject(storeItems));
+            }
+            catch (Exception ex) 
+            {
+                return Content("");
+            }
+        }
     }
 }

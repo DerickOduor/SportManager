@@ -22,6 +22,22 @@ namespace SportManager.Controllers
         // GET: EventSessionController
         public async Task<ActionResult> Index(Guid id)
         {
+            Staff staff = null;
+            try
+            {
+                staff = SessionHelper.GetObjectFromJson<Staff>(HttpContext.Session, "MY_l_USER");
+                if (staff != null)
+                {
+                    try
+                    {
+                        Profile profile = _context.Profiles.Where(p => p.Id.Equals(staff.ProfileId)).SingleOrDefault();
+                        if (/*staff.Profile*/profile.Name.Equals("Secretary") || /*staff.Profile*/profile.Name.Equals("Coordinator"))
+                            ViewBag.CanAddSession = true;
+                    }
+                    catch (Exception ex) { }
+                }
+            }
+            catch (Exception ex) { }
             try
             {
                 if (id.Equals(Guid.Empty))
