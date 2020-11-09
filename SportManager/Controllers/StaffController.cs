@@ -30,6 +30,18 @@ namespace SportManager.Controllers
                 {
                     ViewBag.Success = TempData["Success"];
                 }
+                if (TempData["Failed"] != null)
+                {
+                    ViewBag.Failed = TempData["Failed"];
+                }
+            }
+            catch (Exception ex) { }
+            try
+            {
+                if (TempData["Success"] != null)
+                {
+                    ViewBag.Success = TempData["Success"];
+                }
                 List<Profile> profiles = new List<Profile>();
                 profiles = _context.Profiles.Where(p => p.Name != "Student").ToList();
                 ViewBag.profiles = new SelectList(profiles, "Id", "Name");
@@ -44,6 +56,18 @@ namespace SportManager.Controllers
         // GET: StaffController/Details/5
         public async Task<ActionResult> Details(Guid id)
         {
+            try
+            {
+                if (TempData["Success"] != null)
+                {
+                    ViewBag.Success = TempData["Success"];
+                }
+                if (TempData["Failed"] != null)
+                {
+                    ViewBag.Failed = TempData["Failed"];
+                }
+            }
+            catch (Exception ex) { }
             try
             {
                 List<Profile> profiles = new List<Profile>();
@@ -61,6 +85,18 @@ namespace SportManager.Controllers
         // GET: StaffController/Create
         public async Task<ActionResult> Create()
         {
+            try
+            {
+                if (TempData["Success"] != null)
+                {
+                    ViewBag.Success = TempData["Success"];
+                }
+                if (TempData["Failed"] != null)
+                {
+                    ViewBag.Failed = TempData["Failed"];
+                }
+            }
+            catch (Exception ex) { }
             try
             {
                 List<Profile> profiles = new List<Profile>();
@@ -199,6 +235,18 @@ namespace SportManager.Controllers
         // GET: StaffController/Edit/5
         public async Task<ActionResult> Edit(Guid id)
         {
+            try
+            {
+                if (TempData["Success"] != null)
+                {
+                    ViewBag.Success = TempData["Success"];
+                }
+                if (TempData["Failed"] != null)
+                {
+                    ViewBag.Failed = TempData["Failed"];
+                }
+            }
+            catch (Exception ex) { }
             try
             {
                 List<Profile> profiles = new List<Profile>();
@@ -349,6 +397,18 @@ namespace SportManager.Controllers
         // GET: StaffController/Delete/5
         public async Task<ActionResult> Delete(Guid id)
         {
+            try
+            {
+                if (TempData["Success"] != null)
+                {
+                    ViewBag.Success = TempData["Success"];
+                }
+                if (TempData["Failed"] != null)
+                {
+                    ViewBag.Failed = TempData["Failed"];
+                }
+            }
+            catch (Exception ex) { }
             try
             {
                 List<Profile> profiles = new List<Profile>();

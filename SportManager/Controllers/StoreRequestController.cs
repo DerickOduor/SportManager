@@ -62,6 +62,18 @@ namespace SportManager.Controllers
         {
             try
             {
+                if (TempData["Success"] != null)
+                {
+                    ViewBag.Success = TempData["Success"];
+                }
+                if (TempData["Failed"] != null)
+                {
+                    ViewBag.Failed = TempData["Failed"];
+                }
+            }
+            catch (Exception ex) { }
+            try
+            {
                 StoreItemInUse storeItem = _context.StoreItemInUse.Include("StoreItem").Include("Event").Include("SportDiscipine").Where(s=>s.Id.Equals(id)).SingleOrDefault();
                 return View(storeItem);
             }
@@ -72,6 +84,18 @@ namespace SportManager.Controllers
         // GET: StoreRequestController/Create
         public async Task<ActionResult> Create()
         {
+            try
+            {
+                if (TempData["Success"] != null)
+                {
+                    ViewBag.Success = TempData["Success"];
+                }
+                if (TempData["Failed"] != null)
+                {
+                    ViewBag.Failed = TempData["Failed"];
+                }
+            }
+            catch (Exception ex) { }
             try
             {
                 List<Event> events = _context.Events.Where(e => e.EndDate > DateTime.Now & !e.Cancelled).ToList();
@@ -143,6 +167,18 @@ namespace SportManager.Controllers
         {
             try
             {
+                if (TempData["Success"] != null)
+                {
+                    ViewBag.Success = TempData["Success"];
+                }
+                if (TempData["Failed"] != null)
+                {
+                    ViewBag.Failed = TempData["Failed"];
+                }
+            }
+            catch (Exception ex) { }
+            try
+            {
                 List<Event> events = _context.Events.Where(e => e.EndDate > DateTime.Now & !e.Cancelled).ToList();
                 ViewBag.Events = new SelectList(events, "Id", "Name");
                 List<StoreCategory> storeCategories = _context.StoreCategories.Include("StoreItems").ToList();
@@ -198,6 +234,18 @@ namespace SportManager.Controllers
         // GET: StoreRequestController/Delete/5
         public async Task<ActionResult> Delete(Guid id)
         {
+            try
+            {
+                if (TempData["Success"] != null)
+                {
+                    ViewBag.Success = TempData["Success"];
+                }
+                if (TempData["Failed"] != null)
+                {
+                    ViewBag.Failed = TempData["Failed"];
+                }
+            }
+            catch (Exception ex) { }
             try
             {
                 List<Event> events = _context.Events.Where(e => e.EndDate > DateTime.Now & !e.Cancelled).ToList();

@@ -44,6 +44,18 @@ namespace SportManager.Controllers
         {
             try
             {
+                if (TempData["Success"] != null)
+                {
+                    ViewBag.Success = TempData["Success"];
+                }
+                if (TempData["Failed"] != null)
+                {
+                    ViewBag.Failed = TempData["Failed"];
+                }
+            }
+            catch (Exception ex) { }
+            try
+            {
                 Parameter parameter = _context.Parameters.Where(p => p.Id.Equals(id)).SingleOrDefault();
 
                 return View(parameter);
@@ -55,6 +67,18 @@ namespace SportManager.Controllers
         // GET: SystemParametersController/Create
         public async Task<ActionResult> Create()
         {
+            try
+            {
+                if (TempData["Success"] != null)
+                {
+                    ViewBag.Success = TempData["Success"];
+                }
+                if (TempData["Failed"] != null)
+                {
+                    ViewBag.Failed = TempData["Failed"];
+                }
+            }
+            catch (Exception ex) { }
             return View();
         }
 
@@ -96,6 +120,18 @@ namespace SportManager.Controllers
         // GET: SystemParametersController/Edit/5
         public async Task<ActionResult> Edit(Guid id)
         {
+            try
+            {
+                if (TempData["Success"] != null)
+                {
+                    ViewBag.Success = TempData["Success"];
+                }
+                if (TempData["Failed"] != null)
+                {
+                    ViewBag.Failed = TempData["Failed"];
+                }
+            }
+            catch (Exception ex) { }
             try
             {
                 Parameter parameter = _context.Parameters.Where(p => p.Id.Equals(id)).SingleOrDefault();
@@ -148,6 +184,18 @@ namespace SportManager.Controllers
         // GET: SystemParametersController/Delete/5
         public async Task<ActionResult> Delete(Guid id)
         {
+            try
+            {
+                if (TempData["Success"] != null)
+                {
+                    ViewBag.Success = TempData["Success"];
+                }
+                if (TempData["Failed"] != null)
+                {
+                    ViewBag.Failed = TempData["Failed"];
+                }
+            }
+            catch (Exception ex) { }
             try
             {
                 Parameter parameter = _context.Parameters.Where(p => p.Id.Equals(id)).SingleOrDefault();

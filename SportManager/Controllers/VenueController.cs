@@ -27,6 +27,18 @@ namespace SportManager.Controllers
                 {
                     ViewBag.Success = TempData["Success"];
                 }
+                if (TempData["Failed"] != null)
+                {
+                    ViewBag.Failed = TempData["Failed"];
+                }
+            }
+            catch (Exception ex) { }
+            try
+            {
+                if (TempData["Success"] != null)
+                {
+                    ViewBag.Success = TempData["Success"];
+                }
                 List<Venue> venues = _context.Venues.ToList();
                 return View(venues);
             }
@@ -39,6 +51,18 @@ namespace SportManager.Controllers
         {
             try
             {
+                if (TempData["Success"] != null)
+                {
+                    ViewBag.Success = TempData["Success"];
+                }
+                if (TempData["Failed"] != null)
+                {
+                    ViewBag.Failed = TempData["Failed"];
+                }
+            }
+            catch (Exception ex) { }
+            try
+            {
                 Venue venue =await  _context.Venues.Where(v=>v.Id.Equals(id)).SingleOrDefaultAsync();
                 return View(venue);
             }
@@ -49,6 +73,18 @@ namespace SportManager.Controllers
         // GET: VenueController/Create
         public async Task<ActionResult> Create()
         {
+            try
+            {
+                if (TempData["Success"] != null)
+                {
+                    ViewBag.Success = TempData["Success"];
+                }
+                if (TempData["Failed"] != null)
+                {
+                    ViewBag.Failed = TempData["Failed"];
+                }
+            }
+            catch (Exception ex) { }
             return View();
         }
 
@@ -86,6 +122,18 @@ namespace SportManager.Controllers
         // GET: VenueController/Edit/5
         public async Task<ActionResult> Edit(Guid id)
         {
+            try
+            {
+                if (TempData["Success"] != null)
+                {
+                    ViewBag.Success = TempData["Success"];
+                }
+                if (TempData["Failed"] != null)
+                {
+                    ViewBag.Failed = TempData["Failed"];
+                }
+            }
+            catch (Exception ex) { }
             try
             {
                 Venue venue = await _context.Venues.Where(v => v.Id.Equals(id)).SingleOrDefaultAsync();
@@ -132,6 +180,18 @@ namespace SportManager.Controllers
         // GET: VenueController/Delete/5
         public async Task<ActionResult> Delete(Guid id)
         {
+            try
+            {
+                if (TempData["Success"] != null)
+                {
+                    ViewBag.Success = TempData["Success"];
+                }
+                if (TempData["Failed"] != null)
+                {
+                    ViewBag.Failed = TempData["Failed"];
+                }
+            }
+            catch (Exception ex) { }
             try
             {
                 Venue venue = await _context.Venues.Where(v => v.Id.Equals(id)).SingleOrDefaultAsync();

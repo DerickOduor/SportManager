@@ -51,12 +51,36 @@ namespace SportManager.Controllers
         // GET: SportDisciplinePatronController/Details/5
         public async Task<ActionResult> Details(int id)
         {
+            try
+            {
+                if (TempData["Success"] != null)
+                {
+                    ViewBag.Success = TempData["Success"];
+                }
+                if (TempData["Failed"] != null)
+                {
+                    ViewBag.Failed = TempData["Failed"];
+                }
+            }
+            catch (Exception ex) { }
             return View();
         }
 
         // GET: SportDisciplinePatronController/Create
         public async Task<ActionResult> Create()
         {
+            try
+            {
+                if (TempData["Success"] != null)
+                {
+                    ViewBag.Success = TempData["Success"];
+                }
+                if (TempData["Failed"] != null)
+                {
+                    ViewBag.Failed = TempData["Failed"];
+                }
+            }
+            catch (Exception ex) { }
             return View();
         }
 
@@ -182,6 +206,18 @@ namespace SportManager.Controllers
         // GET: SportDisciplinePatronController/Delete/5
         public async Task<ActionResult> Delete(int id)
         {
+            try
+            {
+                if (TempData["Success"] != null)
+                {
+                    ViewBag.Success = TempData["Success"];
+                }
+                if (TempData["Failed"] != null)
+                {
+                    ViewBag.Failed = TempData["Failed"];
+                }
+            }
+            catch (Exception ex) { }
             return View();
         }
 

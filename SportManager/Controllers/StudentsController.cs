@@ -49,6 +49,18 @@ namespace SportManager.Controllers
         {
             try
             {
+                if (TempData["Success"] != null)
+                {
+                    ViewBag.Success = TempData["Success"];
+                }
+                if (TempData["Failed"] != null)
+                {
+                    ViewBag.Failed = TempData["Failed"];
+                }
+            }
+            catch (Exception ex) { }
+            try
+            {
                 Student student = _context.Students.Include("SportDiscipine").Include("StudentsParticipatingInEvent")
                     .Where(s => s.Id.Equals(id)).SingleOrDefault();
 
@@ -61,6 +73,18 @@ namespace SportManager.Controllers
         // GET: StudentsController/Create
         public async Task<ActionResult> Create()
         {
+            try
+            {
+                if (TempData["Success"] != null)
+                {
+                    ViewBag.Success = TempData["Success"];
+                }
+                if (TempData["Failed"] != null)
+                {
+                    ViewBag.Failed = TempData["Failed"];
+                }
+            }
+            catch (Exception ex) { }
             return View();
         }
 
@@ -82,6 +106,18 @@ namespace SportManager.Controllers
         // GET: StudentsController/Edit/5
         public async Task<ActionResult> Edit(int id)
         {
+            try
+            {
+                if (TempData["Success"] != null)
+                {
+                    ViewBag.Success = TempData["Success"];
+                }
+                if (TempData["Failed"] != null)
+                {
+                    ViewBag.Failed = TempData["Failed"];
+                }
+            }
+            catch (Exception ex) { }
             return View();
         }
 
@@ -103,6 +139,18 @@ namespace SportManager.Controllers
         // GET: StudentsController/Delete/5
         public async Task<ActionResult> Delete(int id)
         {
+            try
+            {
+                if (TempData["Success"] != null)
+                {
+                    ViewBag.Success = TempData["Success"];
+                }
+                if (TempData["Failed"] != null)
+                {
+                    ViewBag.Failed = TempData["Failed"];
+                }
+            }
+            catch (Exception ex) { }
             return View();
         }
 

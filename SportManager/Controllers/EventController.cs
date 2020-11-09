@@ -51,7 +51,7 @@ namespace SportManager.Controllers
                 List<EventType> eventTypes=_context.EventTypes.ToList();
                 ViewBag.EventTypes = eventTypes;
 
-                List<Event> events = _context.Events.ToList();
+                List<Event> events = _context.Events.Include("EventType").ToList();
                 if (id != null)
                 {
                     if (id == 1)
@@ -72,6 +72,18 @@ namespace SportManager.Controllers
         // GET: EventController/Details/5
         public async Task<ActionResult> Details(Guid id)
         {
+            try
+            {
+                if (TempData["Success"] != null)
+                {
+                    ViewBag.Success = TempData["Success"];
+                }
+                if (TempData["Failed"] != null)
+                {
+                    ViewBag.Failed = TempData["Failed"];
+                }
+            }
+            catch (Exception ex) { }
             Staff staff = null;
             try
             {
@@ -104,6 +116,18 @@ namespace SportManager.Controllers
         // GET: EventController/Create
         public async Task<ActionResult> Create()
         {
+            try
+            {
+                if (TempData["Success"] != null)
+                {
+                    ViewBag.Success = TempData["Success"];
+                }
+                if (TempData["Failed"] != null)
+                {
+                    ViewBag.Failed = TempData["Failed"];
+                }
+            }
+            catch (Exception ex) { }
             try
             {
                 List<EventType> eventTypes = _context.EventTypes.ToList();
@@ -150,6 +174,18 @@ namespace SportManager.Controllers
         // GET: EventController/Edit/5
         public async Task<ActionResult> Edit(Guid id)
         {
+            try
+            {
+                if (TempData["Success"] != null)
+                {
+                    ViewBag.Success = TempData["Success"];
+                }
+                if (TempData["Failed"] != null)
+                {
+                    ViewBag.Failed = TempData["Failed"];
+                }
+            }
+            catch (Exception ex) { }
             try
             {
                 List<EventType> eventTypes = _context.EventTypes.ToList();
@@ -206,6 +242,18 @@ namespace SportManager.Controllers
         // GET: EventController/Delete/5
         public async Task<ActionResult> Delete(Guid id)
         {
+            try
+            {
+                if (TempData["Success"] != null)
+                {
+                    ViewBag.Success = TempData["Success"];
+                }
+                if (TempData["Failed"] != null)
+                {
+                    ViewBag.Failed = TempData["Failed"];
+                }
+            }
+            catch (Exception ex) { }
             try
             {
                 Event @event = _context.Events.Include("Teams").Include("StoreItemsInUse").Include("EventSessions").

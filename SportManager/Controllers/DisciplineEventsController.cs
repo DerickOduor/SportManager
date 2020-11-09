@@ -82,12 +82,36 @@ namespace SportManager.Controllers
         // GET: DisciplineEventsController/Details/5
         public async Task<ActionResult> Details(int id)
         {
+            try
+            {
+                if (TempData["Success"] != null)
+                {
+                    ViewBag.Success = TempData["Success"];
+                }
+                if (TempData["Failed"] != null)
+                {
+                    ViewBag.Failed = TempData["Failed"];
+                }
+            }
+            catch (Exception ex) { }
             return View();
         }
 
         // GET: DisciplineEventsController/Create
         public async Task<ActionResult> Create()
         {
+            try
+            {
+                if (TempData["Success"] != null)
+                {
+                    ViewBag.Success = TempData["Success"];
+                }
+                if (TempData["Failed"] != null)
+                {
+                    ViewBag.Failed = TempData["Failed"];
+                }
+            }
+            catch (Exception ex) { }
             return View();
         }
 
@@ -109,6 +133,18 @@ namespace SportManager.Controllers
         // GET: DisciplineEventsController/Edit/5
         public async Task<ActionResult> Edit(int id)
         {
+            try
+            {
+                if (TempData["Success"] != null)
+                {
+                    ViewBag.Success = TempData["Success"];
+                }
+                if (TempData["Failed"] != null)
+                {
+                    ViewBag.Failed = TempData["Failed"];
+                }
+            }
+            catch (Exception ex) { }
             return View();
         }
 
@@ -130,6 +166,18 @@ namespace SportManager.Controllers
         // GET: DisciplineEventsController/Delete/5
         public async Task<ActionResult> Delete(int id)
         {
+            try
+            {
+                if (TempData["Success"] != null)
+                {
+                    ViewBag.Success = TempData["Success"];
+                }
+                if (TempData["Failed"] != null)
+                {
+                    ViewBag.Failed = TempData["Failed"];
+                }
+            }
+            catch (Exception ex) { }
             return View();
         }
 

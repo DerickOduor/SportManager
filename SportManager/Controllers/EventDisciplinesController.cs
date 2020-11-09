@@ -77,12 +77,36 @@ namespace SportManager.Controllers
         // GET: EventDisciplinesController/Details/5
         public ActionResult Details(Guid id)
         {
+            try
+            {
+                if (TempData["Success"] != null)
+                {
+                    ViewBag.Success = TempData["Success"];
+                }
+                if (TempData["Failed"] != null)
+                {
+                    ViewBag.Failed = TempData["Failed"];
+                }
+            }
+            catch (Exception ex) { }
             return View();
         }
 
         // GET: EventDisciplinesController/Create
         public async Task<ActionResult> Create(Guid id)
         {
+            try
+            {
+                if (TempData["Success"] != null)
+                {
+                    ViewBag.Success = TempData["Success"];
+                }
+                if (TempData["Failed"] != null)
+                {
+                    ViewBag.Failed = TempData["Failed"];
+                }
+            }
+            catch (Exception ex) { }
             try
             {
                 if (id.Equals(Guid.Empty))
@@ -141,6 +165,18 @@ namespace SportManager.Controllers
         // GET: EventDisciplinesController/Edit/5
         public ActionResult Edit(int id)
         {
+            try
+            {
+                if (TempData["Success"] != null)
+                {
+                    ViewBag.Success = TempData["Success"];
+                }
+                if (TempData["Failed"] != null)
+                {
+                    ViewBag.Failed = TempData["Failed"];
+                }
+            }
+            catch (Exception ex) { }
             return View();
         }
 
@@ -162,6 +198,18 @@ namespace SportManager.Controllers
         // GET: EventDisciplinesController/Delete/5
         public async Task<ActionResult> Delete(Guid id,Guid jd)
         {
+            try
+            {
+                if (TempData["Success"] != null)
+                {
+                    ViewBag.Success = TempData["Success"];
+                }
+                if (TempData["Failed"] != null)
+                {
+                    ViewBag.Failed = TempData["Failed"];
+                }
+            }
+            catch (Exception ex) { }
             try
             {
                 SportDisciplinesInEvent sportDisciplinesInEvent = _context.SportDisciplinesInEvents.Where(s => s.Id.Equals(id)).SingleOrDefault();

@@ -10,15 +10,15 @@ using SportManager.Models.Context;
 
 namespace SportManager.Controllers
 {
-    public class StoreApprovalsController : Controller
+    public class ProfileController : Controller
     {
         private readonly SportDbContext _context;
 
-        public StoreApprovalsController(SportDbContext context)
+        public ProfileController(SportDbContext context)
         {
             _context = context;
         }
-        // GET: StoreApprovalsController
+        // GET: ProfileController
         public async Task<ActionResult> Index()
         {
             try
@@ -32,20 +32,15 @@ namespace SportManager.Controllers
                     ViewBag.Failed = TempData["Failed"];
                 }
 
-                List<StoreItemInUse> storeItems = _context.StoreItemInUse.Include("StoreItem").Include("Event")
-                    .Include("SportDiscipine").
-                    ToList();
+                List<Profile> profiles = _context.Profiles.ToList();
 
-                return View(storeItems);
+                return View(profiles);
             }
-            catch(Exception ex)
-            {
-
-            }
+            catch (Exception ex) { }
             return View();
         }
 
-        // GET: StoreApprovalsController/Details/5
+        // GET: ProfileController/Details/5
         public async Task<ActionResult> Details(Guid id)
         {
             try
@@ -60,11 +55,17 @@ namespace SportManager.Controllers
                 }
             }
             catch (Exception ex) { }
+            try
+            {
+                Profile profile = _context.Profiles.Include("AccessRights").Where(p => p.Id.Equals(id)).SingleOrDefault();
+                return View(profile);
+            }
+            catch (Exception ex) { }
             return View();
         }
 
-        // GET: StoreApprovalsController/Create
-        public ActionResult Create()
+        // GET: ProfileController/Create
+        public async Task<ActionResult> Create()
         {
             try
             {
@@ -81,10 +82,10 @@ namespace SportManager.Controllers
             return View();
         }
 
-        // POST: StoreApprovalsController/Create
+        // POST: ProfileController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public async Task<ActionResult> Create(IFormCollection collection)
         {
             try
             {
@@ -96,8 +97,8 @@ namespace SportManager.Controllers
             }
         }
 
-        // GET: StoreApprovalsController/Edit/5
-        public async Task<ActionResult> Edit(Guid id)
+        // GET: ProfileController/Edit/5
+        public async Task<ActionResult> Edit(int id)
         {
             try
             {
@@ -111,58 +112,26 @@ namespace SportManager.Controllers
                 }
             }
             catch (Exception ex) { }
-            try
-            {
-                StoreItemInUse storeItemInUse = _context.StoreItemInUse.Include("StoreItem").Include("Event")
-                    .Include("SportDiscipine").SingleOrDefault();
-                
-                return View(storeItemInUse);
-            }
-            catch (Exception ex) { }
             return View();
         }
 
-        // POST: StoreApprovalsController/Edit/5
+        // POST: ProfileController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit(Guid id, StoreItemInUse collection,string status)
+        public async Task<ActionResult> Edit(int id, IFormCollection collection)
         {
             try
             {
-                StoreItemInUse storeItemInUse = null;
-                if (status != null)
-                {
-                    storeItemInUse = _context.StoreItemInUse.Where(s => s.Id.Equals(id)).SingleOrDefault();
-                    if (storeItemInUse != null)
-                    {
-                        if (status.Equals("reject"))
-                        {
-                            storeItemInUse.Approved = false;
-                            storeItemInUse.Rejected = true;
-                        }else if (status.Equals("accept"))
-                        {
-                            storeItemInUse.Approved = true;
-                            storeItemInUse.Rejected = false;
-                        }
-                        storeItemInUse.DateApproved = DateTime.Now;
-                        _context.StoreItemInUse.Update(storeItemInUse);
-                        await _context.SaveChangesAsync();
-                    }
-
-                }
-                ViewBag.Success = status.Equals("accept")?"Items approved successfully!": "Items rejected successfully!";
-                TempData["Success"] = status.Equals("accept") ? "Items approved successfully!" : "Items rejected successfully!";
                 return RedirectToAction(nameof(Index));
             }
             catch
             {
-                ViewBag.Failed = "An error occured!";
                 return View();
             }
         }
 
-        // GET: StoreApprovalsController/Delete/5
-        public ActionResult Delete(int id)
+        // GET: ProfileController/Delete/5
+        public async Task<ActionResult> Delete(int id)
         {
             try
             {
@@ -179,10 +148,10 @@ namespace SportManager.Controllers
             return View();
         }
 
-        // POST: StoreApprovalsController/Delete/5
+        // POST: ProfileController/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        public async Task<ActionResult> Delete(int id, IFormCollection collection)
         {
             try
             {

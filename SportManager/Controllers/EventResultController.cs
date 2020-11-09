@@ -77,6 +77,18 @@ namespace SportManager.Controllers
         {
             try
             {
+                if (TempData["Success"] != null)
+                {
+                    ViewBag.Success = TempData["Success"];
+                }
+                if (TempData["Failed"] != null)
+                {
+                    ViewBag.Failed = TempData["Failed"];
+                }
+            }
+            catch (Exception ex) { }
+            try
+            {
                 EventResult result = _context.EventResults.Include("SportDisciplinesInEvent").Include("SportDisciplinesInEvent.Event")
                     .Include("SportDisciplinesInEvent.SportDiscipine")
                     .Include("TournamentStage").Where(r => r.SportDisciplinesInEventId.Equals(id))
@@ -91,6 +103,18 @@ namespace SportManager.Controllers
         // GET: EventResultController/Create
         public async Task<ActionResult> Create(Guid id)
         {
+            try
+            {
+                if (TempData["Success"] != null)
+                {
+                    ViewBag.Success = TempData["Success"];
+                }
+                if (TempData["Failed"] != null)
+                {
+                    ViewBag.Failed = TempData["Failed"];
+                }
+            }
+            catch (Exception ex) { }
             try
             {
                 List<TournamentStage> tournamentStages = _context.TournamentStages.ToList();
@@ -139,6 +163,18 @@ namespace SportManager.Controllers
         // GET: EventResultController/Edit/5
         public async Task<ActionResult> Edit(Guid id)
         {
+            try
+            {
+                if (TempData["Success"] != null)
+                {
+                    ViewBag.Success = TempData["Success"];
+                }
+                if (TempData["Failed"] != null)
+                {
+                    ViewBag.Failed = TempData["Failed"];
+                }
+            }
+            catch (Exception ex) { }
             try
             {
                 List<TournamentStage> tournamentStages = _context.TournamentStages.ToList();
@@ -194,6 +230,18 @@ namespace SportManager.Controllers
         // GET: EventResultController/Delete/5
         public async Task<ActionResult> Delete(Guid id)
         {
+            try
+            {
+                if (TempData["Success"] != null)
+                {
+                    ViewBag.Success = TempData["Success"];
+                }
+                if (TempData["Failed"] != null)
+                {
+                    ViewBag.Failed = TempData["Failed"];
+                }
+            }
+            catch (Exception ex) { }
             try
             {
                 EventResult result = _context.EventResults.Include("SportDisciplinesInEvent").Include("SportDisciplinesInEvent.SportDiscipine")

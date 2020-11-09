@@ -112,6 +112,8 @@ namespace SportManager.Models
         public string MenuUser { get; set; }
         public Guid ParentId { get; set; }
         public int Level { get; set; }
+        [NotMapped]
+        public virtual bool Assigned { get; set; }
         public virtual IEnumerable<AccessRight> AccessRights { get; set; }
     }
 
@@ -345,6 +347,8 @@ namespace SportManager.Models
         public Guid SportDiscipineId { get; set; }
         public virtual SportDiscipine SportDiscipine { get; set; }
         public Guid StaffId { get; set; }
+
+        [Display(Name = "StudeStaffnt name")]
         public virtual Staff Staff { get; set; }
     }
 
@@ -353,6 +357,7 @@ namespace SportManager.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Key]
         public Guid Id { get; set; }
+        [Display(Name = "Category name")]
         public string Name { get; set; }
         public IEnumerable<StoreItem> StoreItems { get; set; }
     }
@@ -362,9 +367,13 @@ namespace SportManager.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Key]
         public Guid Id { get; set; }
+        [Display(Name = "Event name")]
         public Guid EventId { get; set; }
+        [Display(Name = "Sport discipline")]
         public Guid SportDiscipineId { get; set; }
+        [Display(Name = "Event name")]
         public virtual Event Event { get; set; }
+        [Display(Name = "Sport discipline")]
         public virtual SportDiscipine SportDiscipine { get; set; }
         public virtual IEnumerable<StudentsParticipatingInEvent> StudentsParticipatingInEvent { get; set; }
     }
@@ -374,9 +383,11 @@ namespace SportManager.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Key]
         public Guid Id { get; set; }
+        [Display(Name = "Student name")]
         public Guid StudentId { get; set; }
+        [Display(Name = "Event name")]
         public Guid SportDisciplinesInEventId { get; set; }
-        [Display(Name = "Name")]
+        [Display(Name = "Student name")]
         public virtual Student Student { get; set; }
         [Display(Name = "Sport discipline")]
         public virtual SportDisciplinesInEvent SportDisciplinesInEvent { get; set; }

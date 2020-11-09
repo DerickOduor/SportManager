@@ -46,6 +46,18 @@ namespace SportManager.Controllers
         {
             try
             {
+                if (TempData["Success"] != null)
+                {
+                    ViewBag.Success = TempData["Success"];
+                }
+                if (TempData["Failed"] != null)
+                {
+                    ViewBag.Failed = TempData["Failed"];
+                }
+            }
+            catch (Exception ex) { }
+            try
+            {
                 SportDiscipine discipine = _context.SportDiscipines.Include("SportDiscipinePatron")
                     .Include("Students").Include("Teams").Include("StoreItemsInUse").Include("SportDiscipinePatron.Staff").Where(s => s.Id.Equals(id)).SingleOrDefault();
 
@@ -58,6 +70,18 @@ namespace SportManager.Controllers
         // GET: SportController/Create
         public async Task<ActionResult> Create()
         {
+            try
+            {
+                if (TempData["Success"] != null)
+                {
+                    ViewBag.Success = TempData["Success"];
+                }
+                if (TempData["Failed"] != null)
+                {
+                    ViewBag.Failed = TempData["Failed"];
+                }
+            }
+            catch (Exception ex) { }
             return View();
         }
 
@@ -93,6 +117,18 @@ namespace SportManager.Controllers
         // GET: SportController/Edit/5
         public async Task<ActionResult> Edit(Guid id)
         {
+            try
+            {
+                if (TempData["Success"] != null)
+                {
+                    ViewBag.Success = TempData["Success"];
+                }
+                if (TempData["Failed"] != null)
+                {
+                    ViewBag.Failed = TempData["Failed"];
+                }
+            }
+            catch (Exception ex) { }
             try
             {
                 SportDiscipine discipine = _context.SportDiscipines.Include("SportDiscipinePatron")
@@ -136,6 +172,18 @@ namespace SportManager.Controllers
         // GET: SportController/Delete/5
         public async Task<ActionResult> Delete(Guid id)
         {
+            try
+            {
+                if (TempData["Success"] != null)
+                {
+                    ViewBag.Success = TempData["Success"];
+                }
+                if (TempData["Failed"] != null)
+                {
+                    ViewBag.Failed = TempData["Failed"];
+                }
+            }
+            catch (Exception ex) { }
             try
             {
                 SportDiscipine discipine = _context.SportDiscipines.Include("SportDiscipinePatron")

@@ -65,6 +65,18 @@ namespace SportManager.Controllers
         {
             try
             {
+                if (TempData["Success"] != null)
+                {
+                    ViewBag.Success = TempData["Success"];
+                }
+                if (TempData["Failed"] != null)
+                {
+                    ViewBag.Failed = TempData["Failed"];
+                }
+            }
+            catch (Exception ex) { }
+            try
+            {
                 EventSession eventSession = _context.EventSessions.Include(nameof(Event)).Include(nameof(Venue)).Where(e => e.Id.Equals(id)).SingleOrDefault();
                 return View(eventSession);
             }catch(Exception ex)
@@ -77,6 +89,18 @@ namespace SportManager.Controllers
         // GET: EventSessionController/Create
         public async Task<ActionResult> Create(Guid id)
         {
+            try
+            {
+                if (TempData["Success"] != null)
+                {
+                    ViewBag.Success = TempData["Success"];
+                }
+                if (TempData["Failed"] != null)
+                {
+                    ViewBag.Failed = TempData["Failed"];
+                }
+            }
+            catch (Exception ex) { }
             try
             {
                 ViewBag.Event = _context.Events.Where(e => e.Id.Equals(id)).SingleOrDefault();
@@ -150,6 +174,18 @@ namespace SportManager.Controllers
         {
             try
             {
+                if (TempData["Success"] != null)
+                {
+                    ViewBag.Success = TempData["Success"];
+                }
+                if (TempData["Failed"] != null)
+                {
+                    ViewBag.Failed = TempData["Failed"];
+                }
+            }
+            catch (Exception ex) { }
+            try
+            {
                 ViewBag.Event = _context.Events.Where(e => e.Id.Equals(id)).SingleOrDefault();
                 List<Venue> venues = _context.Venues.ToList();
                 ViewBag.Venues = new SelectList(venues, "Id", "Name");
@@ -202,6 +238,18 @@ namespace SportManager.Controllers
         // GET: EventSessionController/Delete/5
         public async Task<ActionResult> Delete(Guid id)
         {
+            try
+            {
+                if (TempData["Success"] != null)
+                {
+                    ViewBag.Success = TempData["Success"];
+                }
+                if (TempData["Failed"] != null)
+                {
+                    ViewBag.Failed = TempData["Failed"];
+                }
+            }
+            catch (Exception ex) { }
             try
             {
                 EventSession eventSession = _context.EventSessions.Include(nameof(Event)).Include(nameof(Venue)).Where(e => e.Id.Equals(id)).SingleOrDefault();

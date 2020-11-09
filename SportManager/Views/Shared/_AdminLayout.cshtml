@@ -716,6 +716,13 @@
                 });
             });
 
+            $('select.Right#ProfileId').on('change', function (e) {
+                var id = $(this).val();
+                if (id == '--select--')
+                    return;
+                window.location = '/AccessRights/Create/'+id;
+            });
+
             $('#packageMainClassCode').on('change', function (e) {
                 var code = $(this).val();
                 if (code == '005') {

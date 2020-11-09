@@ -44,6 +44,18 @@ namespace SportManager.Controllers
         {
             try
             {
+                if (TempData["Success"] != null)
+                {
+                    ViewBag.Success = TempData["Success"];
+                }
+                if (TempData["Failed"] != null)
+                {
+                    ViewBag.Failed = TempData["Failed"];
+                }
+            }
+            catch (Exception ex) { }
+            try
+            {
                 Menu menu = _context.Menus.Where(m => m.Id.Equals(id)).SingleOrDefault();
                 ViewBag.SubMenus = _context.Menus.Where(s => s.ParentId.Equals(menu.Id) & s.Id != menu.Id).ToList();
 
@@ -56,6 +68,18 @@ namespace SportManager.Controllers
         // GET: MenuController/Create
         public async Task<ActionResult> Create()
         {
+            try
+            {
+                if (TempData["Success"] != null)
+                {
+                    ViewBag.Success = TempData["Success"];
+                }
+                if (TempData["Failed"] != null)
+                {
+                    ViewBag.Failed = TempData["Failed"];
+                }
+            }
+            catch (Exception ex) { }
             return View();
         }
 
@@ -66,7 +90,7 @@ namespace SportManager.Controllers
         {
             try
             {
-                Menu menu = _context.Menus.Where(m => m.Name.Equals(collection.Name)).SingleOrDefault();
+                Menu menu = _context.Menus.Where(m => m.Name.Equals(collection.Name) & m.MenuUser.Equals(collection.MenuUser)).SingleOrDefault();
                 if (menu != null)
                 {
                     ViewBag.Failed = "Menu with same name already exists!";
@@ -105,6 +129,18 @@ namespace SportManager.Controllers
         {
             try
             {
+                if (TempData["Success"] != null)
+                {
+                    ViewBag.Success = TempData["Success"];
+                }
+                if (TempData["Failed"] != null)
+                {
+                    ViewBag.Failed = TempData["Failed"];
+                }
+            }
+            catch (Exception ex) { }
+            try
+            {
                 Menu menu = _context.Menus.Where(m => m.Id.Equals(id)).SingleOrDefault();
                 ViewBag.SubMenus = _context.Menus.Where(s => s.ParentId.Equals(menu.Id) & s.Id != menu.Id).ToList();
 
@@ -121,7 +157,12 @@ namespace SportManager.Controllers
         {
             try
             {
-                Menu menu = _context.Menus.Where(m => m.Name.Equals(collection.Name)).SingleOrDefault();
+
+            }
+            catch (Exception ex) { }
+            try
+            {
+                Menu menu = _context.Menus.Where(m => m.Name.Equals(collection.Name) & m.MenuUser.Equals(collection.MenuUser)).SingleOrDefault();
                 if (menu != null)
                 {
                     if (!menu.Id.Equals(collection.Id))
@@ -149,6 +190,18 @@ namespace SportManager.Controllers
         // GET: MenuController/Delete/5
         public async Task<ActionResult> Delete(Guid id)
         {
+            try
+            {
+                if (TempData["Success"] != null)
+                {
+                    ViewBag.Success = TempData["Success"];
+                }
+                if (TempData["Failed"] != null)
+                {
+                    ViewBag.Failed = TempData["Failed"];
+                }
+            }
+            catch (Exception ex) { }
             try
             {
                 Menu menu = _context.Menus.Where(m => m.Id.Equals(id)).SingleOrDefault();

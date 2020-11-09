@@ -70,6 +70,18 @@ namespace SportManager.Controllers
         {
             try
             {
+                if (TempData["Success"] != null)
+                {
+                    ViewBag.Success = TempData["Success"];
+                }
+                if (TempData["Failed"] != null)
+                {
+                    ViewBag.Failed = TempData["Failed"];
+                }
+            }
+            catch (Exception ex) { }
+            try
+            {
                 if (id == 0)
                 {
 
@@ -93,12 +105,36 @@ namespace SportManager.Controllers
         // GET: StudentsInEventController/Details/5
         public async Task<ActionResult> Details(int id)
         {
+            try
+            {
+                if (TempData["Success"] != null)
+                {
+                    ViewBag.Success = TempData["Success"];
+                }
+                if (TempData["Failed"] != null)
+                {
+                    ViewBag.Failed = TempData["Failed"];
+                }
+            }
+            catch (Exception ex) { }
             return View();
         }
 
         // GET: StudentsInEventController/Create
         public async Task<ActionResult> Create(Guid id)
         {
+            try
+            {
+                if (TempData["Success"] != null)
+                {
+                    ViewBag.Success = TempData["Success"];
+                }
+                if (TempData["Failed"] != null)
+                {
+                    ViewBag.Failed = TempData["Failed"];
+                }
+            }
+            catch (Exception ex) { }
             try
             {
                 SportDisciplinesInEvent disciplineInEvent = _context.SportDisciplinesInEvents.Include("Event")
@@ -159,6 +195,19 @@ namespace SportManager.Controllers
         // GET: StudentsInEventController/Edit/5
         public async Task<ActionResult> Edit(int id)
         {
+
+            try
+            {
+                if (TempData["Success"] != null)
+                {
+                    ViewBag.Success = TempData["Success"];
+                }
+                if (TempData["Failed"] != null)
+                {
+                    ViewBag.Failed = TempData["Failed"];
+                }
+            }
+            catch (Exception ex) { }
             return View();
         }
 
@@ -180,6 +229,18 @@ namespace SportManager.Controllers
         // GET: StudentsInEventController/Delete/5
         public async Task<ActionResult> Delete(Guid id,Guid studentid)
         {
+            try
+            {
+                if (TempData["Success"] != null)
+                {
+                    ViewBag.Success = TempData["Success"];
+                }
+                if (TempData["Failed"] != null)
+                {
+                    ViewBag.Failed = TempData["Failed"];
+                }
+            }
+            catch (Exception ex) { }
             try
             {
                 StudentsParticipatingInEvent participatingInEvent = _context.StudentsParticipatingInEvents.Where(s => s.StudentId.Equals(studentid)

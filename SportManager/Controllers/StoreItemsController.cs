@@ -22,12 +22,36 @@ namespace SportManager.Controllers
         // GET: StoreItemsController
         public async Task<ActionResult> Index()
         {
+            try
+            {
+                if (TempData["Success"] != null)
+                {
+                    ViewBag.Success = TempData["Success"];
+                }
+                if (TempData["Failed"] != null)
+                {
+                    ViewBag.Failed = TempData["Failed"];
+                }
+            }
+            catch (Exception ex) { }
             return View();
         }
 
         // GET: StoreItemsController/Details/5
         public async Task<ActionResult> Details(Guid id)
         {
+            try
+            {
+                if (TempData["Success"] != null)
+                {
+                    ViewBag.Success = TempData["Success"];
+                }
+                if (TempData["Failed"] != null)
+                {
+                    ViewBag.Failed = TempData["Failed"];
+                }
+            }
+            catch (Exception ex) { }
             try
             {
                 StoreItem storeItem = _context.StoreItems.Include("StoreCategory").Include("StoreItemsInUse").Where(s => s.Id.Equals(id)).SingleOrDefault();
@@ -43,6 +67,18 @@ namespace SportManager.Controllers
         // GET: StoreItemsController/Create
         public async Task<ActionResult> Create(Guid id)
         {
+            try
+            {
+                if (TempData["Success"] != null)
+                {
+                    ViewBag.Success = TempData["Success"];
+                }
+                if (TempData["Failed"] != null)
+                {
+                    ViewBag.Failed = TempData["Failed"];
+                }
+            }
+            catch (Exception ex) { }
             try
             {
                 if (id != null)
@@ -100,6 +136,18 @@ namespace SportManager.Controllers
         {
             try
             {
+                if (TempData["Success"] != null)
+                {
+                    ViewBag.Success = TempData["Success"];
+                }
+                if (TempData["Failed"] != null)
+                {
+                    ViewBag.Failed = TempData["Failed"];
+                }
+            }
+            catch (Exception ex) { }
+            try
+            {
                 List<StoreCategory> storeCategories = _context.StoreCategories.ToList();
                 ViewBag.StoreCategories = new SelectList(storeCategories, "Id", "Name");
                 StoreItem storeItem = _context.StoreItems.Include("StoreCategory").Include("StoreItemsInUse").Where(s => s.Id.Equals(id)).SingleOrDefault();
@@ -151,6 +199,18 @@ namespace SportManager.Controllers
         // GET: StoreItemsController/Delete/5
         public async Task<ActionResult> Delete(Guid id)
         {
+            try
+            {
+                if (TempData["Success"] != null)
+                {
+                    ViewBag.Success = TempData["Success"];
+                }
+                if (TempData["Failed"] != null)
+                {
+                    ViewBag.Failed = TempData["Failed"];
+                }
+            }
+            catch (Exception ex) { }
             try
             {
                 List<StoreCategory> storeCategories = _context.StoreCategories.ToList();
