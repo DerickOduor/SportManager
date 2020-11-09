@@ -86,7 +86,7 @@ namespace SportManager.Controllers
 
                 ViewBag.Success = "Item saved successfully!";
                 TempData["Success"] = "Item saved successfully!";
-                return RedirectToAction(nameof(Index), "StoreCategory",collection.StoreCategoryId);
+                return RedirectToAction(nameof(Index), "StoreCategory",new { id= collection.StoreCategoryId });
             }
             catch
             {
@@ -139,7 +139,7 @@ namespace SportManager.Controllers
 
                 ViewBag.Success = "Item updated successfully!";
                 TempData["Success"] = "Item updated successfully!";
-                return RedirectToAction(nameof(Index), "StoreCategory",collection.StoreCategoryId);
+                return RedirectToAction(nameof(Index), "StoreCategory",new { id= collection.StoreCategoryId });
             }
             catch
             {
@@ -181,7 +181,7 @@ namespace SportManager.Controllers
                     await _context.SaveChangesAsync();
 
                     ViewBag.Success = "Item deleted successfully!";
-                    return RedirectToAction(nameof(Index), "StoreCategory", cat_id);
+                    return RedirectToAction(nameof(Index), "StoreCategory", new { id= cat_id });
                 }
                 ViewBag.Failed = "Deletion failed!";
                 return View();

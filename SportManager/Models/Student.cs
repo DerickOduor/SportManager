@@ -189,7 +189,7 @@ namespace SportManager.Models
         [Key]
         [Display(Name = "Id")]
         public Guid Id { get; set; }
-        [Display(Name = "Name")]
+        [Display(Name = "Sport discipine name")]
         public string Name { get; set; }
         [Display(Name = "Date added")]
         public DateTime DateAdded { get; set; }
@@ -239,6 +239,7 @@ namespace SportManager.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Key]
         public Guid Id { get; set; }
+        [Display(Name = "Event name")]
         public string Name { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
@@ -379,5 +380,37 @@ namespace SportManager.Models
         public virtual Student Student { get; set; }
         [Display(Name = "Sport discipline")]
         public virtual SportDisciplinesInEvent SportDisciplinesInEvent { get; set; }
+    }
+
+    public class EventResult
+    {
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [Key]
+        public Guid Id { get; set; }
+        [Display(Name = "No. of matches")]
+        public int NoOfMatches { get; set; }
+        [Display(Name = "Matches won")]
+        public int MatchesWon { get; set; }
+        [Display(Name = "Matches lost")]
+        public int MatchesLost { get; set; }
+        [Display(Name = "Matches drawn")]
+        public int MatchesDrawn { get; set; }
+        [Display(Name = "Sport discipline")]
+        public Guid SportDisciplinesInEventId { get; set; }
+        [Display(Name = "Stage reached")]
+        public Guid TournamentStageId { get; set; }
+        [Display(Name = "Sport discipline")]
+        public virtual SportDisciplinesInEvent SportDisciplinesInEvent { get; set; }
+        [Display(Name = "Stage reached")]
+        public virtual TournamentStage TournamentStage { get; set; }
+    }
+
+    public class TournamentStage 
+    {
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [Key]
+        public Guid Id { get; set; }
+        public string Name { get; set; }
+        public virtual List<EventResult> EventResults { get; set; }
     }
 }

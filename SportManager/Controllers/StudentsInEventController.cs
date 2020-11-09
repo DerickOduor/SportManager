@@ -146,7 +146,7 @@ namespace SportManager.Controllers
                 ViewBag.Success = "Student added to event successfully!";
                 TempData["Success"] = "Student added to event successfully!";
 
-                return RedirectToAction(nameof(Index),collection.SportDisciplinesInEventId);
+                return RedirectToAction(nameof(Index),new { id= collection.SportDisciplinesInEventId });
             }
             catch (Exception ex)
             {
@@ -199,7 +199,8 @@ namespace SportManager.Controllers
                 ViewBag.Failed = "An error occured!";
                 TempData["Failed"] = "An error occured!";
             }
-            return RedirectToAction(nameof(Index), id);
+            Guid k_id = id;
+            return RedirectToAction(nameof(Index), new { id= k_id });
         }
 
         // POST: StudentsInEventController/Delete/5

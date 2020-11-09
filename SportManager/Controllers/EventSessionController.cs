@@ -136,7 +136,7 @@ namespace SportManager.Controllers
                 await _context.SaveChangesAsync();
 
                 TempData["Success"] = "Session added successfully";
-                return RedirectToAction(nameof(Index),collection.EventId);
+                return RedirectToAction(nameof(Index),new { id= collection.EventId });
             }
             catch(Exception ex)
             {
@@ -190,7 +190,7 @@ namespace SportManager.Controllers
                 await _context.SaveChangesAsync();
 
                 TempData["Success"] = "Session edited successfully";
-                return RedirectToAction(nameof(Index), collection.EventId);
+                return RedirectToAction(nameof(Index),new { id = collection.EventId });
             }
             catch
             {
@@ -228,13 +228,13 @@ namespace SportManager.Controllers
                 await _context.SaveChangesAsync();
 
                 TempData["Success"] = "Session deleted successfully";
-                return RedirectToAction(nameof(Index), event_id);
+                return RedirectToAction(nameof(Index), new { id= event_id });
             }
             catch
             {
                 ViewBag.Failed="An error occured!";
                 //return View();
-                return RedirectToAction(nameof(Delete), event_id);
+                return RedirectToAction(nameof(Delete), new { id = event_id });
             }
         }
     }

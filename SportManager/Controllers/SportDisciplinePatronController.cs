@@ -98,7 +98,7 @@ namespace SportManager.Controllers
             {
                 ViewBag.Failed = "An error occured!";
                 TempData["Failed"] = "An error occured!";
-                return RedirectToAction(nameof(Index),collection.SportDiscipineId);
+                return RedirectToAction(nameof(Index),new { id= collection.SportDiscipineId });
                 //return View();
             }
         }
@@ -175,7 +175,7 @@ namespace SportManager.Controllers
             {
                 ViewBag.Failed = "An error occured!";
                 TempData["Failed"] = "An error occured!";
-                return RedirectToAction(nameof(Edit), collection.SportDiscipineId);
+                return RedirectToAction(nameof(Edit), new { id= collection.SportDiscipineId });
             }
         }
 

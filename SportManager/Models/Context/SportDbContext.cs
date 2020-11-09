@@ -42,6 +42,8 @@ namespace SportManager.Models.Context
         public DbSet<Password> Passwords { get; set; }
         //public DbSet<Status> Statuses { get; set; }
         public DbSet<MakerChecker> MakerCheckers { get; set; }
+        public DbSet<TournamentStage> TournamentStages { get; set; }
+        public DbSet<EventResult> EventResults { get; set; }
 
         static string Encrypt(string textToEncrypt, string key = "!-gfyugu\\E\\jgjguk87878))_6786yb08\\SSM")
         {
@@ -99,6 +101,12 @@ namespace SportManager.Models.Context
                 .WithMany(b => b.Teams)
                 .IsRequired()
                 .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<EventResult>()
+                .HasOne(a => a.TournamentStage)
+                .WithMany(b => b.EventResults)
+                .IsRequired()
+                .OnDelete(DeleteBehavior.NoAction);
 
             modelBuilder.Entity<SportDiscipinePatron>()
                 .HasOne(a => a.SportDiscipine)
@@ -425,6 +433,34 @@ namespace SportManager.Models.Context
                 {
                     Id = Guid.Parse("910ce653-c7f1-4429-9b95-19270767129d"),
                     Name = "SportStore"
+                }
+            );
+
+            modelBuilder.Entity<TournamentStage>().HasData(
+                new TournamentStage
+                {
+                    Id = Guid.Parse("910ce653-c7f1-4429-9b95-19270767129d"),
+                    Name = "Group Stage"
+                },
+                new TournamentStage
+                {
+                    Id = Guid.Parse("73503878-6414-42fc-87a6-b98c1bc17b5c"),
+                    Name = "Round of 16"
+                },
+                new TournamentStage
+                {
+                    Id = Guid.Parse("d0e36979-1c0e-41a8-9a4a-c19293390f74"),
+                    Name = "Quarter-finals"
+                },
+                new TournamentStage
+                {
+                    Id = Guid.Parse("33dcb26b-db77-4147-8398-d45a5d09e952"),
+                    Name = "Semi-finals"
+                },
+                new TournamentStage
+                {
+                    Id = Guid.Parse("400dd70c-af53-4849-9889-823256adf99a"),
+                    Name = "Finals"
                 }
             );
 

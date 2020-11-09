@@ -178,7 +178,7 @@ namespace SportManager.Controllers
             catch (Exception ex) { }
             ViewBag.Failed = "An error occured!";
             TempData["Failed"] = "An error occured!";
-            return RedirectToAction("Index",jd);
+            return RedirectToAction("Index",new { id= jd });
         }
 
         // POST: EventDisciplinesController/Delete/5
