@@ -5,7 +5,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using iText.Kernel.Pdf;
 using iText.Layout;
+using iText.Layout.Borders;
 using iText.Layout.Element;
+using iText.Layout.Properties;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -57,7 +59,7 @@ namespace SportManager.Controllers
                 {
                     ViewBag.Failed = TempData["Failed"];
                 }
-                List<EventResult> results = _context.EventResults.Include("SportDisciplinesInEvent")
+                List<EventResult> results = _context.EventResults.Include("SportDisciplinesInEvent").Include("SportDisciplinesInEvent.Event")
                     .Include("TournamentStage").Include("SportDisciplinesInEvent.SportDiscipine")
                     .Where(r=>r.SportDisciplinesInEventId.Equals(id)).ToList();
 
@@ -65,6 +67,13 @@ namespace SportManager.Controllers
                     .Include("SportDiscipine").Where(s => s.Id.Equals(id)).SingleOrDefault();
 
                 ViewBag.SportDisciplineInEvent = disciplineInEvent;
+
+                try
+                {
+                    SessionHelper.SetObjectAsJson(HttpContext.Session, "REPORT", "");
+                    SessionHelper.SetObjectAsJson(HttpContext.Session, "REPORT", results);
+                }
+                catch (Exception ex) { }
 
                 return View(results);
             }
@@ -277,6 +286,70 @@ namespace SportManager.Controllers
                 ViewBag.Failed = "An error occured!";
                 return View();
             }
+        }
+
+        public async Task<ActionResult> Report()
+        {
+
+            byte[] pdfBytes;
+            using (MemoryStream stream = new MemoryStream())
+            {
+                using (PdfDocument pdf = new PdfDocument(new PdfWriter(stream)))
+                {
+                    using (iText.Layout.Document document = new iText.Layout.Document(pdf))
+                    {
+                        String line = "REPORT";
+                        document.Add(new Paragraph(line));
+
+                        try
+                        {
+                            List<EventResult> students = SessionHelper.GetObjectFromJson<List<EventResult>>(HttpContext.Session, "REPORT");
+                            if (students != null)
+                            {
+                                if (students.Count > 0)
+                                {
+                                    Table table = new Table(new float[] { 1, 1, 1, 1, 1,1,1 });
+                                    table.SetWidth(100);
+                                    table.AddCell(createCell("Event name", 1, 1, TextAlignment.LEFT));
+                                    table.AddCell(createCell("Sport", 1, 1, TextAlignment.LEFT));
+                                    table.AddCell(createCell("No. of matches", 1, 1, TextAlignment.LEFT));
+                                    table.AddCell(createCell("Matches won", 1, 1, TextAlignment.LEFT));
+                                    table.AddCell(createCell("Matches drawn", 1, 1, TextAlignment.LEFT));
+                                    table.AddCell(createCell("Matches lost", 1, 1, TextAlignment.LEFT));
+                                    table.AddCell(createCell("Stage reached", 1, 1, TextAlignment.LEFT));
+                                    //table.AddCell(createCell("SportDiscipine", 1, 1, TextAlignment.LEFT));
+
+                                    foreach (EventResult student in students)
+                                    {
+                                        table.AddCell(createCell(student.SportDisciplinesInEvent.Event.Name, 1, 1, TextAlignment.LEFT));
+                                        table.AddCell(createCell(student.SportDisciplinesInEvent.SportDiscipine.Name, 1, 1, TextAlignment.LEFT));
+                                        table.AddCell(createCell(student.NoOfMatches+"", 1, 1, TextAlignment.LEFT));
+                                        table.AddCell(createCell(student.MatchesWon+"", 1, 1, TextAlignment.LEFT));
+                                        table.AddCell(createCell(student.MatchesDrawn+"", 1, 1, TextAlignment.LEFT));
+                                        table.AddCell(createCell(student.MatchesLost+"", 1, 1, TextAlignment.LEFT));
+                                        table.AddCell(createCell(student.TournamentStage.Name, 1, 1, TextAlignment.LEFT));
+                                    }
+                                }
+                            }
+                        }
+                        catch (Exception ex) { }
+
+                        document.Close();
+                        pdfBytes = stream.ToArray();
+                        //return File(stream, "application/pdf");
+                        return new FileContentResult(pdfBytes, "application/pdf");
+                    }
+                }
+            }
+        }
+
+        public Cell createCell(String content, float borderWidth, int colspan, TextAlignment alignment)
+        {
+            Cell cell = new Cell(1, colspan).Add(new Paragraph(content));
+            cell.SetTextAlignment(alignment);
+            cell.SetBorder(new SolidBorder(borderWidth));
+
+            return cell;
         }
 
         public async Task<ActionResult> P_D_F() 

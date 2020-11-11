@@ -12,7 +12,11 @@ namespace SportManager.Models
     {
         public static void SetObjectAsJson(this ISession session, string key, object value)
         {
-            session.SetString(key, AppUtility.Encrypt(JsonConvert.SerializeObject(value)));
+            try
+            {
+                session.SetString(key, AppUtility.Encrypt(JsonConvert.SerializeObject(value)));
+            }
+            catch (Exception ex) { }
         }
 
         public static T GetObjectFromJson<T>(this ISession session, string key)

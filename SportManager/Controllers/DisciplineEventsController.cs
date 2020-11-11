@@ -8,6 +8,13 @@ using Microsoft.EntityFrameworkCore;
 using SportManager.Models;
 using SportManager.Models.Context;
 
+using iText.Kernel.Pdf;
+using iText.Layout;
+using iText.Layout.Borders;
+using iText.Layout.Element;
+using iText.Layout.Properties;
+using System.IO;
+
 namespace SportManager.Controllers
 {
     public class DisciplineEventsController : Controller
@@ -73,6 +80,12 @@ namespace SportManager.Controllers
                         events_ = events_.Where(e => e.Cancelled).ToList();
                     }
                 }
+                try
+                {
+                    SessionHelper.SetObjectAsJson(HttpContext.Session, "REPORT", "");
+                    SessionHelper.SetObjectAsJson(HttpContext.Session, "REPORT", events_);
+                }
+                catch (Exception ex) { }
                 return View(events_);
             }
             catch (Exception ex) { }
@@ -194,6 +207,75 @@ namespace SportManager.Controllers
             {
                 return View();
             }
+        }
+        public async Task<ActionResult> Report()
+        {
+
+            byte[] pdfBytes;
+            using (MemoryStream stream = new MemoryStream())
+            {
+                using (PdfDocument pdf = new PdfDocument(new PdfWriter(stream)))
+                {
+                    using (iText.Layout.Document document = new iText.Layout.Document(pdf))
+                    {
+                        String line = "REPORT";
+                        document.Add(new Paragraph(line));
+
+                        try
+                        {
+                            List<Event> students = SessionHelper.GetObjectFromJson<List<Event>>(HttpContext.Session, "REPORT");
+                            if (students != null)
+                            {
+                                if (students.Count > 0)
+                                {
+                                    Table table = new Table(new float[] { 1, 1, 1, 1, 1 });
+                                    table.SetWidth(100);
+                                    table.AddCell(createCell("Event name", 1, 1, TextAlignment.LEFT));
+                                    table.AddCell(createCell("Start date", 1, 1, TextAlignment.LEFT));
+                                    table.AddCell(createCell("End date", 1, 1, TextAlignment.LEFT));
+                                    table.AddCell(createCell("Event type", 1, 1, TextAlignment.LEFT));
+                                    table.AddCell(createCell("No. of disciplines", 1, 1, TextAlignment.LEFT));
+                                    //table.AddCell(createCell("SportDiscipine", 1, 1, TextAlignment.LEFT));
+
+                                    foreach (Event student in students)
+                                    {
+                                        table.AddCell(createCell(student.Name, 1, 1, TextAlignment.LEFT));
+                                        table.AddCell(createCell(student.StartDate.ToString(), 1, 1, TextAlignment.LEFT));
+                                        table.AddCell(createCell(student.EndDate.ToString(), 1, 1, TextAlignment.LEFT));
+                                        table.AddCell(createCell(student.EventType.Name, 1, 1, TextAlignment.LEFT));
+                                        //table.AddCell(createCell(student.SportDiscipine.Name, 1, 1, TextAlignment.LEFT));
+                                        try
+                                        {
+                                            table.AddCell(createCell(Convert.ToString(student.SportDisciplinesInEvent.Count()), 1, 1, TextAlignment.LEFT));
+                                        }
+                                        catch (Exception ex)
+                                        {
+                                            table.AddCell(createCell("0", 1, 1, TextAlignment.LEFT));
+                                        }
+                                        //table.AddCell(createCell(student.Phone, 1, 1, TextAlignment.LEFT));
+                                        //table.AddCell(createCell(student.SportDiscipine.Name, 1, 1, TextAlignment.LEFT));
+                                    }
+                                }
+                            }
+                        }
+                        catch (Exception ex) { }
+
+                        document.Close();
+                        pdfBytes = stream.ToArray();
+                        //return File(stream, "application/pdf");
+                        return new FileContentResult(pdfBytes, "application/pdf");
+                    }
+                }
+            }
+        }
+
+        public Cell createCell(String content, float borderWidth, int colspan, TextAlignment alignment)
+        {
+            Cell cell = new Cell(1, colspan).Add(new Paragraph(content));
+            cell.SetTextAlignment(alignment);
+            cell.SetBorder(new SolidBorder(borderWidth));
+
+            return cell;
         }
     }
 }

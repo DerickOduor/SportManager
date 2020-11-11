@@ -9,6 +9,13 @@ using Microsoft.EntityFrameworkCore;
 using SportManager.Models;
 using SportManager.Models.Context;
 
+using iText.Kernel.Pdf;
+using iText.Layout;
+using iText.Layout.Borders;
+using iText.Layout.Element;
+using iText.Layout.Properties;
+using System.IO;
+
 namespace SportManager.Controllers
 {
     public class EventSessionController : Controller
@@ -54,6 +61,12 @@ namespace SportManager.Controllers
                 }
                 ViewBag.Event = _context.Events.Where(e => e.Id.Equals(id)).SingleOrDefault();
                 List<EventSession> eventSessions = _context.EventSessions.Include(nameof(Event)).Include(nameof(Venue)).Where(e => e.EventId.Equals(id)).ToList();
+                try
+                {
+                    SessionHelper.SetObjectAsJson(HttpContext.Session, "REPORT", "");
+                    SessionHelper.SetObjectAsJson(HttpContext.Session, "REPORT", eventSessions);
+                }
+                catch (Exception ex) { }
                 return View(eventSessions);
             }
             catch (Exception ex) { }
@@ -284,6 +297,65 @@ namespace SportManager.Controllers
                 //return View();
                 return RedirectToAction(nameof(Delete), new { id = event_id });
             }
+        }
+        public async Task<ActionResult> Report()
+        {
+
+            byte[] pdfBytes;
+            using (MemoryStream stream = new MemoryStream())
+            {
+                using (PdfDocument pdf = new PdfDocument(new PdfWriter(stream)))
+                {
+                    using (iText.Layout.Document document = new iText.Layout.Document(pdf))
+                    {
+                        String line = "REPORT";
+                        document.Add(new Paragraph(line));
+
+                        try
+                        {
+                            List<EventSession> students = SessionHelper.GetObjectFromJson<List<EventSession>>(HttpContext.Session, "REPORT");
+                            if (students != null)
+                            {
+                                if (students.Count > 0)
+                                {
+                                    Table table = new Table(new float[] { 1, 1, 1, 1, 1 });
+                                    table.SetWidth(100);
+                                    table.AddCell(createCell("Session name", 1, 1, TextAlignment.LEFT));
+                                    table.AddCell(createCell("Event", 1, 1, TextAlignment.LEFT));
+                                    table.AddCell(createCell("Start time", 1, 1, TextAlignment.LEFT));
+                                    table.AddCell(createCell("End time", 1, 1, TextAlignment.LEFT));
+                                    table.AddCell(createCell("Venue", 1, 1, TextAlignment.LEFT));
+                                    //table.AddCell(createCell("SportDiscipine", 1, 1, TextAlignment.LEFT));
+
+                                    foreach (EventSession student in students)
+                                    {
+                                        table.AddCell(createCell(student.Name, 1, 1, TextAlignment.LEFT));
+                                        table.AddCell(createCell(student.Event.Name, 1, 1, TextAlignment.LEFT));
+                                        table.AddCell(createCell(student.StartTime.ToString(), 1, 1, TextAlignment.LEFT));
+                                        table.AddCell(createCell(student.EndTime.ToString(), 1, 1, TextAlignment.LEFT));
+                                        table.AddCell(createCell(student.Venue.Name, 1, 1, TextAlignment.LEFT));
+                                    }
+                                }
+                            }
+                        }
+                        catch (Exception ex) { }
+
+                        document.Close();
+                        pdfBytes = stream.ToArray();
+                        //return File(stream, "application/pdf");
+                        return new FileContentResult(pdfBytes, "application/pdf");
+                    }
+                }
+            }
+        }
+
+        public Cell createCell(String content, float borderWidth, int colspan, TextAlignment alignment)
+        {
+            Cell cell = new Cell(1, colspan).Add(new Paragraph(content));
+            cell.SetTextAlignment(alignment);
+            cell.SetBorder(new SolidBorder(borderWidth));
+
+            return cell;
         }
     }
 }

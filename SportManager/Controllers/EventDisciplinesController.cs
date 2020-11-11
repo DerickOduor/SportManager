@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
@@ -8,6 +9,12 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using SportManager.Models;
 using SportManager.Models.Context;
+
+using iText.Kernel.Pdf;
+using iText.Layout;
+using iText.Layout.Borders;
+using iText.Layout.Element;
+using iText.Layout.Properties;
 
 namespace SportManager.Controllers
 {
@@ -67,7 +74,12 @@ namespace SportManager.Controllers
                 ViewBag.Event = _context.Events.Where(e => e.Id.Equals(id)).SingleOrDefault();
                 List<SportDisciplinesInEvent> sportDisciplinesInEvent = _context.SportDisciplinesInEvents
                     .Include("Event").Include("SportDiscipine").Include("StudentsParticipatingInEvent").ToList();
-                
+                try
+                {
+                    SessionHelper.SetObjectAsJson(HttpContext.Session, "REPORT", "");
+                    SessionHelper.SetObjectAsJson(HttpContext.Session, "REPORT", sportDisciplinesInEvent);
+                }
+                catch (Exception ex) { }
                 return View(sportDisciplinesInEvent);
             }
             catch (Exception ex) { }
@@ -242,6 +254,71 @@ namespace SportManager.Controllers
             {
                 return View();
             }
+        }
+
+        public async Task<ActionResult> Report()
+        {
+
+            byte[] pdfBytes;
+            using (MemoryStream stream = new MemoryStream())
+            {
+                using (PdfDocument pdf = new PdfDocument(new PdfWriter(stream)))
+                {
+                    using (iText.Layout.Document document = new iText.Layout.Document(pdf))
+                    {
+                        String line = "REPORT";
+                        document.Add(new Paragraph(line));
+
+                        try
+                        {
+                            List<SportDisciplinesInEvent> students = SessionHelper.GetObjectFromJson<List<SportDisciplinesInEvent>>(HttpContext.Session, "REPORT");
+                            if (students != null)
+                            {
+                                if (students.Count > 0)
+                                {
+                                    Table table = new Table(new float[] { 1, 1, 1 });
+                                    table.SetWidth(100);
+                                    table.AddCell(createCell("Event name", 1, 1, TextAlignment.LEFT));
+                                    //table.AddCell(createCell("Name", 1, 1, TextAlignment.LEFT));
+                                    table.AddCell(createCell("Sport discipline", 1, 1, TextAlignment.LEFT));
+                                    table.AddCell(createCell("No. of students", 1, 1, TextAlignment.LEFT));
+                                    //table.AddCell(createCell("SportDiscipine", 1, 1, TextAlignment.LEFT));
+
+                                    foreach (SportDisciplinesInEvent student in students)
+                                    {
+                                        table.AddCell(createCell(student.Event.Name, 1, 1, TextAlignment.LEFT));
+                                        table.AddCell(createCell(student.SportDiscipine.Name , 1, 1, TextAlignment.LEFT));
+                                        try
+                                        {
+                                            table.AddCell(createCell(Convert.ToString(student.StudentsParticipatingInEvent.Count()), 1, 1, TextAlignment.LEFT));
+                                        }catch(Exception ex)
+                                        {
+                                            table.AddCell(createCell("0", 1, 1, TextAlignment.LEFT));
+                                        }
+                                        //table.AddCell(createCell(student.Phone, 1, 1, TextAlignment.LEFT));
+                                        //table.AddCell(createCell(student.SportDiscipine.Name, 1, 1, TextAlignment.LEFT));
+                                    }
+                                }
+                            }
+                        }
+                        catch (Exception ex) { }
+
+                        document.Close();
+                        pdfBytes = stream.ToArray();
+                        //return File(stream, "application/pdf");
+                        return new FileContentResult(pdfBytes, "application/pdf");
+                    }
+                }
+            }
+        }
+
+        public Cell createCell(String content, float borderWidth, int colspan, TextAlignment alignment)
+        {
+            Cell cell = new Cell(1, colspan).Add(new Paragraph(content));
+            cell.SetTextAlignment(alignment);
+            cell.SetBorder(new SolidBorder(borderWidth));
+
+            return cell;
         }
     }
 }
