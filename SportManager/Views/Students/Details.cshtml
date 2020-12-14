@@ -1,7 +1,14 @@
 ﻿@model SportManager.Models.Student
 
+@using Microsoft.AspNetCore.Http;
 @{
     ViewData["Title"] = "Details";
+    string UserProfile = "";
+    try
+    {
+        UserProfile = Context.Session.GetString("USERPROFILE");
+    }
+    catch (Exception ex) { }
 }
 
 
@@ -82,13 +89,13 @@
                                             {
                                                 if (Model.RegistrationVerified)
                                                     @Html.Raw("Yes")
-                                                else
-                                                    @Html.Raw("No")
-                                            }
-                                            catch (Exception ex)
-                                            {
-                                                @Html.Raw("No")
-                                            }
+                                                    else
+                                                        @Html.Raw("No")
+                                                    }
+                                                    catch (Exception ex)
+                                                    {
+                                                        @Html.Raw("No")
+                                                    }
                                         }
                                     </dd>
                                     <dt class="col-sm-2">
@@ -104,8 +111,8 @@
                                         @{
                                             if (Model.ChangePassword)
                                                 @Html.Raw("Yes")
-                                            else
-                                                @Html.Raw("No")
+                                                else
+                                                    @Html.Raw("No")
                                         }
                                     </dd>
                                 </dl>

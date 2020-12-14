@@ -265,3 +265,4 @@ C:\Users\doduor\source\repos\SportManager\SportManager\obj\Debug\netcoreapp3.1\R
 C:\Users\doduor\source\repos\SportManager\SportManager\obj\Debug\netcoreapp3.1\Razor\Views\AccessRights\Create.cshtml.g.cs
 C:\Users\doduor\source\repos\SportManager\SportManager\obj\Debug\netcoreapp3.1\Razor\Views\Profile\Index.cshtml.g.cs
 C:\Users\doduor\source\repos\SportManager\SportManager\obj\Debug\netcoreapp3.1\Razor\Views\Profile\Details.cshtml.g.cs
+C:\Users\doduor\source\repos\SportManager\SportManager\obj\Debug\netcoreapp3.1\Razor\Views\ChangePassword\Create.cshtml.g.cs

@@ -1,8 +1,15 @@
 ﻿@model SportManager.Models.SportDiscipinePatron
 @using SportManager.Models
+@using Microsoft.AspNetCore.Http;
 @{
     ViewData["Title"] = "Index";
     SportDiscipine sportDiscipine = null;
+    string UserProfile = "";
+    try
+    {
+        UserProfile = Context.Session.GetString("USERPROFILE");
+    }
+    catch (Exception ex) { }
     try
     {
         if (ViewBag.SpoortDiscipline != null)
@@ -79,8 +86,8 @@
                                     <div class="form-group row">
                                         <label class="col-sm-2 col-form-label">Sport discipline&nbsp;<span style="color:red;">*</span></label>
                                         <div class="col-sm-10">
-                                            <input type="hidden" class="form-control" value="@sportDiscipine.Id" asp-for="SportDiscipineId" required/>
-                                            <input type="text" class="form-control" value="@sportDiscipine.Name" readonly/>
+                                            <input type="hidden" class="form-control" value="@sportDiscipine.Id" asp-for="SportDiscipineId" required />
+                                            <input type="text" class="form-control" value="@sportDiscipine.Name" readonly />
                                             <span asp-validation-for="SportDiscipineId" class="text-danger"></span>
                                         </div>
                                     </div>

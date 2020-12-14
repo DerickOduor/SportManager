@@ -1,7 +1,14 @@
 ﻿@model IEnumerable<SportManager.Models.StoreItemInUse>
+@using Microsoft.AspNetCore.Http;
 
 @{
     ViewData["Title"] = "Index";
+    string UserProfile = "";
+    try
+    {
+        UserProfile = Context.Session.GetString("USERPROFILE");
+    }
+    catch (Exception ex) { }
 }
 
 <div class="page-header card">
@@ -39,6 +46,15 @@
                         <h5>Store items requested</h5>
                     </div>
                     <div class="card-block">
+                        @if (Model != null)
+                        {
+                            if (Model.Count() > 0)
+                            {
+                                <div class="container">
+                                    <a asp-action="Report" class="btn btn-primary waves-effect waves-light btn-sm">Generate report</a>
+                                </div>
+                            }
+                        }
                         <div class="table-responsive dt-responsive">
                             @{ if (ViewBag.Failed != null)
                                 {
@@ -127,7 +143,13 @@
                                                         }
                                                     </td>
                                                     <td>
-                                                        @Html.ActionLink("View", "Edit", new { id = item.Id })
+                                                        @{
+                                                            if (!UserProfile.Equals("Student"))
+                                                            {
+                                                                @Html.ActionLink("View", "Edit", new { id = item.Id })
+                                                            }
+                                                        }
+
                                                     </td>
                                                 </tr>
                                             }

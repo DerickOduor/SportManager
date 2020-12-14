@@ -1,7 +1,14 @@
 ﻿@model SportManager.Models.EventResult
+@using Microsoft.AspNetCore.Http;
 
 @{
     ViewData["Title"] = "Details";
+    string UserProfile = "";
+    try
+    {
+        UserProfile = Context.Session.GetString("USERPROFILE");
+    }
+    catch (Exception ex) { }
 }
 
 <div class="page-header card">
@@ -94,7 +101,13 @@
         </div>
 
         <div>
-            @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+            @{
+                if (UserProfile.Equals("Coordinator") || UserProfile.Equals("Secretary"))
+                {
+                    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) @Html.Raw(" | ")
+                }
+            }
+
             <a asp-action="Index">Back to List</a>
         </div>
     </div>

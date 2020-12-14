@@ -47,6 +47,7 @@ namespace SportManager.Controllers
                 List<Menu> menus = new List<Menu>();
                 List<Menu> subMenus = new List<Menu>();
                 List<AccessRight> accessRights = new List<AccessRight>();
+                Profile UserProfile = null;
                 if (collection != null)
                 {
                     Staff staff = _context.Staffs/*.Include("SportDiscipinePatron")*//*.Include("Profile")*/.Where(s => s.Email.Equals(collection.Username.Trim())).SingleOrDefault();
@@ -72,7 +73,7 @@ namespace SportManager.Controllers
                             {
                                 try
                                 {
-                                    //Profile profile_ = _context.Profiles.Where(p => p.Id.Equals(staff.ProfileId)).SingleOrDefault();
+                                    
                                     //staff.Profile = profile_;
                                 }
                                 catch (Exception ex) { }
@@ -113,11 +114,13 @@ namespace SportManager.Controllers
                             try
                             {
                                 SessionHelper.SetObjectAsJson(HttpContext.Session, "MY_l_USER", staff);
+                                
                             }
                             catch (Exception ex) { }
                             try
                             {
                                 HttpContext.Session.SetString("USERTYPE", "STAFF");
+                                
                             }
                             catch (Exception ex) { }
                             try
@@ -134,6 +137,12 @@ namespace SportManager.Controllers
                             {
                                 
                             }
+                            try
+                            {
+                                UserProfile = _context.Profiles.Where(p => p.Id.Equals(staff.ProfileId)).SingleOrDefault();
+                                HttpContext.Session.SetString("USERPROFILE", UserProfile.Name);
+                            }
+                            catch (Exception ex) { }
                             return RedirectToAction("Index","Home");
                         }
                         else
@@ -161,6 +170,7 @@ namespace SportManager.Controllers
                                 }
                                 try
                                 {
+                                    
                                     accessRights = _context.AccessRights.Include(nameof(Menu)).Where(a => a.ProfileId == student.ProfileId).ToList();
                                     foreach (AccessRight access in accessRights)
                                     {
@@ -174,7 +184,8 @@ namespace SportManager.Controllers
                                                     Name = access.Menu.Name,
                                                     Link = access.Menu.Link,
                                                     MenuType = access.Menu.MenuType,
-                                                    MenuUser = access.Menu.MenuUser
+                                                    MenuUser = access.Menu.MenuUser,
+                                                    ParentId = access.Menu.ParentId
                                                 });
                                             }
                                             else if (access.Menu.MenuType.Equals("SUB-MENU"))
@@ -185,7 +196,7 @@ namespace SportManager.Controllers
                                                     Name = access.Menu.Name,
                                                     Link = access.Menu.Link,
                                                     MenuType = access.Menu.MenuType,
-                                                    MenuUser = access.Menu.MenuUser
+                                                    ParentId = access.Menu.ParentId
                                                 });
                                             }
                                         }
@@ -196,6 +207,8 @@ namespace SportManager.Controllers
                                 SessionHelper.SetObjectAsJson(HttpContext.Session, "MY_P_MENUS", menus);
                                 SessionHelper.SetObjectAsJson(HttpContext.Session, "MY_S_MENUS", subMenus);
                                 HttpContext.Session.SetString("USERTYPE", "STUDENT");
+                                UserProfile = _context.Profiles.Where(p => p.Id.Equals(student.ProfileId)).SingleOrDefault();
+                                HttpContext.Session.SetString("USERPROFILE", UserProfile.Name);
                                 return RedirectToAction("Index", "Home");
                             }
                             else

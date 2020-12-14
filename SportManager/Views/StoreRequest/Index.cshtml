@@ -1,7 +1,14 @@
 ﻿@model IEnumerable<SportManager.Models.StoreItemInUse>
 
+@using Microsoft.AspNetCore.Http;
 @{
     ViewData["Title"] = "Index";
+    string UserProfile = "";
+    try
+    {
+        UserProfile = Context.Session.GetString("USERPROFILE");
+    }
+    catch (Exception ex) { }
 }
 
 <div class="page-header card">
@@ -124,9 +131,15 @@
                                                         }
                                                     </td>
                                                     <td>
-                                                        @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
-                                                        @Html.ActionLink("Details", "Details", new { id = item.Id }) |
-                                                        @Html.ActionLink("Cancel Request", "Delete", new { id = item.Id })
+                                                        @{
+                                                            if (!UserProfile.Equals("Student"))
+                                                            {
+                                                                @Html.ActionLink("Edit", "Edit", new { id = item.Id }) @Html.Raw(" | ")
+                                                                @Html.ActionLink("Details", "Details", new { id = item.Id }) @Html.Raw(" | ")
+                                                                @Html.ActionLink("Cancel Request", "Delete", new { id = item.Id })
+                                                            }
+                                                        }
+
                                                     </td>
                                                 </tr>
                                             }

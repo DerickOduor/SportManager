@@ -4,6 +4,8 @@ using System.IO;
 using System.Linq;
 using System.Reflection.Metadata;
 using System.Threading.Tasks;
+using iText.IO.Font;
+using iText.Kernel.Font;
 using iText.Kernel.Pdf;
 using iText.Layout;
 using iText.Layout.Borders;
@@ -40,10 +42,36 @@ namespace SportManager.Controllers
                     ViewBag.Failed = TempData["Failed"];
                 }
 
+                Staff staff= SessionHelper.GetObjectFromJson<Staff>(HttpContext.Session, "MY_l_USER");
+                if (staff == null)
+                {
+                    TempData["Failed"] = "You are out of session!";
+                    return RedirectToAction("Index", "Logout");
+                }
+
+                Profile profile = _context.Profiles.Where(p => p.Id.Equals(staff.ProfileId)).SingleOrDefault();
+                
                 List<Student> students = _context.Students.Include("SportDiscipine").Include("StudentsParticipatingInEvent")
                     .ToList();
                 if (!id.Equals(Guid.Empty))
                     students = students.Where(s => s.SportDiscipineId.Equals(id)).ToList();
+                if (profile != null)
+                {
+                    if (profile.Name.Equals("Coordinator") || profile.Name.Equals("Patron"))
+                    {
+                        
+                    }
+                    if(profile.Name.Equals("Patron"))
+                    {
+                        staff = _context.Staffs.Include("SportDiscipinePatron").Include("SportDiscipinePatron.SportDiscipine")
+                            .Where(s => s.Id.Equals(staff.Id)).SingleOrDefault();
+
+                        if (staff != null)
+                        {
+                            students = students.Where(s => s.SportDiscipineId.Equals(staff.SportDiscipinePatron.SportDiscipineId)).ToList();
+                        }
+                    }
+                }
                 try
                 {
                     SessionHelper.SetObjectAsJson(HttpContext.Session, "REPORT", "");
@@ -191,6 +219,9 @@ namespace SportManager.Controllers
                 {
                     using (iText.Layout.Document document = new iText.Layout.Document(pdf))
                     {
+                        Style normal = new Style();
+                        PdfFont font = PdfFontFactory.CreateFont(FontConstants.TIMES_ROMAN);
+                        normal.SetFont(font).SetFontSize(11);
                         String line = "Students";
                         document.Add(new Paragraph(line));
 
@@ -203,25 +234,29 @@ namespace SportManager.Controllers
                                 {
                                     Table table = new Table(new float[] { 1, 1, 1, 1, 1 });
                                     table.SetWidth(100);
-                                    table.AddCell(createCell("Reg. No.", 1, 1, TextAlignment.LEFT));
-                                    table.AddCell(createCell("Name", 1, 1, TextAlignment.LEFT));
-                                    table.AddCell(createCell("Email", 1, 1, TextAlignment.LEFT));
-                                    table.AddCell(createCell("Phone", 1, 1, TextAlignment.LEFT));
-                                    table.AddCell(createCell("SportDiscipine", 1, 1, TextAlignment.LEFT));
+                                    table.AddCell(createCell("Reg. No.", (float)0.5, 1, TextAlignment.LEFT));
+                                    table.AddCell(createCell("Name", (float)0.5, 1, TextAlignment.LEFT));
+                                    table.AddCell(createCell("Email", (float)0.5, 1, TextAlignment.LEFT));
+                                    table.AddCell(createCell("Phone", (float)0.5, 1, TextAlignment.LEFT));
+                                    table.AddCell(createCell("SportDiscipine", (float)0.5, 1, TextAlignment.LEFT));
 
                                     foreach(Student student in students)
                                     {
-                                        table.AddCell(createCell(student.RegistrationNumber, 1, 1, TextAlignment.LEFT));
-                                        table.AddCell(createCell(student.Firstname+" "+student.Lastname, 1, 1, TextAlignment.LEFT));
-                                        table.AddCell(createCell(student.Email, 1, 1, TextAlignment.LEFT));
-                                        table.AddCell(createCell(student.Phone, 1, 1, TextAlignment.LEFT));
-                                        table.AddCell(createCell(student.SportDiscipine.Name, 1, 1, TextAlignment.LEFT));
+                                        table.AddCell(createCell(student.RegistrationNumber, (float)0.5, 1, TextAlignment.LEFT));
+                                        table.AddCell(createCell(student.Firstname+" "+student.Lastname, (float)0.5, 1, TextAlignment.LEFT));
+                                        table.AddCell(createCell(student.Email, (float)0.5, 1, TextAlignment.LEFT));
+                                        table.AddCell(createCell(student.Phone, (float)0.5, 1, TextAlignment.LEFT));
+                                        table.AddCell(createCell(student.SportDiscipine.Name, (float)0.5, 1, TextAlignment.LEFT));
                                     }
+                                    table.AddStyle(normal);
+                                    table.UseAllAvailableWidth();
+                                    document.Add(table);
                                 }
                             }
                         }
                         catch (Exception ex) { }
 
+                        document.SetTextAlignment(TextAlignment.CENTER);
                         document.Close();
                         pdfBytes = stream.ToArray();
                         //return File(stream, "application/pdf");
@@ -237,7 +272,7 @@ namespace SportManager.Controllers
             cell.SetTextAlignment(alignment);
             cell.SetBorder(new SolidBorder(borderWidth));
             
-            return cell;
+            cell.SetPadding(5);return cell;
         }
     }
 }

@@ -1,8 +1,15 @@
 ﻿@model SportManager.Models.Event
+@using Microsoft.AspNetCore.Http;
 
 @{
     ViewData["Title"] = "Details";
-    Event _event=null;
+    Event _event = null;
+    string UserProfile = "";
+    try
+    {
+        UserProfile = Context.Session.GetString("USERPROFILE");
+    }
+    catch (Exception ex) { }
     try
     {
         _event = Model;
@@ -96,10 +103,11 @@
                                             {
                                                 @Html.Raw(" | ")
                                             }
-                                            if (CanAdd)
-                                            {
-                                                @Html.ActionLink("Add sport disciplines", "Create", "EventDisciplines", new { id = Model.Id })
-                                            }
+                                            if (UserProfile.Equals("Coordinator") || UserProfile.Equals("Secretary"))
+                                                if (CanAdd)
+                                                {
+                                                    @Html.ActionLink("Add sport disciplines", "Create", "EventDisciplines", new { id = Model.Id })
+                                                }
 
                                         }
                                         catch (Exception ex)
@@ -123,7 +131,11 @@
         </div>
 
         <div>
-            @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+            @{
+                if (UserProfile.Equals("Coordinator") || UserProfile.Equals("Secretary"))
+                    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) @Html.Raw(" | ")
+            }
+
             <a asp-action="Index">Back to List</a>
         </div>
     </div>

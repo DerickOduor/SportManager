@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using iText.IO.Font;
+using iText.Kernel.Font;
 using iText.Kernel.Pdf;
 using iText.Layout;
 using iText.Layout.Borders;
@@ -100,7 +102,7 @@ namespace SportManager.Controllers
             {
                 EventResult result = _context.EventResults.Include("SportDisciplinesInEvent").Include("SportDisciplinesInEvent.Event")
                     .Include("SportDisciplinesInEvent.SportDiscipine")
-                    .Include("TournamentStage").Where(r => r.SportDisciplinesInEventId.Equals(id))
+                    .Include("TournamentStage").Where(r => r.Id.Equals(id))
                     .SingleOrDefault();
 
                 return View(result);
@@ -129,7 +131,9 @@ namespace SportManager.Controllers
                 List<TournamentStage> tournamentStages = _context.TournamentStages.ToList();
                 ViewBag.TournamentStages = new SelectList(tournamentStages,"Id","Name");
 
-                SportDisciplinesInEvent disciplineInEvent = _context.SportDisciplinesInEvents.Where(s => s.Id.Equals(id)).SingleOrDefault();
+                //SportDisciplinesInEvent disciplineInEvent = _context.SportDisciplinesInEvents.Where(s => s.Id.Equals(id)).SingleOrDefault();
+                SportDisciplinesInEvent disciplineInEvent = _context.SportDisciplinesInEvents
+                    .Include("SportDiscipine").Where(s => s.Id.Equals(id)).SingleOrDefault();
                 ViewBag.SportDisciplineInEvent = disciplineInEvent;
             }
             catch (Exception ex) { }
@@ -146,7 +150,9 @@ namespace SportManager.Controllers
                 List<TournamentStage> tournamentStages = _context.TournamentStages.ToList();
                 ViewBag.TournamentStages = new SelectList(tournamentStages, "Id", "Name");
 
-                SportDisciplinesInEvent disciplineInEvent = _context.SportDisciplinesInEvents.Where(s => s.Id.Equals(collection.SportDisciplinesInEventId)).SingleOrDefault();
+                //SportDisciplinesInEvent disciplineInEvent = _context.SportDisciplinesInEvents.Where(s => s.Id.Equals(collection.SportDisciplinesInEventId)).SingleOrDefault();
+                SportDisciplinesInEvent disciplineInEvent = _context.SportDisciplinesInEvents
+                    .Include("SportDiscipine").Where(s => s.Id.Equals(collection.SportDisciplinesInEventId)).SingleOrDefault();
                 ViewBag.SportDisciplineInEvent = disciplineInEvent;
             }
             catch (Exception ex) { }
@@ -193,10 +199,12 @@ namespace SportManager.Controllers
             try
             {
                 EventResult result = _context.EventResults.Include("SportDisciplinesInEvent").Include("SportDisciplinesInEvent.SportDiscipine")
-                    .Include("TournamentStage").Where(r => r.SportDisciplinesInEventId.Equals(id))
+                    .Include("TournamentStage").Where(r => r.Id.Equals(id))
                     .SingleOrDefault();
 
-                SportDisciplinesInEvent disciplineInEvent = _context.SportDisciplinesInEvents.Where(s => s.Id.Equals(result.SportDisciplinesInEventId)).SingleOrDefault();
+                //SportDisciplinesInEvent disciplineInEvent = _context.SportDisciplinesInEvents.Where(s => s.Id.Equals(result.SportDisciplinesInEventId)).SingleOrDefault();
+                SportDisciplinesInEvent disciplineInEvent = _context.SportDisciplinesInEvents
+                    .Include("SportDiscipine").Where(s => s.Id.Equals(result.SportDisciplinesInEventId)).SingleOrDefault();
                 ViewBag.SportDisciplineInEvent = disciplineInEvent;
 
                 return View(result);
@@ -215,7 +223,9 @@ namespace SportManager.Controllers
                 List<TournamentStage> tournamentStages = _context.TournamentStages.ToList();
                 ViewBag.TournamentStages = new SelectList(tournamentStages, "Id", "Name");
 
-                SportDisciplinesInEvent disciplineInEvent = _context.SportDisciplinesInEvents.Where(s => s.Id.Equals(collection.SportDisciplinesInEventId)).SingleOrDefault();
+                //SportDisciplinesInEvent disciplineInEvent = _context.SportDisciplinesInEvents.Where(s => s.Id.Equals(collection.SportDisciplinesInEventId)).SingleOrDefault();
+                SportDisciplinesInEvent disciplineInEvent = _context.SportDisciplinesInEvents
+                    .Include("SportDiscipine").Where(s => s.Id.Equals(collection.SportDisciplinesInEventId)).SingleOrDefault();
                 ViewBag.SportDisciplineInEvent = disciplineInEvent;
             }
             catch (Exception ex) { }
@@ -254,7 +264,7 @@ namespace SportManager.Controllers
             try
             {
                 EventResult result = _context.EventResults.Include("SportDisciplinesInEvent").Include("SportDisciplinesInEvent.SportDiscipine")
-                    .Include("TournamentStage").Where(r => r.SportDisciplinesInEventId.Equals(id))
+                    .Include("TournamentStage").Where(r => r.Id.Equals(id))
                     .SingleOrDefault();
 
                 return View(result);
@@ -298,6 +308,9 @@ namespace SportManager.Controllers
                 {
                     using (iText.Layout.Document document = new iText.Layout.Document(pdf))
                     {
+                        Style normal = new Style();
+                        PdfFont font = PdfFontFactory.CreateFont(FontConstants.TIMES_ROMAN);
+                        normal.SetFont(font).SetFontSize(11);
                         String line = "REPORT";
                         document.Add(new Paragraph(line));
 
@@ -310,30 +323,34 @@ namespace SportManager.Controllers
                                 {
                                     Table table = new Table(new float[] { 1, 1, 1, 1, 1,1,1 });
                                     table.SetWidth(100);
-                                    table.AddCell(createCell("Event name", 1, 1, TextAlignment.LEFT));
-                                    table.AddCell(createCell("Sport", 1, 1, TextAlignment.LEFT));
-                                    table.AddCell(createCell("No. of matches", 1, 1, TextAlignment.LEFT));
-                                    table.AddCell(createCell("Matches won", 1, 1, TextAlignment.LEFT));
-                                    table.AddCell(createCell("Matches drawn", 1, 1, TextAlignment.LEFT));
-                                    table.AddCell(createCell("Matches lost", 1, 1, TextAlignment.LEFT));
-                                    table.AddCell(createCell("Stage reached", 1, 1, TextAlignment.LEFT));
+                                    table.AddCell(createCell("Event name", (float)0.5, 1, TextAlignment.LEFT));
+                                    table.AddCell(createCell("Sport", (float)0.5, 1, TextAlignment.LEFT));
+                                    table.AddCell(createCell("No. of matches", (float)0.5, 1, TextAlignment.LEFT));
+                                    table.AddCell(createCell("Matches won", (float)0.5, 1, TextAlignment.LEFT));
+                                    table.AddCell(createCell("Matches drawn", (float)0.5, 1, TextAlignment.LEFT));
+                                    table.AddCell(createCell("Matches lost", (float)0.5, 1, TextAlignment.LEFT));
+                                    table.AddCell(createCell("Stage reached", (float)0.5, 1, TextAlignment.LEFT));
                                     //table.AddCell(createCell("SportDiscipine", 1, 1, TextAlignment.LEFT));
 
                                     foreach (EventResult student in students)
                                     {
-                                        table.AddCell(createCell(student.SportDisciplinesInEvent.Event.Name, 1, 1, TextAlignment.LEFT));
-                                        table.AddCell(createCell(student.SportDisciplinesInEvent.SportDiscipine.Name, 1, 1, TextAlignment.LEFT));
-                                        table.AddCell(createCell(student.NoOfMatches+"", 1, 1, TextAlignment.LEFT));
-                                        table.AddCell(createCell(student.MatchesWon+"", 1, 1, TextAlignment.LEFT));
-                                        table.AddCell(createCell(student.MatchesDrawn+"", 1, 1, TextAlignment.LEFT));
-                                        table.AddCell(createCell(student.MatchesLost+"", 1, 1, TextAlignment.LEFT));
-                                        table.AddCell(createCell(student.TournamentStage.Name, 1, 1, TextAlignment.LEFT));
+                                        table.AddCell(createCell(student.SportDisciplinesInEvent.Event.Name, (float)0.5, 1, TextAlignment.LEFT));
+                                        table.AddCell(createCell(student.SportDisciplinesInEvent.SportDiscipine.Name, (float)0.5, 1, TextAlignment.LEFT));
+                                        table.AddCell(createCell(student.NoOfMatches+"", (float)0.5, 1, TextAlignment.LEFT));
+                                        table.AddCell(createCell(student.MatchesWon+"", (float)0.5, 1, TextAlignment.LEFT));
+                                        table.AddCell(createCell(student.MatchesDrawn+"", (float)0.5, 1, TextAlignment.LEFT));
+                                        table.AddCell(createCell(student.MatchesLost+"", (float)0.5, 1, TextAlignment.LEFT));
+                                        table.AddCell(createCell(student.TournamentStage.Name, (float)0.5, 1, TextAlignment.LEFT));
                                     }
+                                    table.AddStyle(normal);
+                                    table.UseAllAvailableWidth();
+                                    document.Add(table);
                                 }
                             }
                         }
                         catch (Exception ex) { }
 
+                        document.SetTextAlignment(TextAlignment.CENTER);
                         document.Close();
                         pdfBytes = stream.ToArray();
                         //return File(stream, "application/pdf");
@@ -349,7 +366,7 @@ namespace SportManager.Controllers
             cell.SetTextAlignment(alignment);
             cell.SetBorder(new SolidBorder(borderWidth));
 
-            return cell;
+            cell.SetPadding(5);return cell;
         }
 
         public async Task<ActionResult> P_D_F() 

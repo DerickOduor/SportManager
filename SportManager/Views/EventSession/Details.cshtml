@@ -1,7 +1,14 @@
 ﻿@model SportManager.Models.EventSession
+@using Microsoft.AspNetCore.Http;
 
 @{
     ViewData["Title"] = "Details";
+    string UserProfile = "";
+    try
+    {
+        UserProfile = Context.Session.GetString("USERPROFILE");
+    }
+    catch (Exception ex) { }
 }
 
 <div class="page-header card">

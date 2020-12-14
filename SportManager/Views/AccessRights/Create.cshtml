@@ -1,11 +1,20 @@
 ﻿@model SportManager.Models.AccessRight
 @using SportManager.Models
+@using Microsoft.AspNetCore.Http;
 @{
     ViewData["Title"] = "Create";
     Profile profile = null;
     List<Menu> menus = null;
+    string UserType = "";
+    string UserProfile="";
     try
     {
+        UserProfile = Context.Session.GetString("USERPROFILE");
+    }
+    catch (Exception ex) { }
+    try
+    {
+        UserType = Context.Session.GetString("USERTYPE");
         if (ViewBag.Profile != null)
         {
             profile = (Profile)ViewBag.Profile;

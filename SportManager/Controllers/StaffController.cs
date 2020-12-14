@@ -16,6 +16,8 @@ using iText.Layout.Borders;
 using iText.Layout.Element;
 using iText.Layout.Properties;
 using System.IO;
+using iText.Kernel.Font;
+using iText.IO.Font;
 
 namespace SportManager.Controllers
 {
@@ -49,10 +51,6 @@ namespace SportManager.Controllers
                 {
                     ViewBag.Success = TempData["Success"];
                 }
-                List<Profile> profiles = new List<Profile>();
-                profiles = _context.Profiles.Where(p => p.Name != "Student").ToList();
-                ViewBag.profiles = new SelectList(profiles, "Id", "Name");
-
                 List<Staff> staffs = _context.Staffs.ToList().OrderBy(s => s.DateRegistered).ToList();
                 try
                 {
@@ -60,6 +58,11 @@ namespace SportManager.Controllers
                     SessionHelper.SetObjectAsJson(HttpContext.Session, "REPORT", staffs);
                 }
                 catch (Exception ex) { }
+                List<Profile> profiles = new List<Profile>();
+                profiles = _context.Profiles.Where(p => p.Name != "Student").ToList();
+                ViewBag.profiles = new SelectList(profiles, "Id", "Name");
+
+                
                 return View(staffs);
             }
             catch(Exception ex) { }
@@ -474,6 +477,9 @@ namespace SportManager.Controllers
                 {
                     using (iText.Layout.Document document = new iText.Layout.Document(pdf))
                     {
+                        Style normal = new Style();
+                        PdfFont font = PdfFontFactory.CreateFont(FontConstants.TIMES_ROMAN);
+                        normal.SetFont(font).SetFontSize(11);
                         String line = "REPORT";
                         document.Add(new Paragraph(line));
 
@@ -486,32 +492,37 @@ namespace SportManager.Controllers
                                 {
                                     Table table = new Table(new float[] { 1, 1, 1, 1, 1 });
                                     table.SetWidth(100);
-                                    table.AddCell(createCell("Name", 1, 1, TextAlignment.LEFT));
-                                    table.AddCell(createCell("Staff no.", 1, 1, TextAlignment.LEFT));
-                                    table.AddCell(createCell("Email", 1, 1, TextAlignment.LEFT));
-                                    table.AddCell(createCell("Phone", 1, 1, TextAlignment.LEFT));
-                                    table.AddCell(createCell("Profile", 1, 1, TextAlignment.LEFT));
+                                    table.AddCell(createCell("Name", (float)0.5, 1, TextAlignment.LEFT));
+                                    table.AddCell(createCell("Staff no.", (float)0.5, 1, TextAlignment.LEFT));
+                                    table.AddCell(createCell("Email", (float)0.5, 1, TextAlignment.LEFT));
+                                    table.AddCell(createCell("Phone", (float)0.5, 1, TextAlignment.LEFT));
+                                    table.AddCell(createCell("Profile", (float)0.5, 1, TextAlignment.LEFT));
                                     //table.AddCell(createCell("SportDiscipine", 1, 1, TextAlignment.LEFT));
 
                                     foreach (Staff student in students)
                                     {
-                                        table.AddCell(createCell(student.Firstname+" "+student.Lastname, 1, 1, TextAlignment.LEFT));
-                                        table.AddCell(createCell(student.RegistrationNumber, 1, 1, TextAlignment.LEFT));
-                                        table.AddCell(createCell(student.Email, 1, 1, TextAlignment.LEFT));
-                                        table.AddCell(createCell(student.Phone, 1, 1, TextAlignment.LEFT));
+                                        table.AddCell(createCell(student.Firstname+" "+student.Lastname, (float)0.5, 1, TextAlignment.LEFT));
+                                        table.AddCell(createCell(student.RegistrationNumber, (float)0.5, 1, TextAlignment.LEFT));
+                                        table.AddCell(createCell(student.Email, (float)0.5, 1, TextAlignment.LEFT));
+                                        table.AddCell(createCell(student.Phone, (float)0.5, 1, TextAlignment.LEFT));
                                         try
                                         {
-                                            table.AddCell(createCell(student.Profile.Name, 1, 1, TextAlignment.LEFT));
+                                            table.AddCell(createCell(student.Profile.Name, (float)0.5, 1, TextAlignment.LEFT));
                                         }catch(Exception ex)
                                         {
-                                            table.AddCell(createCell("N/A", 1, 1, TextAlignment.LEFT));
+                                            table.AddCell(createCell("N/A", (float)0.5, 1, TextAlignment.LEFT));
                                         }
                                     }
+
+                                    table.AddStyle(normal);
+                                    table.UseAllAvailableWidth();
+                                    document.Add(table);
                                 }
                             }
                         }
                         catch (Exception ex) { }
 
+                        document.SetTextAlignment(TextAlignment.CENTER);
                         document.Close();
                         pdfBytes = stream.ToArray();
                         //return File(stream, "application/pdf");
@@ -527,7 +538,7 @@ namespace SportManager.Controllers
             cell.SetTextAlignment(alignment);
             cell.SetBorder(new SolidBorder(borderWidth));
 
-            return cell;
+            cell.SetPadding(5);return cell;
         }
     }
 }

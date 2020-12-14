@@ -179,6 +179,39 @@ namespace SportManager.Migrations
                     b.ToTable("Events");
                 });
 
+            modelBuilder.Entity("SportManager.Models.EventResult", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("MatchesDrawn")
+                        .HasColumnType("int");
+
+                    b.Property<int>("MatchesLost")
+                        .HasColumnType("int");
+
+                    b.Property<int>("MatchesWon")
+                        .HasColumnType("int");
+
+                    b.Property<int>("NoOfMatches")
+                        .HasColumnType("int");
+
+                    b.Property<Guid>("SportDisciplinesInEventId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("TournamentStageId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("SportDisciplinesInEventId");
+
+                    b.HasIndex("TournamentStageId");
+
+                    b.ToTable("EventResults");
+                });
+
             modelBuilder.Entity("SportManager.Models.EventSession", b =>
                 {
                     b.Property<Guid>("Id")
@@ -608,7 +641,7 @@ namespace SportManager.Migrations
                         new
                         {
                             Id = new Guid("910ce653-c7f1-4429-9b95-19270767129d"),
-                            DateAdded = new DateTime(2020, 11, 7, 20, 58, 27, 69, DateTimeKind.Local).AddTicks(9017),
+                            DateAdded = new DateTime(2020, 12, 14, 17, 18, 52, 501, DateTimeKind.Local).AddTicks(9533),
                             Deleted = false,
                             Name = "Football",
                             Status = true
@@ -616,7 +649,7 @@ namespace SportManager.Migrations
                         new
                         {
                             Id = new Guid("27f9810e-3e57-4f56-b787-8e8df67fd9ff"),
-                            DateAdded = new DateTime(2020, 11, 7, 20, 58, 27, 70, DateTimeKind.Local).AddTicks(756),
+                            DateAdded = new DateTime(2020, 12, 14, 17, 18, 52, 503, DateTimeKind.Local).AddTicks(6351),
                             Deleted = false,
                             Name = "Basketball",
                             Status = true
@@ -624,7 +657,7 @@ namespace SportManager.Migrations
                         new
                         {
                             Id = new Guid("8d5d6ccb-c34f-44b6-8bc7-0b19e5d0e472"),
-                            DateAdded = new DateTime(2020, 11, 7, 20, 58, 27, 70, DateTimeKind.Local).AddTicks(800),
+                            DateAdded = new DateTime(2020, 12, 14, 17, 18, 52, 503, DateTimeKind.Local).AddTicks(6626),
                             Deleted = false,
                             Name = "Volleyball",
                             Status = true
@@ -632,7 +665,7 @@ namespace SportManager.Migrations
                         new
                         {
                             Id = new Guid("73503878-6414-42fc-87a6-b98c1bc17b5c"),
-                            DateAdded = new DateTime(2020, 11, 7, 20, 58, 27, 70, DateTimeKind.Local).AddTicks(804),
+                            DateAdded = new DateTime(2020, 12, 14, 17, 18, 52, 503, DateTimeKind.Local).AddTicks(6639),
                             Deleted = false,
                             Name = "Racket games",
                             Status = true
@@ -746,7 +779,7 @@ namespace SportManager.Migrations
                             Id = new Guid("327d571a-1690-44e0-806d-65e0593364ad"),
                             Authorized = true,
                             ChangePassword = false,
-                            DateRegistered = new DateTime(2020, 11, 7, 20, 58, 27, 67, DateTimeKind.Local).AddTicks(6754),
+                            DateRegistered = new DateTime(2020, 12, 14, 17, 18, 52, 497, DateTimeKind.Local).AddTicks(897),
                             Deleted = false,
                             Email = "oduorderick@gmail.com",
                             Firstname = "Derick",
@@ -764,7 +797,7 @@ namespace SportManager.Migrations
                             Id = new Guid("81019aa2-4056-41f9-b4b3-828d51fa7c51"),
                             Authorized = true,
                             ChangePassword = false,
-                            DateRegistered = new DateTime(2020, 11, 7, 20, 58, 27, 69, DateTimeKind.Local).AddTicks(6337),
+                            DateRegistered = new DateTime(2020, 12, 14, 17, 18, 52, 500, DateTimeKind.Local).AddTicks(5719),
                             Deleted = false,
                             Email = "appsderick@gmail.com",
                             Firstname = "Derick",
@@ -782,7 +815,7 @@ namespace SportManager.Migrations
                             Id = new Guid("44c04a3e-844d-46e6-ae44-1e3e2853e50c"),
                             Authorized = true,
                             ChangePassword = false,
-                            DateRegistered = new DateTime(2020, 11, 7, 20, 58, 27, 69, DateTimeKind.Local).AddTicks(6435),
+                            DateRegistered = new DateTime(2020, 12, 14, 17, 18, 52, 500, DateTimeKind.Local).AddTicks(6216),
                             Deleted = false,
                             Email = "derick_oduor@yahoo.com",
                             Firstname = "Derick",
@@ -974,7 +1007,7 @@ namespace SportManager.Migrations
                             Id = new Guid("910ce653-c7f1-4429-9b95-19270767129d"),
                             Authorized = true,
                             ChangePassword = false,
-                            DateRegistered = new DateTime(2020, 11, 7, 20, 58, 27, 70, DateTimeKind.Local).AddTicks(8329),
+                            DateRegistered = new DateTime(2020, 12, 14, 17, 18, 52, 506, DateTimeKind.Local).AddTicks(2929),
                             Email = "derick_oduor@yahoo.com",
                             Firstname = "Derick",
                             Lastname = "Oduor",
@@ -1062,6 +1095,47 @@ namespace SportManager.Migrations
                     b.ToTable("TeamMembers");
                 });
 
+            modelBuilder.Entity("SportManager.Models.TournamentStage", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("TournamentStages");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("910ce653-c7f1-4429-9b95-19270767129d"),
+                            Name = "Group Stage"
+                        },
+                        new
+                        {
+                            Id = new Guid("73503878-6414-42fc-87a6-b98c1bc17b5c"),
+                            Name = "Round of 16"
+                        },
+                        new
+                        {
+                            Id = new Guid("d0e36979-1c0e-41a8-9a4a-c19293390f74"),
+                            Name = "Quarter-finals"
+                        },
+                        new
+                        {
+                            Id = new Guid("33dcb26b-db77-4147-8398-d45a5d09e952"),
+                            Name = "Semi-finals"
+                        },
+                        new
+                        {
+                            Id = new Guid("400dd70c-af53-4849-9889-823256adf99a"),
+                            Name = "Finals"
+                        });
+                });
+
             modelBuilder.Entity("SportManager.Models.Venue", b =>
                 {
                     b.Property<Guid>("Id")
@@ -1106,6 +1180,21 @@ namespace SportManager.Migrations
                         .WithMany("Event")
                         .HasForeignKey("EventTypeId")
                         .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("SportManager.Models.EventResult", b =>
+                {
+                    b.HasOne("SportManager.Models.SportDisciplinesInEvent", "SportDisciplinesInEvent")
+                        .WithMany()
+                        .HasForeignKey("SportDisciplinesInEventId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("SportManager.Models.TournamentStage", "TournamentStage")
+                        .WithMany("EventResults")
+                        .HasForeignKey("TournamentStageId")
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
                 });
 

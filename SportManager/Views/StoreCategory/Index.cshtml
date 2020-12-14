@@ -1,7 +1,14 @@
 ﻿@model IEnumerable<SportManager.Models.StoreItem>
+@using Microsoft.AspNetCore.Http;
 
 @{
     ViewData["Title"] = "Index";
+    string UserProfile = "";
+    try
+    {
+        UserProfile = Context.Session.GetString("USERPROFILE");
+    }
+    catch (Exception ex) { }
 }
 
 <div class="page-header card">
@@ -41,8 +48,23 @@
                     <div class="card-block">
                         <p>
                             @*<a asp-action="/StoreItems/Create" asp-route="@ViewBag.StoreCategoryId">Create New Item</a>*@
-                            @Html.ActionLink("Create New Item", "Create", "StoreItems", new { id= ViewBag.StoreCategoryId!=null? ViewBag.StoreCategoryId:""})
+                            @{
+                                if (UserProfile.Equals("Coordinator") || UserProfile.Equals("Secretary") || UserProfile.Equals("StoreKeeper"))
+                                {
+                                    @Html.ActionLink("Create New Item", "Create", "StoreItems", new { id = ViewBag.StoreCategoryId != null ? ViewBag.StoreCategoryId : "" })
+                                }
+                            }
+
                         </p>
+                        @if (Model != null)
+                        {
+                            if (Model.Count() > 0)
+                            {
+                                <div class="container">
+                                    <a asp-action="Report" class="btn btn-primary waves-effect waves-light btn-sm">Generate report</a>
+                                </div>
+                            }
+                        }
                         <div class="table-responsive dt-responsive">
                             @{ if (ViewBag.Failed != null)
                                 {
@@ -102,9 +124,15 @@
                                                     </td>
                                                     <td>
                                                         @*@Html.ActionLink("Items", "Index", "StoreCategory", new { id = item.Id }) |*@
-                                                        @Html.ActionLink("Edit", "Edit", "StoreItems", new { id = item.Id }) |
-                                                        @Html.ActionLink("Details", "Details", "StoreItems", new { id = item.Id }) |
-                                                        @Html.ActionLink("Delete", "Delete", "StoreItems", new { id = item.Id })
+                                                        @{
+                                                            if (UserProfile.Equals("Coordinator") || UserProfile.Equals("Secretary") || UserProfile.Equals("StoreKeeper"))
+                                                            {
+                                                                @Html.ActionLink("Edit", "Edit", "StoreItems", new { id = item.Id }) @Html.Raw(" | ")
+
+                                                                @Html.ActionLink("Delete", "Delete", "StoreItems", new { id = item.Id }) @Html.Raw(" | ")
+                                                            }
+                                                        }
+                                                        @Html.ActionLink("Details", "Details", "StoreItems", new { id = item.Id })
                                                     </td>
                                                 </tr>
                                             }

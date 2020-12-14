@@ -1,7 +1,14 @@
 ﻿@model SportManager.Models.StoreItem
+@using Microsoft.AspNetCore.Http;
 
 @{
     ViewData["Title"] = "Details";
+    string UserProfile = "";
+    try
+    {
+        UserProfile = Context.Session.GetString("USERPROFILE");
+    }
+    catch (Exception ex) { }
 }
 
 <div class="page-header card">
@@ -77,7 +84,13 @@
         </div>
 
         <div>
-            @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+            @{
+                if (UserProfile.Equals("Coordinator") || UserProfile.Equals("Secretary") || UserProfile.Equals("StoreKeeper"))
+                {
+                    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) @Html.Raw(" | ")
+}
+            }
+
             @*<a asp-action="Index">Back to List</a>*@
             @Html.ActionLink("Back to List", "Index", "StoreCategory", new { id = Model.StoreCategoryId })
         </div>

@@ -14,6 +14,8 @@ using iText.Layout.Borders;
 using iText.Layout.Element;
 using iText.Layout.Properties;
 using System.IO;
+using iText.Kernel.Font;
+using iText.IO.Font;
 
 namespace SportManager.Controllers
 {
@@ -180,6 +182,9 @@ namespace SportManager.Controllers
                 {
                     using (iText.Layout.Document document = new iText.Layout.Document(pdf))
                     {
+                        Style normal = new Style();
+                        PdfFont font = PdfFontFactory.CreateFont(FontConstants.TIMES_ROMAN);
+                        normal.SetFont(font).SetFontSize(11);
                         String line = "REPORT";
                         document.Add(new Paragraph(line));
 
@@ -192,20 +197,24 @@ namespace SportManager.Controllers
                                 {
                                     Table table = new Table(new float[] { 1, 1 });
                                     table.SetWidth(100);
-                                    table.AddCell(createCell("Name", 1, 1, TextAlignment.LEFT));
-                                    table.AddCell(createCell("No. of items", 1, 1, TextAlignment.LEFT));
+                                    table.AddCell(createCell("Name", (float)0.5, 1, TextAlignment.LEFT));
+                                    table.AddCell(createCell("No. of items", (float)0.5, 1, TextAlignment.LEFT));
                                     //table.AddCell(createCell("SportDiscipine", 1, 1, TextAlignment.LEFT));
 
                                     foreach (StoreCategory student in students)
                                     {
-                                        table.AddCell(createCell(student.Name, 1, 1, TextAlignment.LEFT));
-                                        table.AddCell(createCell(student.StoreItems.Count()+"", 1, 1, TextAlignment.LEFT));
+                                        table.AddCell(createCell(student.Name, (float)0.5, 1, TextAlignment.LEFT));
+                                        table.AddCell(createCell(student.StoreItems.Count()+"", (float)0.5, 1, TextAlignment.LEFT));
                                     }
+                                    table.AddStyle(normal);
+                                    table.UseAllAvailableWidth();
+                                    document.Add(table);
                                 }
                             }
                         }
                         catch (Exception ex) { }
 
+                        document.SetTextAlignment(TextAlignment.CENTER);
                         document.Close();
                         pdfBytes = stream.ToArray();
                         //return File(stream, "application/pdf");
@@ -221,7 +230,7 @@ namespace SportManager.Controllers
             cell.SetTextAlignment(alignment);
             cell.SetBorder(new SolidBorder(borderWidth));
 
-            return cell;
+            cell.SetPadding(5);return cell;
         }
     }
 }

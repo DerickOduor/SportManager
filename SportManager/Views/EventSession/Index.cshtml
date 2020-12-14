@@ -1,16 +1,24 @@
 ﻿@model IEnumerable<SportManager.Models.EventSession>
 @using SportManager.Models
+@using Microsoft.AspNetCore.Http;
 
 @{
     ViewData["Title"] = "Index";
     Event event_ = null;
+    string UserProfile = "";
+    try
+    {
+        UserProfile = Context.Session.GetString("USERPROFILE");
+    }
+    catch (Exception ex) { }
     try
     {
         if (ViewBag.Event != null)
         {
             event_ = (Event)ViewBag.Event;
         }
-    }catch(Exception ex) { }
+    }
+    catch (Exception ex) { }
 }
 
 <div class="page-header card">
@@ -60,8 +68,23 @@
                     <div class="card-block">
                         <p>
                             @*<a asp-action="Create/@event_.Id">Create New</a>*@
-                            @Html.ActionLink("Create New", "Create", new { id = @event_.Id })
+                            @{
+                                if (UserProfile.Equals("Coordinator") || UserProfile.Equals("Secretary"))
+                                {
+                                    @Html.ActionLink("Create New", "Create", new { id = @event_.Id })
+                                }
+                            }
+
                         </p>
+                        @if (Model != null)
+                        {
+                            if (Model.Count() > 0)
+                            {
+                                <div class="container">
+                                    <a asp-action="Report" class="btn btn-primary waves-effect waves-light btn-sm">Generate report</a>
+                                </div>
+                            }
+                        }
                         <div class="table-responsive dt-responsive">
                             @{ if (ViewBag.Failed != null)
                                 {
@@ -135,16 +158,18 @@
                                                         @{
                                                             try
                                                             {
-                                                                if (ViewBag.CanAddSession != null)
-                                                                {
-                                                                    @Html.ActionLink("Edit", "Edit", new { id = item.Id })
-                                                                    @Html.Raw(" | ")
-                                                                }
-                                                                if (ViewBag.CanAddSession != null)
-                                                                {
-                                                                    @Html.ActionLink("Delete", "Delete", new { id = item.Id })
-                                                                    @Html.Raw(" | ")
-                                                                }
+                                                                if (UserProfile.Equals("Coordinator") || UserProfile.Equals("Secretary"))
+                                                                    if (ViewBag.CanAddSession != null)
+                                                                    {
+                                                                        @Html.ActionLink("Edit", "Edit", new { id = item.Id })
+                                                                        @Html.Raw(" | ")
+                                                                    }
+                                                                if (UserProfile.Equals("Coordinator") || UserProfile.Equals("Secretary"))
+                                                                    if (ViewBag.CanAddSession != null)
+                                                                    {
+                                                                        @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+                                                                        @Html.Raw(" | ")
+                                                                    }
                                                             }
                                                             catch (Exception ex) { }
                                                         }
@@ -186,7 +211,7 @@
 
         </div>
         <div>
-            @Html.ActionLink("Back to event", "Index","Event")
+            @Html.ActionLink("Back to event", "Index", "Event")
         </div>
     </div>
 </div>
