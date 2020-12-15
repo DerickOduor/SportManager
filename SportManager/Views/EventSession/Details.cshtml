@@ -90,7 +90,11 @@
         </div>
 
         <div>
-            @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+            @if (UserProfile.Equals("Coordinator") || UserProfile.Equals("Secretary"))
+            {
+                @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) @Html.Raw(" | ")
+            }
+            
             @*<a asp-action="Index" asp-route="@Model.EventId">Back to List</a>*@
             @Html.ActionLink("Back to List", "Index", new { id = Model.EventId })
         </div>

@@ -83,6 +83,7 @@ namespace SportManager.Controllers
             {
                 if (id != null)
                 {
+                    ViewBag.StoreCategoryId = id;
                     ViewBag.StoreCategory = _context.StoreCategories.Where(s => s.Id.Equals(id)).SingleOrDefault();
                 }
                 List<StoreCategory> storeCategories = _context.StoreCategories.ToList();
